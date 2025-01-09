@@ -1,4 +1,4 @@
-package com.northcoders.pigliotech_frontend.ui.fragments;
+package com.northcoders.pigliotech_frontend.ui.fragments.home;
 
 import android.os.Bundle;
 

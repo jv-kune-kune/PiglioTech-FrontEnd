@@ -7,7 +7,7 @@
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.SignUpFragment">
+    tools:context=".ui.fragments.signup.SignUpFragment">
 
 
     <!-- Linear Layout with vertical orientation and other properties -->

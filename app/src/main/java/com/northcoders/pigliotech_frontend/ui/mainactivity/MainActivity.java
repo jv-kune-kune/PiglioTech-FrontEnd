@@ -13,12 +13,12 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.northcoders.pigliotech_frontend.ui.fragments.AddBookFragment;
-import com.northcoders.pigliotech_frontend.ui.fragments.HomeFragment;
-import com.northcoders.pigliotech_frontend.ui.fragments.LandingPageFragment;
+import com.northcoders.pigliotech_frontend.ui.fragments.addbook.AddBookFragment;
+import com.northcoders.pigliotech_frontend.ui.fragments.home.HomeFragment;
+import com.northcoders.pigliotech_frontend.ui.fragments.landingpage.LandingPageFragment;
 import com.northcoders.pigliotech_frontend.R;
-import com.northcoders.pigliotech_frontend.ui.fragments.ProfileFragment;
-import com.northcoders.pigliotech_frontend.ui.fragments.SignUpFragment;
+import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileFragment;
+import com.northcoders.pigliotech_frontend.ui.fragments.signup.SignUpFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 

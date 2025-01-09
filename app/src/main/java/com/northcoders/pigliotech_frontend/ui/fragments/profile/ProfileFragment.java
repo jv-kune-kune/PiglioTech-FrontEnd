@@ -1,4 +1,4 @@
-package com.northcoders.pigliotech_frontend.ui.fragments;
+package com.northcoders.pigliotech_frontend.ui.fragments.profile;
 
 import android.os.Bundle;
 
@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentProfileBinding;
+import com.northcoders.pigliotech_frontend.ui.fragments.landingpage.LandingPageFragment;
 
 public class ProfileFragment extends Fragment {
 

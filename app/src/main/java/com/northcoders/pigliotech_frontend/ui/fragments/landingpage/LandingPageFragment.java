@@ -1,4 +1,4 @@
-package com.northcoders.pigliotech_frontend.ui.fragments;
+package com.northcoders.pigliotech_frontend.ui.fragments.landingpage;
 
 import android.os.Bundle;
 
@@ -14,6 +14,8 @@ import android.widget.Button;
 import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentLandingPageBinding;
+import com.northcoders.pigliotech_frontend.ui.fragments.login.LoginFragment;
+import com.northcoders.pigliotech_frontend.ui.fragments.signup.SignUpFragment;
 
 
 public class LandingPageFragment extends Fragment {
