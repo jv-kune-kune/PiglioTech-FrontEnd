@@ -13,22 +13,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.northcoders.pigliotech_frontend.R;
-import com.northcoders.pigliotech_frontend.databinding.FragmentRegisteredUserBinding;
+import com.northcoders.pigliotech_frontend.databinding.FragmentProfileBinding;
 
-
-public class RegisteredUserFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private TextView textViewEmail, textViewUuid;
-    private FragmentRegisteredUserBinding binding;
+    private FragmentProfileBinding binding;
     private Button btnSignOut;
 
-    public RegisteredUserFragment() {
+    public ProfileFragment() {
         // Required empty public constructor
     }
 
@@ -46,7 +44,7 @@ public class RegisteredUserFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        binding = FragmentRegisteredUserBinding.inflate(inflater, container, false);
+        binding = FragmentProfileBinding.inflate(inflater, container, false);
 
 
         return binding.getRoot();

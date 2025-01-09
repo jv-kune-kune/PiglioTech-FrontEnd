@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import com.northcoders.pigliotech_frontend.R;
 
 
-public class AddFragment extends Fragment {
+public class AddBookFragment extends Fragment {
 
 
-    public AddFragment() {
+    public AddBookFragment() {
         // Required empty public constructor
     }
 
@@ -28,6 +28,6 @@ public class AddFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add, container, false);
+        return inflater.inflate(R.layout.fragment_add_book, container, false);
     }
 }

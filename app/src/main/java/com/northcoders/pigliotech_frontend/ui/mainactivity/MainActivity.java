@@ -2,7 +2,6 @@ package com.northcoders.pigliotech_frontend.ui.mainactivity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -14,20 +13,20 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.northcoders.pigliotech_frontend.ui.fragments.AddFragment;
+import com.northcoders.pigliotech_frontend.ui.fragments.AddBookFragment;
 import com.northcoders.pigliotech_frontend.ui.fragments.HomeFragment;
 import com.northcoders.pigliotech_frontend.ui.fragments.LandingPageFragment;
 import com.northcoders.pigliotech_frontend.R;
-import com.northcoders.pigliotech_frontend.ui.fragments.RegisteredUserFragment;
+import com.northcoders.pigliotech_frontend.ui.fragments.ProfileFragment;
 import com.northcoders.pigliotech_frontend.ui.fragments.SignUpFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 
     private FirebaseAuth mAuth;
     private NavigationBarView bottomNav;
-    private RegisteredUserFragment registeredUserFragment = new RegisteredUserFragment(); // TODO Rename to ProfileFragment
+    private ProfileFragment profileFragment = new ProfileFragment(); // TODO Rename to ProfileFragment
     private HomeFragment homeFragment = new HomeFragment();
-    private AddFragment addFragment = new AddFragment();
+    private AddBookFragment addBookFragment = new AddBookFragment();
 
 
     @Override
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     protected void onStart() {
         super.onStart();
 
-        RegisteredUserFragment registeredUserFragment = new RegisteredUserFragment();
+        ProfileFragment profileFragment = new ProfileFragment();
         LandingPageFragment landingPageFragment = new LandingPageFragment();
 
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         if(currentUser != null){
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.frame_layout_fragment, registeredUserFragment)
+                    .replace(R.id.frame_layout_fragment, profileFragment)
                     .commit();
 
             NavigationBarView bottomNavBar = findViewById(R.id.bottom_nav_bar);
@@ -87,13 +86,13 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         }
         if(item.getItemId() == R.id.profile) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frame_layout_fragment, registeredUserFragment)
+                    .replace(R.id.frame_layout_fragment, profileFragment)
                     .commit();
             return true;
         }
         if(item.getItemId() == R.id.addBook) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frame_layout_fragment, addFragment)
+                    .replace(R.id.frame_layout_fragment, addBookFragment)
                     .commit();
             return true;
         }

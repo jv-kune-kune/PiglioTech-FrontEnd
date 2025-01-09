@@ -31,7 +31,7 @@ public class LoginFragment extends Fragment {
     private ProgressBar progressBar;
     private FragmentLoginBinding binding;
     private FirebaseAuth mAuth;
-    private final RegisteredUserFragment registeredUserFragment = new RegisteredUserFragment();
+    private final ProfileFragment profileFragment = new ProfileFragment();
 
     public LoginFragment() {
         // Required empty public constructor
@@ -120,7 +120,7 @@ public class LoginFragment extends Fragment {
                                                 .beginTransaction()
                                                 .replace(
                                                         R.id.frame_layout_fragment,
-                                                        registeredUserFragment
+                                                        profileFragment
                                                 ).commit();
                                     }
                                 }

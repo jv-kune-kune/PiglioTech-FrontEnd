@@ -143,7 +143,7 @@ public class SignUpFragment extends Fragment {
                             // if the user created intent to login activity
                             getActivity().getSupportFragmentManager()
                                     .beginTransaction()
-                                    .replace(R.id.frame_layout_fragment, new RegisteredUserFragment())
+                                    .replace(R.id.frame_layout_fragment, new ProfileFragment())
                                     .commit();
                         }
                         else {
