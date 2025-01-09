@@ -2,63 +2,138 @@ package com.northcoders.pigliotech_frontend;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.northcoders.pigliotech_frontend.databinding.FragmentLoginBinding;
+
+
 public class LoginFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private EditText editTextEmail, editTextPassword;
+    private Button btnLogin;
+    private ProgressBar progressBar;
+    private FragmentLoginBinding binding;
+    private FirebaseAuth mAuth;
+    private final RegisteredUserFragment registeredUserFragment = new RegisteredUserFragment();
 
     public LoginFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        mAuth = FirebaseAuth.getInstance(); //FirebaseAuth Instance
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        binding = FragmentLoginBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        editTextEmail = binding.email;
+        editTextPassword = binding.password;
+        progressBar = binding.progressBar;
+        btnLogin = binding.buttonLogin;
+
+        btnLogin.setOnClickListener(view1 -> loginUserAccount());
+    }
+
+    private void loginUserAccount()
+    {
+
+        // show the visibility of progress bar to show loading
+        progressBar.setVisibility(View.VISIBLE);
+
+        // Take the value of two edit texts in Strings
+        String email, password;
+        email = editTextEmail.getText().toString();
+        password = editTextPassword.getText().toString();
+
+        // validations for input email and password
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(getContext(),
+                            "Please enter email!!",
+                            Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(getContext(),
+                            "Please enter password!!",
+                            Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+
+        // signin existing user
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(
+                        new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(
+                                    @NonNull Task<AuthResult> task)
+                            {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getContext(),
+                                                    "Login successful!!",
+                                                    Toast.LENGTH_LONG)
+                                            .show();
+
+                                    // hide the progress bar
+                                    progressBar.setVisibility(View.GONE);
+
+                                    // if sign-in is successful
+                                    // intent to home activity
+                                    if (getActivity() != null){
+                                        getActivity().getSupportFragmentManager()
+                                                .beginTransaction()
+                                                .replace(
+                                                        R.id.frame_layout_fragment,
+                                                        registeredUserFragment
+                                                ).commit();
+                                    }
+                                }
+
+                                else {
+
+                                    // sign-in failed
+                                    Toast.makeText(getContext(),
+                                                    "Login failed!!",
+                                                    Toast.LENGTH_LONG)
+                                            .show();
+
+                                    // hide the progress bar
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            }
+                        }
+                );
+    }
+
 }

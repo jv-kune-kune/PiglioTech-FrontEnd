@@ -8,7 +8,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class MainActivity extends AppCompatActivity {
+
+    private FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +27,33 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        mAuth = FirebaseAuth.getInstance();
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_layout_fragment, new SignUpFragment())
                 .commit();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        RegisteredUserFragment registeredUserFragment = new RegisteredUserFragment();
+        LandingPageFragment landingPageFragment = new LandingPageFragment();
+
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_layout_fragment, registeredUserFragment)
+                    .commit();
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_layout_fragment, landingPageFragment)
+                    .commit();
+        }
     }
 }
