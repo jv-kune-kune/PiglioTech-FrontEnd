@@ -1,6 +1,5 @@
-package com.northcoders.pigliotech_frontend;
+package com.northcoders.pigliotech_frontend.ui.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,11 +18,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentSignUpBinding;
 
 
@@ -70,6 +70,9 @@ public class SignUpFragment extends Fragment {
         Btn.setOnClickListener(view1 -> {
             registerNewUser();
         });
+
+        NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
+        bottomNav.setVisibility(View.GONE);
 
     }
 

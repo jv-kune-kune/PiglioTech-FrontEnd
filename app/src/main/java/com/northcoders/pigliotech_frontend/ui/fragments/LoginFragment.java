@@ -1,4 +1,4 @@
-package com.northcoders.pigliotech_frontend;
+package com.northcoders.pigliotech_frontend.ui.fragments;
 
 import android.os.Bundle;
 
@@ -17,8 +17,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentLoginBinding;
 
 
@@ -61,6 +63,9 @@ public class LoginFragment extends Fragment {
         btnLogin = binding.buttonLogin;
 
         btnLogin.setOnClickListener(view1 -> loginUserAccount());
+
+        NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
+        bottomNav.setVisibility(View.GONE);
     }
 
     private void loginUserAccount()

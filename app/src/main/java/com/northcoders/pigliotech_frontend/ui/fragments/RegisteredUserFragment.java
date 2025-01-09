@@ -1,4 +1,4 @@
-package com.northcoders.pigliotech_frontend;
+package com.northcoders.pigliotech_frontend.ui.fragments;
 
 import android.os.Bundle;
 
@@ -13,8 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentRegisteredUserBinding;
 
 
@@ -78,6 +81,9 @@ public class RegisteredUserFragment extends Fragment {
                     .replace(R.id.frame_layout_fragment, landingPageFragment)
                     .commit();
         });
+
+        NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
+        bottomNav.setVisibility(View.VISIBLE);
 
     }
 }

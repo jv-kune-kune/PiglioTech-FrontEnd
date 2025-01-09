@@ -1,6 +1,7 @@
-package com.northcoders.pigliotech_frontend;
+package com.northcoders.pigliotech_frontend.ui.mainactivity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,8 +9,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.northcoders.pigliotech_frontend.ui.fragments.LandingPageFragment;
+import com.northcoders.pigliotech_frontend.R;
+import com.northcoders.pigliotech_frontend.ui.fragments.RegisteredUserFragment;
+import com.northcoders.pigliotech_frontend.ui.fragments.SignUpFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.frame_layout_fragment, registeredUserFragment)
                     .commit();
+
+            NavigationBarView bottomNavBar = findViewById(R.id.bottom_nav_bar);
+
+
         } else {
             getSupportFragmentManager()
                     .beginTransaction()

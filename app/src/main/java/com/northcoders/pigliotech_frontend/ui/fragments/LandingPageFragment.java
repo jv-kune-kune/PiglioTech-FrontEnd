@@ -1,4 +1,4 @@
-package com.northcoders.pigliotech_frontend;
+package com.northcoders.pigliotech_frontend.ui.fragments;
 
 import android.os.Bundle;
 
@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.material.navigation.NavigationBarView;
+import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentLandingPageBinding;
 
 
@@ -66,5 +68,8 @@ public class LandingPageFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
+
+        NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
+        bottomNav.setVisibility(View.GONE);
     }
 }
