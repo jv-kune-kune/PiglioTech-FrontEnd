@@ -47,7 +47,7 @@ public class LandingPageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         btnLogin = binding.btnLogin;
-        btnSignUp = binding.btnSignIn; // TODO Change to Sign Up
+        btnSignUp = binding.btnSignUp;
 
         LoginFragment loginFragment = new LoginFragment();
         SignUpFragment signUpFragment = new SignUpFragment();
