@@ -59,8 +59,8 @@ public class SignUpFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(SignUpViewModel.class);
 
         emailTextView = binding.email;
-        passwordTextView = binding.passwd;
-        Btn = binding.btnregister;
+        passwordTextView = binding.password;
+        Btn = binding.buttonConfirm;
         progressbar = binding.progressbar;
 
         Btn.setOnClickListener(view1 -> registerNewUser());

@@ -22,7 +22,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="28dp">
+        android:padding="50dp">
 
         <TextView
             android:id="@+id/heading"
@@ -105,7 +105,7 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:strokeColor="@color/white"
-            app:strokeWidth="1.5dp" />
+            app:strokeWidth="0.8dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
