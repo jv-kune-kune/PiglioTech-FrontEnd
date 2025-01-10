@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.northcoders.pigliotech_frontend.model.User;
 
+import java.util.function.Consumer;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -14,7 +16,7 @@ public class UserRepository {
 
     private final String TAG = "UserRepository";
     private final UserApiService userApiService;
-    private final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
+
 
     public UserRepository() {
 
@@ -42,22 +44,23 @@ public class UserRepository {
         });
     }
 
-    public MutableLiveData<User> getUser(String id){
+    public void getUser(String id, Consumer<User> userConsumer){
 
         Call<User> call = userApiService.getCurrentUser(id);
+        Log.i(TAG, "Requested User Id: "+ id);
 
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.code() == 200 && response.body() != null){
                     User user = response.body();
-                    userMutableLiveData.setValue(user);
+                    userConsumer.accept(user);
                     Log.i(
                             TAG,
-                            "GET USER: Successfully retrieved " + response.body()
+                            "GET USER: Successfully retrieved " + response.body().toString()
                     );
                 }else {
-                    userMutableLiveData.setValue(null);
+                    userConsumer.accept(null);
                     Log.e(
                             TAG,
                             "GET USER: Unsuccessful response code" + response.code()
@@ -67,6 +70,7 @@ public class UserRepository {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
+                userConsumer.accept(null);
                 Log.e(
                         TAG,
                         "GET USER: Network failure",
@@ -75,6 +79,5 @@ public class UserRepository {
             }
         });
 
-        return userMutableLiveData;
     }
 }
