@@ -11,57 +11,106 @@
     android:background="@drawable/landing_background"
     >
 
-    <LinearLayout
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:orientation="vertical"-->
+<!--        android:padding="16dp"-->
+<!--        tools:context=".LoginActivity">-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:padding="16dp"
-        tools:context=".LoginActivity">
-
+        android:padding="28dp">
 
         <TextView
             android:id="@+id/heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login" />
-
-        <EditText
-            android:id="@+id/enter_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="144dp"
             android:fontFamily="@font/lin_libertine_r"
-            android:hint="Email:"
-            android:textSize="26sp"
+            android:text="Login"
             android:textColor="@color/white"
-            android:textColorHint="@color/white" />
+            android:textSize="50sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/enter_password"
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/email_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/lin_libertine_r"
-            android:hint="Password:"
-            android:textSize="26sp"
-            android:inputType="textPassword"
-            android:textColorHint="@color/white"
-            android:backgroundTint="@drawable/landing_background"
-            />
+            android:backgroundTint="@color/cardview_shadow_end_color"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@+id/heading"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lin_libertine_r"
+                android:hint="Email:"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@+id/heading"
+                tools:layout_editor_absoluteX="28dp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/password_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/cardview_shadow_end_color"
+            app:layout_constraintTop_toBottomOf="@+id/email_card"
+            app:layout_constraintBottom_toTopOf="@id/buttonLogin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lin_libertine_r"
+                android:hint="Password:"
+                android:inputType="textPassword"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="20sp"
+                 />
+
+        </com.google.android.material.card.MaterialCardView>
+
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_login"
+            android:id="@+id/buttonLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="128dp"
+            android:layout_marginBottom="156dp"
             android:fontFamily="@font/lin_libertine_r"
             android:text="Confirm"
             android:textSize="28sp"
             app:backgroundTint="#3E6144"
             app:cornerRadius="10dp"
-            app:layout_constraintTop_toBottomOf="@id/enter_password"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
             app:strokeColor="@color/white"
             app:strokeWidth="1.5dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         <!-- ProgressBar for Loading Time -->
         <ProgressBar
@@ -69,6 +118,5 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone" />
-    </LinearLayout>
 </FrameLayout>
 </layout>
