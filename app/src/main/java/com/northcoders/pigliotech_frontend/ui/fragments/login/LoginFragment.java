@@ -2,13 +2,6 @@ package com.northcoders.pigliotech_frontend.ui.fragments.login;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,16 +11,16 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentLoginBinding;
 import com.northcoders.pigliotech_frontend.ui.fragments.home.HomeFragment;
-import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileFragment;
-import com.northcoders.pigliotech_frontend.ui.fragments.signup.SignUpViewModel;
 
 
 public class LoginFragment extends Fragment {
@@ -36,8 +29,6 @@ public class LoginFragment extends Fragment {
     private Button btnLogin;
     private ProgressBar progressBar;
     private FragmentLoginBinding binding;
-    private FirebaseAuth mAuth;
-    //    private final ProfileFragment profileFragment = new ProfileFragment();
     private LoginViewModel viewModel;
 
     public LoginFragment() {
@@ -48,8 +39,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mAuth = FirebaseAuth.getInstance(); //FirebaseAuth Instance
     }
 
     @Override
@@ -126,9 +115,6 @@ public class LoginFragment extends Fragment {
 
     private void loginUserAccount(){
 
-        // show the visibility of progress bar to show loading
-//        progressBar.setVisibility(View.VISIBLE);
-
         // Take the value of two edit texts in Strings
         String email, password;
         email = editTextEmail.getText().toString();
@@ -153,49 +139,5 @@ public class LoginFragment extends Fragment {
 
         viewModel.login(email, password);
 
-        // signin existing user
-//        mAuth.signInWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(
-//                        new OnCompleteListener<AuthResult>() {
-//                            @Override
-//                            public void onComplete(
-//                                    @NonNull Task<AuthResult> task)
-//                            {
-//                                if (task.isSuccessful()) {
-//                                    Toast.makeText(getContext(),
-//                                                    "Login successful!!",
-//                                                    Toast.LENGTH_LONG)
-//                                            .show();
-//
-//                                    // hide the progress bar
-//                                    progressBar.setVisibility(View.GONE);
-//
-//                                    // if sign-in is successful
-//                                    // intent to home activity
-//                                    if (getActivity() != null){
-//                                        getActivity().getSupportFragmentManager()
-//                                                .beginTransaction()
-//                                                .replace(
-//                                                        R.id.frame_layout_fragment,
-//                                                        profileFragment
-//                                                ).commit();
-//                                    }
-//                                }
-//
-//                                else {
-//
-//                                    // sign-in failed
-//                                    Toast.makeText(getContext(),
-//                                                    "Login failed!!",
-//                                                    Toast.LENGTH_LONG)
-//                                            .show();
-//
-//                                    // hide the progress bar
-//                                    progressBar.setVisibility(View.GONE);
-//                                }
-//                            }
-//                        }
-//                );
     }
-
 }
