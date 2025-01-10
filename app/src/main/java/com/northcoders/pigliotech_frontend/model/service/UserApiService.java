@@ -10,7 +10,7 @@ import retrofit2.http.Path;
 
 public interface UserApiService {
 
-    @POST("user")
+    @POST("users")
     Call<User> addUser(@Body User user);
 
     @GET("users/{id}")
