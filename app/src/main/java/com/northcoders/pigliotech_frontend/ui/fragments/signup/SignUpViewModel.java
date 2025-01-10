@@ -13,6 +13,7 @@ import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 public class SignUpViewModel extends ViewModel {
     /*
     TODO: User class implementation
+        Create methods to replace TextUtils.isEmpty calls'
      */
 
     private final AuthRepository authRepository;
@@ -55,7 +56,6 @@ public class SignUpViewModel extends ViewModel {
                         events.setValue(SignUpEvents.REGISTRATION_FAILED);
                     }
                 });
-
     }
 
     // Updates the DisplayName for the current Firebase user

@@ -1,11 +1,12 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.signup;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.text.TextUtils;
@@ -18,35 +19,23 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
+
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentSignUpBinding;
 import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileFragment;
-import com.northcoders.pigliotech_frontend.ui.mainactivity.MainActivityViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class SignUpFragment extends Fragment {
 
     private EditText emailTextView, passwordTextView;
     private Button Btn;
     private ProgressBar progressbar;
-    private FirebaseAuth mAuth;
     private FragmentSignUpBinding binding;
     private SignUpViewModel viewModel;
 
     public SignUpFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,9 +45,6 @@ public class SignUpFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        // taking FirebaseAuth instance
-        mAuth = FirebaseAuth.getInstance();
 
         // Inflate the layout for this fragment
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
@@ -77,65 +63,57 @@ public class SignUpFragment extends Fragment {
         Btn = binding.btnregister;
         progressbar = binding.progressbar;
 
-        Btn.setOnClickListener(view1 -> {
-            registerNewUser();
-        });
+        Btn.setOnClickListener(view1 -> registerNewUser());
 
         NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
         bottomNav.setVisibility(View.GONE);
 
-        viewModel.getState().observe(requireActivity(), new Observer<SignUpState>() {
-            @Override
-            public void onChanged(SignUpState state) {
-                if (state.getLoading()){
-                    progressbar.setVisibility(View.VISIBLE);
-                }else {
-                    progressbar.setVisibility(View.GONE);
-                }
-            }
-        });
-        var context = getContext();
-        var activity = getActivity();
-
-        viewModel.getEvents().observe(requireActivity(), new Observer<SignUpEvents>() {
-            @Override
-            public void onChanged(SignUpEvents event) {
-                if(event != null){
-                    switch (event){
-                        case REGISTRATION_SUCCESSFUL:
-                            Toast.makeText(context,
-                                            "Registration successful!",
-                                            Toast.LENGTH_LONG)
-                                    .show();
-
-                            activity.getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .replace(R.id.frame_layout_fragment, new ProfileFragment())
-                                    .commit();
-                            break;
-                        case REGISTRATION_FAILED:
-                            Toast.makeText(
-                                            context,
-                                            "Registration failed!!"
-                                                    + " Please try again later",
-                                            Toast.LENGTH_LONG)
-                                    .show();
-                            break;
-                        default:
-                            break;
-                    }
-                    viewModel.eventSeen();
-                }
+        viewModel.getState().observe(requireActivity(), state -> {
+            if (state.getLoading()){
+                progressbar.setVisibility(View.VISIBLE);
+            }else {
+                progressbar.setVisibility(View.GONE);
             }
         });
 
+        Context context = getContext();
+        FragmentActivity activity = getActivity();
+
+        /*
+        events observer that uses the state of MutableLiveData<SignUpEvents> events in the
+        SignUpFragment ViewModel
+         */
+        viewModel.getEvents().observe(requireActivity(), event -> {
+            if(event != null){
+                switch (event){
+                    case REGISTRATION_SUCCESSFUL:
+                        Toast.makeText(context,
+                                        "Registration successful!",
+                                        Toast.LENGTH_LONG)
+                                .show();
+
+                        activity.getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.frame_layout_fragment, new ProfileFragment())
+                                .commit();
+                        break;
+                    case REGISTRATION_FAILED:
+                        Toast.makeText(
+                                        context,
+                                        "Registration failed!!"
+                                                + " Please try again later",
+                                        Toast.LENGTH_LONG)
+                                .show();
+                        break;
+                    default:
+                        break;
+                }
+                viewModel.eventSeen();
+            }
+        });
     }
 
-    private void registerNewUser()
-    {
-
-        // show the visibility of progress bar to show loading
-        progressbar.setVisibility(View.VISIBLE);
+    private void registerNewUser(){
 
         // Take the value of two edit texts in Strings
         String email, password;
@@ -160,62 +138,5 @@ public class SignUpFragment extends Fragment {
         }
 
         viewModel.signUp("Name", email, password, "url", "region");
-//        // create new user or register new user
-//        mAuth
-//                .createUserWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task)
-//                    {
-//                        if (task.isSuccessful()) {
-//                            Toast.makeText(getContext(),
-//                                            "Registration successful!",
-//                                            Toast.LENGTH_LONG)
-//                                    .show();
-//
-//                            // Set Display Name
-//                            // Sign in success, update the user's display name
-//                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-//                                    .setDisplayName("Test User Name")
-//                                    .build();
-//                            user.updateProfile(profileUpdates)
-//                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                        @Override
-//                                        public void onComplete(@NonNull Task<Void> task) {
-//                                            if (task.isSuccessful()) {
-//                                                Log.d("Display Name", "User profile updated.");
-//                                            }
-//                                        }
-//                                    });
-//
-//
-//                            // hide the progress bar
-//                            progressbar.setVisibility(View.GONE);
-//
-//
-//
-//                            // if the user created intent to login activity
-//                            getActivity().getSupportFragmentManager()
-//                                    .beginTransaction()
-//                                    .replace(R.id.frame_layout_fragment, new ProfileFragment())
-//                                    .commit();
-//                        }
-//                        else {
-//
-//                            // Registration failed
-//                            Toast.makeText(
-//                                            getContext(),
-//                                            "Registration failed!!"
-//                                                    + " Please try again later",
-//                                            Toast.LENGTH_LONG)
-//                                    .show();
-//
-//                            // hide the progress bar
-//                            progressbar.setVisibility(View.GONE);
-//                        }
-//                    }
-//                });
     }
 }
