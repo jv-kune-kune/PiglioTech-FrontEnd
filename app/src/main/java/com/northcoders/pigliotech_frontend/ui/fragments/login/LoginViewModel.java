@@ -1,14 +1,8 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.login;
 
-import android.view.View;
-import android.widget.Toast;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 
 public class LoginViewModel extends ViewModel {
@@ -43,47 +37,22 @@ public class LoginViewModel extends ViewModel {
         authRepository.getmAuth()
                 .signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-//                                Toast.makeText(getContext(),
-//                                                "Login successful!!",
-//                                                Toast.LENGTH_LONG)
-//                                        .show();
-                                events.setValue(LoginEvents.LOGIN_SUCCESSFUL);
+                    if (task.isSuccessful()) {
 
-                                // hide the progress bar
-//                                progressBar.setVisibility(View.GONE);
-                                state.setValue(new LoginState(false));
+                        // Set the event for a successful login
+                        events.setValue(LoginEvents.LOGIN_SUCCESSFUL);
 
-                                // if sign-in is successful
-                                // intent to home activity
-//                                if (getActivity() != null){
-//                                    getActivity().getSupportFragmentManager()
-//                                            .beginTransaction()
-//                                            .replace(
-//                                                    R.id.frame_layout_fragment,
-//                                                    profileFragment
-//                                            ).commit();
-//                                }
-                            }
+                        // hide the progress bar
+                        state.setValue(new LoginState(false));
 
-                            else {
+                    }else {
 
-                                // sign-in failed
-//                                Toast.makeText(getContext(),
-//                                                "Login failed!!",
-//                                                Toast.LENGTH_LONG)
-//                                        .show();
-//
-//                                // hide the progress bar
-//                                progressBar.setVisibility(View.GONE);
+                        // Set the event for a failed login
+                        events.setValue(LoginEvents.LOGIN_FAILED);
 
-                                events.setValue(LoginEvents.LOGIN_FAILED);
-
-                                // Update the state for the progressbar
-                                state.setValue(new LoginState(false));
-                            }
-                        }
-                );
+                        // Update the state for the progressbar
+                        state.setValue(new LoginState(false));
+                    }
+                });
     }
-
 }
