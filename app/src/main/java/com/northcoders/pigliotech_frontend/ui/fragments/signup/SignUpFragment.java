@@ -64,8 +64,8 @@ public class SignUpFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         emailTextView = binding.email;
-        passwordTextView = binding.passwd;
-        Btn = binding.btnregister;
+        passwordTextView = binding.password;
+        Btn = binding.buttonConfirm;
         progressbar = binding.progressbar;
 
         Btn.setOnClickListener(view1 -> {
