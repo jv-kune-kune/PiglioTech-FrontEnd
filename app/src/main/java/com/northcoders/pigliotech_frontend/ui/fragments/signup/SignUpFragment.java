@@ -27,8 +27,8 @@ import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileFragment;
 
 public class SignUpFragment extends Fragment {
 
-    private EditText emailTextView, passwordTextView;
-    private Button Btn;
+    private EditText emailTextView, passwordTextView, nameTextView, avatarUrlTextView;
+    private Button buttonConfirm;
     private ProgressBar progressbar;
     private FragmentSignUpBinding binding;
     private SignUpViewModel viewModel;
@@ -60,10 +60,12 @@ public class SignUpFragment extends Fragment {
 
         emailTextView = binding.email;
         passwordTextView = binding.password;
-        Btn = binding.buttonConfirm;
+        nameTextView = binding.name;
+        avatarUrlTextView = binding.url;
+        buttonConfirm = binding.buttonConfirm;
         progressbar = binding.progressbar;
 
-        Btn.setOnClickListener(view1 -> registerNewUser());
+        buttonConfirm.setOnClickListener(view1 -> registerNewUser());
 
         NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
         bottomNav.setVisibility(View.GONE);
@@ -116,11 +118,19 @@ public class SignUpFragment extends Fragment {
     private void registerNewUser(){
 
         // Take the value of two edit texts in Strings
-        String email, password;
+        String email, password, name, avatarUrl, region;
+
+        name = nameTextView.getText().toString();
+        Log.i("NAME", name);
         email = emailTextView.getText().toString();
         Log.i("EMAIL", email);
         password = passwordTextView.getText().toString();
         Log.i("PASSWORD", password);
+        avatarUrl = avatarUrlTextView.getText().toString();
+        Log.i("AVATARURL", avatarUrl);
+        region = "LONDON"; // TODO: To implement enum and spinner for Regions
+        Log.i("REGION", region);
+
         // Validations for input email and password
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(getContext(),
