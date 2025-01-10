@@ -30,8 +30,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-             <com.google.android.material.button.MaterialButton
-                 android:id="@+id/btn_login"
+             <Button
+                 android:id="@+id/btnLogin"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                  android:layout_gravity="center"
@@ -54,13 +54,13 @@
                 android:textSize="14sp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/lin_libertine_r"
-                app:layout_constraintBottom_toTopOf="@id/btn_sign_in"
+                app:layout_constraintBottom_toTopOf="@id/btnSignUp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
             <Button
-                android:id="@+id/btn_sign_in"
+                android:id="@+id/btnSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -69,7 +69,7 @@
                 android:fontFamily="@font/lin_libertine_r"
                 android:text="Sign up"
                 android:textSize="28sp"
-                app:layout_constraintTop_toBottomOf="@id/btn_login"
+                app:layout_constraintTop_toBottomOf="@id/btnLogin"
                 app:cornerRadius="10dp"
                 app:strokeColor="@color/white"
                 app:strokeWidth="1.5dp"
