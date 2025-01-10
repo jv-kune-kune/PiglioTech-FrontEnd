@@ -6,16 +6,6 @@ import java.util.List;
 
 public interface ProfileState {
 
-//    private final Boolean isLoading;
-//
-//    public ProfileSate(Boolean isLoading) {
-//        this.isLoading = isLoading;
-//    }
-//
-//    public Boolean getLoading() {
-//        return isLoading;
-//    }
-
     class Loading implements ProfileState {
         public Loading() {
         }
