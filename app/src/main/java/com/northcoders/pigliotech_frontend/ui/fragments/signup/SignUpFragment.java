@@ -98,6 +98,10 @@ public class SignUpFragment extends Fragment {
                                 .beginTransaction()
                                 .replace(R.id.frame_layout_fragment, new ProfileFragment())
                                 .commit();
+
+                        NavigationBarView bottomNavBar = activity.findViewById(R.id.bottom_nav_bar);
+                        bottomNavBar.setSelectedItemId(R.id.profile);
+
                         break;
                     case REGISTRATION_FAILED:
                         Toast.makeText(
@@ -147,6 +151,7 @@ public class SignUpFragment extends Fragment {
             return;
         }
 
-        viewModel.signUp("Name", email, password, "url", "region");
+        viewModel.signUp(name, email, password, avatarUrl, "LONDON");
+
     }
 }

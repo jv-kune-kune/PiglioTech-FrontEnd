@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.northcoders.pigliotech_frontend.model.User;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
+import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 
 public class SignUpViewModel extends ViewModel {
     /*
@@ -17,12 +19,14 @@ public class SignUpViewModel extends ViewModel {
      */
 
     private final AuthRepository authRepository;
+    private final UserRepository userRepository;
 
     private final MutableLiveData<SignUpState> state = new MutableLiveData<>(new SignUpState(false));
     private final MutableLiveData<SignUpEvents> events = new MutableLiveData<>(null);
 
     public SignUpViewModel() {
         this.authRepository = new AuthRepository();
+        this.userRepository = new UserRepository();
     }
 
     public void signUp(
@@ -48,6 +52,16 @@ public class SignUpViewModel extends ViewModel {
 
                         // Update the state for the progress loading bar
                         state.setValue(new SignUpState(false));
+
+                        User newUser = new User(
+                                authRepository.getmAuth().getCurrentUser().getUid(),
+                                name,
+                                email,
+                                region,
+                                imageUrl
+                        );
+
+                        userRepository.addUser(newUser);
                     }
                     else {
                         // Update the state for the progress loading bar
