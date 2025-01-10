@@ -78,4 +78,15 @@ public class User extends BaseObservable {
     public List<Book> getBooks() {
         return books;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid='" + uid + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", region='" + region + '\'' +
+                ", thumbnail='" + thumbnail + '\'' +
+                '}';
+    }
 }
