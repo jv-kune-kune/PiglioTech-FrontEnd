@@ -22,7 +22,7 @@
             android:background="@drawable/border_image"
             android:padding="4dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             tools:src="@drawable/blank_pfp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -101,6 +101,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:strokeColor="@color/white"
             app:strokeWidth="0.8dp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/profilePic"
+            app:layout_constraintStart_toStartOf="parent"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
