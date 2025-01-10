@@ -1,8 +1,8 @@
 ---
 name: New Issue Template
 about: Standard issue template to format new general issues.
-title: Short title here, expand in H1 below.
-labels: ''
+title: ''
+labels: "\U0001F465 frontend \U0001F3A8"
 assignees: ''
 
 ---
