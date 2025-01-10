@@ -63,7 +63,7 @@ public class SignUpFragment extends Fragment {
         nameTextView = binding.name;
         avatarUrlTextView = binding.url;
         buttonConfirm = binding.buttonConfirm;
-        progressbar = binding.progressbar;
+        progressbar = binding.progressBar;
 
         buttonConfirm.setOnClickListener(view1 -> registerNewUser());
 

@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +22,10 @@ import com.northcoders.pigliotech_frontend.ui.fragments.landingpage.LandingPageF
 public class ProfileFragment extends Fragment {
 
     private FirebaseAuth mAuth;
-    private TextView textViewEmail, textViewUuid;
+    private TextView textViewEmail, textViewName, textViewRegion;
     private FragmentProfileBinding binding;
     private Button btnSignOut;
+    private ProfileViewModel viewModel;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -58,20 +58,16 @@ public class ProfileFragment extends Fragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         LandingPageFragment landingPageFragment = new LandingPageFragment();
 
-        if (currentUser != null){
-            textViewEmail = binding.textviewEmail;
-            textViewUuid = binding.textviewUuid;
+        textViewEmail = binding.email;
+        textViewName = binding.name;
+        textViewRegion = binding.region;
 
+        btnSignOut = binding.buttonSignOut;
+
+        if (currentUser != null ){
+            textViewName.setText(currentUser.getDisplayName());
             textViewEmail.setText(currentUser.getEmail());
-
-            if (currentUser.getDisplayName() != null){
-                Log.i("Display Name", currentUser.getDisplayName());
-            }
-
-            textViewUuid.setText(currentUser.getUid());
         }
-
-        btnSignOut = binding.btnSignOut;
 
         btnSignOut.setOnClickListener(view1 ->{
             mAuth.signOut();
