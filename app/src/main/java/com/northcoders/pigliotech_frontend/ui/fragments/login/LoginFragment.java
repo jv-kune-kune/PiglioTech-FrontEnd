@@ -99,6 +99,8 @@ public class LoginFragment extends Fragment {
                                         new HomeFragment()
                                 ).commit();
 
+                        // Sets the selected item in the BottomNavBar to the Home Icon.
+                        bottomNav.setSelectedItemId(R.id.home);
                         break;
                     case LOGIN_FAILED:
                         Toast.makeText(
@@ -138,6 +140,5 @@ public class LoginFragment extends Fragment {
         }
 
         viewModel.login(email, password);
-
     }
 }
