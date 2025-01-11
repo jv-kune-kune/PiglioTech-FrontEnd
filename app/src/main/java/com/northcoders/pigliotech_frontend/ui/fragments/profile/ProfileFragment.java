@@ -21,7 +21,6 @@ import com.northcoders.pigliotech_frontend.ui.fragments.landingpage.LandingPageF
 
 public class ProfileFragment extends Fragment {
 
-//    private FirebaseAuth mAuth;
     private TextView textViewEmail, textViewName, textViewRegion;
     private FragmentProfileBinding binding;
     private Button btnSignOut;
@@ -31,25 +30,20 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        mAuth = FirebaseAuth.getInstance();
-
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
         viewModel.load();
-
-
     }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
-
 
         return binding.getRoot();
     }
@@ -58,7 +52,6 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
         LandingPageFragment landingPageFragment = new LandingPageFragment();
 
         textViewEmail = binding.email;
@@ -68,12 +61,7 @@ public class ProfileFragment extends Fragment {
 
         btnSignOut = binding.buttonSignOut;
 
-//        if (currentUser != null ){
-//            textViewName.setText(currentUser.getDisplayName());
-//            textViewEmail.setText(currentUser.getEmail());
-//        }
-
-
+        // Observe the state from the viewModel
         viewModel.getState().observe(getViewLifecycleOwner(), state -> {
 
             if (state instanceof ProfileState.Loading){
@@ -85,21 +73,8 @@ public class ProfileFragment extends Fragment {
                 textViewRegion.setText(((ProfileState.Loaded) state).getRegion());
             }
         });
-//
-//        viewModel.getUser().observe(requireActivity(), user -> {
-//            // binding.setUser(user)
-//
-//            if (user != null){
-//                textViewName.setText(user.getName());
-//                textViewEmail.setText(user.getEmail());
-//                textViewRegion.setText(user.getRegion());
-//            }
-//
-//
-//        });
 
         btnSignOut.setOnClickListener(view1 ->{
-//            mAuth.signOut();
 
             viewModel.signOut();
 
@@ -107,13 +82,11 @@ public class ProfileFragment extends Fragment {
                     .beginTransaction()
                     .replace(R.id.frame_layout_fragment, landingPageFragment)
                     .commit();
-
-
         });
 
+        // Instantiate the BottomNavigationBarView and set it to Visible
         NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
         bottomNav.setVisibility(View.VISIBLE);
-
     }
 
     @Override
