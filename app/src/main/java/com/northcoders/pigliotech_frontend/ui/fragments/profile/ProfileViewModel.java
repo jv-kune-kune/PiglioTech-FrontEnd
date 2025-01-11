@@ -2,6 +2,7 @@ package com.northcoders.pigliotech_frontend.ui.fragments.profile;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -47,7 +48,7 @@ public class ProfileViewModel extends ViewModel {
         userRepository.getUser(userID, userConsumer);
     }
 
-    public MutableLiveData<ProfileState> getState() {
+    public LiveData<ProfileState> getState() {
         return state;
     }
 
