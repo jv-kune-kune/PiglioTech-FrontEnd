@@ -32,7 +32,7 @@ public class HomeViewModel extends ViewModel {
       }
     };
 
-    public HomeViewModel(AuthRepository authRepository, UserRepository userRepository) {
+    public HomeViewModel() {
         this.authRepository = new AuthRepository();
         this.userRepository = new UserRepository();
     }
