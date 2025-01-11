@@ -1,5 +1,7 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.home;
 
+import static android.view.View.*;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -42,7 +44,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
-        bottomNav.setVisibility(View.VISIBLE);
+        bottomNav.setVisibility(VISIBLE);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -59,10 +61,10 @@ public class HomeFragment extends Fragment {
         viewModel.getState().observe(getViewLifecycleOwner(), homeState -> {
             if (homeState instanceof HomeState.Loading){
                 // TODO
-
+                progressBar.setVisibility(VISIBLE);
             }else if (homeState instanceof  HomeState.Loaded){
                 // TODO
-
+                progressBar.setVisibility(GONE);
             }
         });
     }
