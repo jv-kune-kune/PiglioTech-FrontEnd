@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/cardview_shadow_end_color"
             app:layout_constraintTop_toBottomOf="@+id/password_card"
-            app:layout_constraintBottom_toTopOf="@id/region"
+            app:layout_constraintBottom_toTopOf="@id/region_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
@@ -122,17 +122,36 @@
                 android:textSize="20sp"/>
         </com.google.android.material.card.MaterialCardView>
 
-        <Spinner
-            android:id="@+id/region"
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/region_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/regions"
-            android:foregroundTint="#3F51B5"
-            android:textColor="@color/white"
-            android:layout_marginBottom="60dp"
-            app:layout_constraintBottom_toTopOf="@id/buttonConfirm"
+            android:backgroundTint="@color/cardview_shadow_end_color"
             app:layout_constraintTop_toBottomOf="@id/url_card"
-            tools:layout_editor_absoluteX="50dp"/>
+            app:layout_constraintBottom_toTopOf="@id/buttonConfirm"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="60dp"
+            tools:layout_editor_absoluteX="50dp">
+
+            <Spinner
+                android:id="@+id/region"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="#3F51B5"/>
+        </com.google.android.material.card.MaterialCardView>
+
+<!--        <Spinner-->
+<!--            android:id="@+id/region"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:entries="@array/regions"-->
+<!--            android:foregroundTint="#3F51B5"-->
+<!--            android:layout_marginBottom="60dp"-->
+<!--            app:layout_constraintBottom_toTopOf="@id/buttonConfirm"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/url_card"-->
+<!--            tools:layout_editor_absoluteX="50dp"/>-->
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonConfirm"
