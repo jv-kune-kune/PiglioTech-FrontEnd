@@ -13,14 +13,14 @@
         >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="160dp">
+            android:layout_height="130dp">
 
             <ImageView
                 android:id="@+id/pfp_image"
                 android:layout_width="75dp"
                 android:layout_height="100dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="14dp"
                 android:background="@drawable/border_image"
                 android:padding="5dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -31,18 +31,19 @@
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="28sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_marginStart="20dp"
-
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 app:layout_constraintHorizontal_bias="0.231"
                 app:layout_constraintStart_toEndOf="@id/pfp_image"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/pfp_image"
                 app:layout_constraintVertical_bias="0.122"
-                tools:text="Title"
+                tools:text="Harry Potter and the Order of the Phoenix"
                 />
 
             <TextView
@@ -50,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@id/title"
                 app:layout_constraintStart_toStartOf="@id/title"
                 tools:text="Author"
