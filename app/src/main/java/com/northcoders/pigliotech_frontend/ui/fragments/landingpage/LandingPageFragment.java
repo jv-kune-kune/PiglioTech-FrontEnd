@@ -23,12 +23,9 @@ public class LandingPageFragment extends Fragment {
     private Button btnLogin, btnSignUp;
     private FragmentLandingPageBinding binding;
 
-
-
     public LandingPageFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +34,7 @@ public class LandingPageFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentLandingPageBinding.inflate(inflater, container, false);
