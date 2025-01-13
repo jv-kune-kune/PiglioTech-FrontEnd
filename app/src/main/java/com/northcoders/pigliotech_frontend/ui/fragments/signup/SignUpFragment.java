@@ -14,9 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationBarView;
@@ -32,6 +34,8 @@ public class SignUpFragment extends Fragment {
     private ProgressBar progressbar;
     private FragmentSignUpBinding binding;
     private SignUpViewModel viewModel;
+    private Spinner regionSpinner;
+    private ArrayAdapter<CharSequence> arrayAdapter;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -48,7 +52,6 @@ public class SignUpFragment extends Fragment {
 
         // Inflate the layout for this fragment
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
@@ -117,6 +120,16 @@ public class SignUpFragment extends Fragment {
                 viewModel.eventSeen();
             }
         });
+
+
+        regionSpinner = binding.region;
+        arrayAdapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.regions,
+                R.layout.spinner_item
+        );
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        regionSpinner.setAdapter(arrayAdapter);
     }
 
     private void registerNewUser(){

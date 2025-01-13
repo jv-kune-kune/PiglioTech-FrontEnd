@@ -3,4 +3,22 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="book_image">Book Image</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="name">Name:</string>
+    <string name="email_hint">Email:</string>
+    <string name="password_hint">Password:</string>
+    <string name="avatar_url_hint">Avatar URL:</string>
+    <string name="confirm_button_text">Confirm</string>
+
+    <string-array name="regions">
+        <item>North West</item>
+        <item>North East</item>
+        <item>Yorkshire Humber</item>
+        <item>West Midlands</item>
+        <item>East Midlands</item>
+        <item>East Anglia</item>
+        <item>London</item>
+        <item>South East</item>
+        <item>South West</item>
+    </string-array>
 </resources>

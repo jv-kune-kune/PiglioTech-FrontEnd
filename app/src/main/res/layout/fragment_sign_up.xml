@@ -22,13 +22,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="144dp"
             android:fontFamily="@font/lin_libertine_r"
-            android:text="Sign Up"
+            android:text="@string/sign_up"
             android:textColor="@color/white"
             android:textSize="50sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/name_card"
@@ -45,15 +44,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lin_libertine_r"
-                android:hint="Name:"
+                android:hint="@string/name"
+                android:importantForAutofill="no"
+                android:maxLines="1"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@+id/heading"
-                tools:layout_editor_absoluteX="28dp" />
-
+                tools:layout_editor_absoluteX="28dp"/>
         </com.google.android.material.card.MaterialCardView>
-
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/email_card"
@@ -70,15 +69,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lin_libertine_r"
-                android:hint="Email:"
+                android:hint="@string/email_hint"
+                android:maxLines="1"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="20sp"
                 tools:layout_editor_absoluteX="28dp" />
-
         </com.google.android.material.card.MaterialCardView>
-
-
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/password_card"
@@ -95,13 +92,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lin_libertine_r"
-                android:hint="Password:"
+                android:hint="@string/password_hint"
+                android:maxLines="1"
                 android:inputType="textPassword"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:textSize="20sp"
-                />
-
+                android:textSize="20sp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -119,26 +115,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lin_libertine_r"
-                android:hint="Avatar URL:"
+                android:hint="@string/avatar_url_hint"
+                android:maxLines="1"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:textSize="20sp"
-                />
-
+                android:textSize="20sp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <Spinner
             android:id="@+id/region"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:entries="@array/regions"
             android:foregroundTint="#3F51B5"
-            android:text="Region"
+            android:textColor="@color/white"
             android:layout_marginBottom="60dp"
             app:layout_constraintBottom_toTopOf="@id/buttonConfirm"
             app:layout_constraintTop_toBottomOf="@id/url_card"
-            tools:layout_editor_absoluteX="50dp"
-            />
-
+            tools:layout_editor_absoluteX="50dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonConfirm"
@@ -147,7 +141,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="48dp"
             android:fontFamily="@font/lin_libertine_r"
-            android:text="Confirm"
+            android:text="@string/confirm_button_text"
             android:textSize="28sp"
             app:backgroundTint="#3E6144"
             app:cornerRadius="10dp"
@@ -164,10 +158,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/heading"
-            app:layout_constraintStart_toStartOf="parent"
-            />
-
-
+            app:layout_constraintStart_toStartOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
