@@ -10,28 +10,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.northcoders.pigliotech_frontend.R;
-import com.northcoders.pigliotech_frontend.databinding.FragmentHomeBinding;
 import com.northcoders.pigliotech_frontend.databinding.LibraryViewBinding;
 import com.northcoders.pigliotech_frontend.model.User;
 
 import java.util.List;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.LibraryViewHolder> {
+public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryViewHolder> {
 
     List<User> users;
     Context context;
 
-    public HomeAdapter(List<User> users, Context context) {
+    public LibraryAdapter(List<User> users, Context context) {
         this.users = users;
         this.context = context;
     }
 
     public static class LibraryViewHolder extends RecyclerView.ViewHolder {
-        private LibraryViewBinding binding;
+        private LibraryViewBinding libraryItemBinding;
 
-        public LibraryViewHolder(LibraryViewBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
+        public LibraryViewHolder(LibraryViewBinding libraryItemBinding) {
+            super(libraryItemBinding.getRoot());
+            this.libraryItemBinding = libraryItemBinding;
 
         }
     }
@@ -54,9 +53,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.LibraryViewHol
         Glide.with(holder.itemView.getContext())
                         .load(url)
                         .placeholder(R.drawable.blank_pfp)
-                        .into(holder.binding.pfpImage);
+                        .into(holder.libraryItemBinding.pfpImage);
 
-        holder.binding.setUser(user);
+        holder.libraryItemBinding.setUser(user);
 
     }
 
