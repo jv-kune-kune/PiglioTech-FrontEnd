@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -18,6 +19,9 @@ import android.widget.ProgressBar;
 import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentHomeBinding;
+import com.northcoders.pigliotech_frontend.model.User;
+
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -25,6 +29,8 @@ public class HomeFragment extends Fragment {
     private HomeViewModel viewModel;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private List<User> users;
+    private  LibraryAdapter libraryAdapter;
 
     // TODO add RecyclerView and Adapter and Progressbar
 
@@ -37,6 +43,23 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
         viewModel.load();
+
+
+    }
+
+    public void displayInRecyclerView() {
+        recyclerView = binding.recyclerView;
+        libraryAdapter = new LibraryAdapter(users, this.getContext());
+
+        recyclerView.setAdapter(libraryAdapter);
+        recyclerView.setLayoutManager(
+                new LinearLayoutManager(this.getContext())
+        );
+
+        recyclerView.setHasFixedSize(true);
+
+        libraryAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -54,7 +77,6 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         recyclerView = binding.recyclerView;
         progressBar = binding.progressBar;
 
@@ -65,6 +87,8 @@ public class HomeFragment extends Fragment {
             }else if (homeState instanceof  HomeState.Loaded){
                 // TODO
                 progressBar.setVisibility(GONE);
+                users = ((HomeState.Loaded) homeState).getOtherUserLibraries();
+                displayInRecyclerView();
             }
         });
     }
