@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void displayInRecyclerView() {
-        recyclerView = binding.recyclerView;
+        recyclerView = binding.libRecyclerView;
         libraryAdapter = new LibraryAdapter(users, this.getContext());
 
         recyclerView.setAdapter(libraryAdapter);
@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = binding.recyclerView;
+        recyclerView = binding.libRecyclerView;
         progressBar = binding.progressBar;
 
         viewModel.getState().observe(getViewLifecycleOwner(), homeState -> {
