@@ -7,11 +7,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.northcoders.pigliotech_frontend.model.Book;
 import com.northcoders.pigliotech_frontend.model.User;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class ProfileViewModel extends ViewModel {
@@ -32,7 +34,11 @@ public class ProfileViewModel extends ViewModel {
                     user.getEmail(),
                     user.getRegion(),
                     user.getThumbnail(),
-                    new ArrayList<>()
+                    new ArrayList<>(List.of( // TODO test Books
+                            new Book("ISBN", "BOOK 1", "Author 1", "pic.com"),
+                            new Book("ISBNISBN", "BOOK 2", "Author 2", "pic.com"),
+                            new Book("ISBNISBNISBN", "BOOK 3", "Author3 ", "pic.com")
+                    ))
             ));
         }
     };
