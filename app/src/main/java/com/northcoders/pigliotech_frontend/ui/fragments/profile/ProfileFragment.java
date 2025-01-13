@@ -6,18 +6,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentProfileBinding;
+import com.northcoders.pigliotech_frontend.model.Book;
 import com.northcoders.pigliotech_frontend.ui.fragments.landingpage.LandingPageFragment;
+
+import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
 
@@ -25,6 +32,9 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private Button btnSignOut;
     private ProfileViewModel viewModel;
+    private RecyclerView recyclerView;
+    private UserAdapter userAdapter;
+    private ArrayList<Book> userBooks = new ArrayList<>();
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -58,6 +68,15 @@ public class ProfileFragment extends Fragment {
         textViewName = binding.name;
         textViewRegion = binding.region;
         ProgressBar progressBar = binding.progressBar;
+        //RecyclerView Set Up
+        recyclerView = binding.bookListRecyclerView;
+        userAdapter = new UserAdapter(userBooks);
+        recyclerView.setAdapter(userAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        userAdapter.notifyDataSetChanged();
+
 
         btnSignOut = binding.buttonSignOut;
 
@@ -71,6 +90,8 @@ public class ProfileFragment extends Fragment {
                 textViewName.setText(((ProfileState.Loaded) state).getName());
                 textViewEmail.setText(((ProfileState.Loaded) state).getEmail());
                 textViewRegion.setText(((ProfileState.Loaded) state).getRegion());
+                userBooks.addAll(((ProfileState.Loaded) state).getBooks());
+                Log.i("ProfileFragment: Books", userBooks.toString());
             }
         });
 
@@ -87,6 +108,8 @@ public class ProfileFragment extends Fragment {
         // Instantiate the BottomNavigationBarView and set it to Visible
         NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
         bottomNav.setVisibility(View.VISIBLE);
+
+
     }
 
     @Override
