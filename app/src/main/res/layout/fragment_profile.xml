@@ -30,49 +30,56 @@
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="235dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lin_libertine_r"
             android:textColor="@color/white"
-            android:textSize="28sp"
+            android:textSize="16sp"
             android:background="@drawable/edit_text_background"
             android:layout_marginStart="10dp"
-            android:padding="6dp"
-            tools:text="Name"
+            android:layout_marginEnd="10dp"
+            android:padding="10dp"
+            tools:text="Very long username right here"
             app:layout_constraintStart_toEndOf="@id/profilePic"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/profilePic"
+
 
             />
 
         <TextView
             android:id="@+id/email"
-            android:layout_width="235dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lin_libertine_r"
             android:textColor="@color/white"
-            android:textSize="28sp"
+            android:textSize="16sp"
             android:background="@drawable/edit_text_background"
             android:layout_marginStart="10dp"
-            android:padding="6dp"
-            tools:text="Email"
+            android:layout_marginEnd="10dp"
+            android:padding="10dp"
+            tools:text="biglongemail@emailprovider.co.uk"
             app:layout_constraintStart_toEndOf="@id/profilePic"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/name"
             app:layout_constraintBottom_toTopOf="@id/region"
             />
 
         <TextView
             android:id="@+id/region"
-            android:layout_width="235dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lin_libertine_r"
             android:textColor="@color/white"
-            android:textSize="28sp"
+            android:textSize="16sp"
             android:background="@drawable/edit_text_background"
             android:layout_marginStart="10dp"
-            android:padding="6dp"
-            tools:text="Region"
+            android:layout_marginEnd="10dp"
+            android:padding="10dp"
+            tools:text="The highlands and islands of scotland"
             app:layout_constraintStart_toEndOf="@id/profilePic"
-            app:layout_constraintTop_toBottomOf="@id/email"
+            app:layout_constraintEnd_toEndOf="parent"
+
             app:layout_constraintBottom_toBottomOf="@id/profilePic"
             />
 
