@@ -1,28 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context=".ui.fragments.landingpage.LandingPageFragment">
-
-    <Button
-        android:id="@+id/btn_login"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:layout_gravity="center"/>
+        android:layout_height="match_parent"
+        android:background="@drawable/landing_background"
+        android:padding="16dp"
+        tools:context=".ui.fragments.landingpage.LandingPageFragment">
 
-    <Button
-        android:id="@+id/btn_sign_up"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="Sign Up"
-        android:layout_gravity="center"/>
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="50dp">
+
+
+            <TextView
+                android:id="@+id/welcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="148dp"
+                android:fontFamily="@font/lin_libertine_r"
+                android:text="Welcome"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/white"
+                android:textSize="50sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+             <Button
+                 android:id="@+id/btnLogin"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:layout_marginTop="128dp"
+                 android:backgroundTint="@android:color/transparent"
+                 android:fontFamily="@font/lin_libertine_r"
+                 android:text="Log in"
+                 android:textSize="28sp"
+                 app:layout_constraintTop_toBottomOf="@id/welcome"
+                 app:cornerRadius="10dp"
+                 app:strokeColor="@color/white"
+                 app:strokeWidth="1.5dp"
+                 tools:layout_editor_absoluteX="0dp"
+                 />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not already a user?"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/lin_libertine_r"
+                app:layout_constraintBottom_toTopOf="@id/btnSignUp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <Button
+                android:id="@+id/btnSignUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="128dp"
+                android:backgroundTint="@android:color/transparent"
+                android:fontFamily="@font/lin_libertine_r"
+                android:text="Sign up"
+                android:textSize="28sp"
+                app:layout_constraintTop_toBottomOf="@id/btnLogin"
+                app:cornerRadius="10dp"
+                app:strokeColor="@color/white"
+                app:strokeWidth="1.5dp"
+                tools:layout_editor_absoluteX="0dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 </layout>

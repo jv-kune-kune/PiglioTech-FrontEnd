@@ -43,6 +43,10 @@ dependencies {
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 
+    //UI Design
+    implementation libs.appcompat.v110
+    implementation libs.material.v100
+
     // Retrofit
     implementation libs.retrofit
     implementation libs.retrofit2.converter.gson

@@ -1,0 +1,66 @@
+package com.northcoders.pigliotech_frontend.ui.fragments.addbook;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
+import com.google.firebase.auth.FirebaseUser;
+import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
+import com.northcoders.pigliotech_frontend.model.service.UserRepository;
+
+import java.util.function.Consumer;
+
+public class AddBookViewModel extends ViewModel {
+
+    private final AuthRepository authRepository;
+    private final UserRepository userRepository;
+    private final FirebaseUser currentUser;
+
+    private final MutableLiveData<AddBookState> state = new MutableLiveData<>(new AddBookState(false));
+    private final MutableLiveData<AddBookEvents> events = new MutableLiveData<>(null);
+
+    private final Consumer<Integer> addBookConsumer = responseCode ->{
+        if (responseCode !=null){
+            state.setValue(new AddBookState(false));
+            if (responseCode == 201){
+                events.setValue(AddBookEvents.BOOK_ADDED);
+            }else {
+               events.setValue(AddBookEvents.BOOK_NOT_ADDED);
+            }
+        }
+    };
+
+    public AddBookViewModel() {
+        this.authRepository = new AuthRepository();
+        this.userRepository = new UserRepository();
+        this.currentUser = authRepository.getmAuth().getCurrentUser();
+    }
+
+    public void addBook(String isbn){
+        if (isIsbnValid(isbn)){
+            state.setValue(new AddBookState(true));
+            // TODO call the method from the Repo with the consumer
+            addBookConsumer.accept(201);
+        }else {
+            events.setValue(AddBookEvents.INVALID_ISBN);
+        }
+    }
+
+    private boolean isIsbnValid(String isbn){
+        String trimmedIsbn = isbn.trim(); // remove whitespace
+        return trimmedIsbn.length() == 10|| trimmedIsbn.length() == 13;
+    }
+
+    public LiveData<AddBookState> getState() {
+        return state;
+    }
+
+    public MutableLiveData<AddBookEvents> getEvents() {
+        return events;
+    }
+
+    // Called after each event is observed in the SignUp Fragment.
+    public void eventSeen(){
+        events.setValue(null);
+    }
+}
