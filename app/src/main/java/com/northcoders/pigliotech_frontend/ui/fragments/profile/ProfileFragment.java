@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -34,7 +33,7 @@ public class ProfileFragment extends Fragment {
     private ProfileViewModel viewModel;
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
-    private ArrayList<Book> userBooks = new ArrayList<>();
+    private ArrayList<Book> userBooks;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -54,7 +53,6 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
@@ -68,15 +66,6 @@ public class ProfileFragment extends Fragment {
         textViewName = binding.name;
         textViewRegion = binding.region;
         ProgressBar progressBar = binding.progressBar;
-        //RecyclerView Set Up
-        recyclerView = binding.bookListRecyclerView;
-        userAdapter = new UserAdapter(userBooks);
-        recyclerView.setAdapter(userAdapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        userAdapter.notifyDataSetChanged();
-
 
         btnSignOut = binding.buttonSignOut;
 
@@ -90,7 +79,8 @@ public class ProfileFragment extends Fragment {
                 textViewName.setText(((ProfileState.Loaded) state).getName());
                 textViewEmail.setText(((ProfileState.Loaded) state).getEmail());
                 textViewRegion.setText(((ProfileState.Loaded) state).getRegion());
-                userBooks.addAll(((ProfileState.Loaded) state).getBooks());
+                userBooks = (ArrayList<Book>) ((ProfileState.Loaded) state).getBooks();
+                displayUserRecyclerView(); // Initialise the RecyclerView when the userBooks has data
                 Log.i("ProfileFragment: Books", userBooks.toString());
             }
         });
@@ -108,8 +98,17 @@ public class ProfileFragment extends Fragment {
         // Instantiate the BottomNavigationBarView and set it to Visible
         NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
         bottomNav.setVisibility(View.VISIBLE);
+    }
 
-
+    private void displayUserRecyclerView(){
+        //RecyclerView Set Up
+        recyclerView = binding.bookListRecyclerView;
+        userAdapter = new UserAdapter(userBooks);
+        recyclerView.setAdapter(userAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        userAdapter.notifyDataSetChanged();
     }
 
     @Override
