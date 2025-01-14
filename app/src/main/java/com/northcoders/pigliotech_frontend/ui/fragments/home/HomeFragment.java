@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment {
     private List<User> users;
     private  LibraryAdapter libraryAdapter;
 
-    // TODO add RecyclerView and Adapter and Progressbar
+    // TODO clickability
 
     public HomeFragment() {
         // Required empty public constructor
@@ -46,17 +46,6 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-        viewModel.load();
-
-//        UserRepository userRepository = new UserRepository();
-//
-//        Consumer<List<User>> usersConsumer = list -> {};
-//
-//        userRepository.getUsersByRegion("LONDON", "", usersConsumer);
-//
-//        String region = FirebaseInstance.getFirebaseAuth().getCurrentUser().getDisplayName();
-//        Log.i("FIREBASE HACK", region);
-
     }
 
     public void displayInRecyclerView() {
@@ -94,10 +83,8 @@ public class HomeFragment extends Fragment {
 
         viewModel.getState().observe(getViewLifecycleOwner(), homeState -> {
             if (homeState instanceof HomeState.Loading){
-                // TODO
                 progressBar.setVisibility(VISIBLE);
             }else if (homeState instanceof  HomeState.Loaded){
-                // TODO
                 progressBar.setVisibility(GONE);
                 users = ((HomeState.Loaded) homeState).getOtherUserLibraries();
                 displayInRecyclerView();
