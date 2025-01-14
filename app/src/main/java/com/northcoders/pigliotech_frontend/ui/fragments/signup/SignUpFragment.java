@@ -35,7 +35,8 @@ public class SignUpFragment extends Fragment {
     private FragmentSignUpBinding binding;
     private SignUpViewModel viewModel;
     private Spinner regionSpinner;
-    private ArrayAdapter<CharSequence> arrayAdapter;
+    private NavigationBarView bottomNavBar;
+    private FragmentActivity activity;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -45,6 +46,7 @@ public class SignUpFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(SignUpViewModel.class);
+        activity = getActivity();
     }
 
     @Override
@@ -60,12 +62,13 @@ public class SignUpFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Context context = getContext();
+
         bindingUiElements();
 
         buttonConfirm.setOnClickListener(view1 -> registerNewUser());
 
-        NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
-        bottomNav.setVisibility(View.GONE);
+        bottomNavBar.setVisibility(View.GONE);
 
         viewModel.getState().observe(requireActivity(), state -> {
             if (state.getLoading()){
@@ -74,9 +77,6 @@ public class SignUpFragment extends Fragment {
                 progressbar.setVisibility(View.GONE);
             }
         });
-
-        Context context = getContext();
-        FragmentActivity activity = getActivity();
 
         /*
         events observer that uses the state of MutableLiveData<SignUpEvents> events in the
@@ -96,9 +96,7 @@ public class SignUpFragment extends Fragment {
                                 .replace(R.id.frame_layout_fragment, new ProfileFragment())
                                 .commit();
 
-                        NavigationBarView bottomNavBar = activity.findViewById(R.id.bottom_nav_bar);
                         bottomNavBar.setSelectedItemId(R.id.profile);
-
                         break;
                     case REGISTRATION_FAILED:
                         Toast.makeText(
@@ -165,10 +163,11 @@ public class SignUpFragment extends Fragment {
         avatarUrlTextView = binding.url;
         buttonConfirm = binding.buttonConfirm;
         progressbar = binding.progressBar;
+        bottomNavBar = activity.findViewById(R.id.bottom_nav_bar);
 
         // Setting up the spinner
         regionSpinner = binding.region;
-        arrayAdapter = ArrayAdapter.createFromResource(
+        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(
                 requireContext(),
                 R.array.regions,
                 R.layout.spinner_item
