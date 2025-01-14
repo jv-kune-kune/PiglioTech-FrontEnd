@@ -10,7 +10,6 @@ import com.northcoders.pigliotech_frontend.model.User;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -23,30 +22,34 @@ public class HomeViewModel extends ViewModel {
             new HomeState.Loading()
     );
 
+    // Callback function that allows for the asynchronous method to be run in the main thread
     private final Consumer<List<User>> userLibrariesConsumer = userLibraries ->{
-      if (userLibraries != null){
-          Log.i("User Libraries Consumer Called", userLibraries.toString());
-          state.setValue(
-//                  new HomeState.Loaded(userLibraries)
-                  new HomeState.Loaded(new ArrayList<>(List.of(
-                          new User("1", "user1", "email1@email.com", "LONDON", "url.com"),
-                          new User("2", "user2", "email2@email.com", "LONDON", "url.com"),
-                          new User("3", "user3", "email3@email.com", "LONDON", "url.com")
-                  )))
-
-          );
-      }
+        if (userLibraries != null){
+            Log.i("User Libraries Consumer Called", userLibraries.toString());
+            state.setValue(
+                    new HomeState.Loaded(userLibraries)
+            );
+        }
     };
 
     public HomeViewModel() {
         this.authRepository = new AuthRepository();
         this.userRepository = new UserRepository();
+        load(); // Load the users on ViewModel Instantiation
     }
 
+    // Load the users by Region Exlcuding the the user.
     public void load(){
         state.setValue(new HomeState.Loading());
         // TODO Implementation of method from the repo
-        userLibrariesConsumer.accept(new ArrayList<>());
+        String userRegion = authRepository.getmAuth().getCurrentUser().getDisplayName();
+        String userId = authRepository.getmAuth().getCurrentUser().getUid();
+
+        userRepository.getUsersByRegion(
+                userRegion,
+                userId,
+                userLibrariesConsumer
+        );
     }
 
     public LiveData<HomeState> getState() {

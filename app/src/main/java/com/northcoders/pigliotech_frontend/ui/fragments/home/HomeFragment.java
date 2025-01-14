@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,11 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentHomeBinding;
 import com.northcoders.pigliotech_frontend.model.User;
+import com.northcoders.pigliotech_frontend.model.service.FirebaseInstance;
+import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class HomeFragment extends Fragment {
 
@@ -32,7 +36,7 @@ public class HomeFragment extends Fragment {
     private List<User> users;
     private  LibraryAdapter libraryAdapter;
 
-    // TODO add RecyclerView and Adapter and Progressbar
+    // TODO clickability
 
     public HomeFragment() {
         // Required empty public constructor
@@ -42,9 +46,6 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-        viewModel.load();
-
-
     }
 
     public void displayInRecyclerView() {
@@ -82,10 +83,8 @@ public class HomeFragment extends Fragment {
 
         viewModel.getState().observe(getViewLifecycleOwner(), homeState -> {
             if (homeState instanceof HomeState.Loading){
-                // TODO
                 progressBar.setVisibility(VISIBLE);
             }else if (homeState instanceof  HomeState.Loaded){
-                // TODO
                 progressBar.setVisibility(GONE);
                 users = ((HomeState.Loaded) homeState).getOtherUserLibraries();
                 displayInRecyclerView();

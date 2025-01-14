@@ -52,8 +52,8 @@ public class SignUpViewModel extends ViewModel {
                                 // Set events value to registration successful for the observer in SignUpFragment
                                 events.setValue(SignUpEvents.REGISTRATION_SUCCESSFUL);
 
-                                // On sign in success, update the user's display name
-                                updateFirebaseDisplayName(name);
+                                // On sign in success, update the Firebase DisplayName property to the Region Enum
+                                updateFirebaseDisplayName(regionStringToEnum(region));
 
                                 // Update the state for the progress loading bar
                                 state.setValue(new SignUpState(false));
@@ -104,17 +104,17 @@ public class SignUpViewModel extends ViewModel {
         return regionEnum;
     }
 
-    // Updates the DisplayName for the current Firebase user
-    private void updateFirebaseDisplayName(String name){
+    // Updates the DisplayName for the current Firebase user to the Region ENUM
+    private void updateFirebaseDisplayName(String region){
         FirebaseUser user = authRepository.getmAuth().getCurrentUser();
         if (user != null){
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(name)
+                    .setDisplayName(region)
                     .build();
             user.updateProfile(profileUpdates)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "Display Name updated to : " + name);
+                            Log.d(TAG, "Display Name updated REGION : " + region);
                         }
                     });
         }
