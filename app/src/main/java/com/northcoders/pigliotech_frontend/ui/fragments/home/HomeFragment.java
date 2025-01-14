@@ -23,6 +23,7 @@ import com.northcoders.pigliotech_frontend.databinding.FragmentHomeBinding;
 import com.northcoders.pigliotech_frontend.model.User;
 import com.northcoders.pigliotech_frontend.model.service.FirebaseInstance;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
+import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileFragment;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -88,6 +89,18 @@ public class HomeFragment extends Fragment {
                 progressBar.setVisibility(GONE);
                 users = ((HomeState.Loaded) homeState).getOtherUserLibraries();
                 displayInRecyclerView();
+            }
+        });
+
+        viewModel.getEvent().observe(getViewLifecycleOwner(), homeEvents -> {
+            if(homeEvents != null) {
+                if(homeEvents == HomeEvents.USER_ITEM_CLICKED) {
+                    // TODO
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.frame_layout_fragment, new ProfileFragment())
+                            .commit();
+                }
+                viewModel.eventSeen();
             }
         });
     }

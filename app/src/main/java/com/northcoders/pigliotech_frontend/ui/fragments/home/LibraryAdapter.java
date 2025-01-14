@@ -62,6 +62,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryV
         holder.libraryItemBinding.setUser(user);
 
         holder.libraryItemBinding.libraryCard.setOnClickListener(view -> {
+            viewmodel.onUserClicked();
             Log.i("Library Adapter", "RecyclerView item clicked" );
         });
     }
