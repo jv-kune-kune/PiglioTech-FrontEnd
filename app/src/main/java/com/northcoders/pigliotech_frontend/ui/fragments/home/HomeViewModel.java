@@ -18,7 +18,7 @@ public class HomeViewModel extends ViewModel {
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
 
-    private final MutableLiveData<HomeEvents> events = new MutableLiveData<>(null);
+    private final MutableLiveData<HomeEvents> events = new MutableLiveData<>(new HomeEvents(null));
 
     private final MutableLiveData<HomeState> state = new MutableLiveData<>(
             new HomeState.Loading()
@@ -62,11 +62,12 @@ public class HomeViewModel extends ViewModel {
     }
 
 
-    public void onUserClicked() {
-        events.setValue(HomeEvents.USER_ITEM_CLICKED);
+    public void onUserClicked(String id) {
+        events.setValue(new HomeEvents(id));
+
     }
 
     public void eventSeen(){
-        events.setValue(null);
+        events.setValue(new HomeEvents(null));
     }
 }

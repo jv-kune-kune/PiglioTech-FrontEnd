@@ -93,15 +93,22 @@ public class HomeFragment extends Fragment {
         });
 
         viewModel.getEvent().observe(getViewLifecycleOwner(), homeEvents -> {
-            if(homeEvents != null) {
-                if(homeEvents == HomeEvents.USER_ITEM_CLICKED) {
-                    // TODO
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame_layout_fragment, new ProfileFragment())
-                            .commit();
-                }
+
+            if(homeEvents.getClickedUserId() != null) {
+                // TODO
+                Bundle bundle = new Bundle();
+                bundle.putString("userId", homeEvents.getClickedUserId());
+
+                ProfileFragment profileFragment = new ProfileFragment();
+                profileFragment.setArguments(bundle);
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout_fragment, profileFragment)
+                        .commit();
+
                 viewModel.eventSeen();
             }
+//
         });
     }
 

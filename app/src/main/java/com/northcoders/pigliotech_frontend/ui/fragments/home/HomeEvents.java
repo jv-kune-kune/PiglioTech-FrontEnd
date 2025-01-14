@@ -1,5 +1,14 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.home;
 
-public enum HomeEvents {
-    USER_ITEM_CLICKED
+public class HomeEvents {
+
+    private final String clickedUserId;
+
+    HomeEvents(String s) {
+        this.clickedUserId = s;
+    }
+
+    public String getClickedUserId() {
+        return clickedUserId;
+    }
 }

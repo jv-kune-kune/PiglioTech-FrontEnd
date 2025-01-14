@@ -45,6 +45,12 @@ public class ProfileFragment extends Fragment {
 
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
         viewModel.load();
+
+        if(getArguments() != null) {
+            Log.i("Profile fragment", "passed user id: " + getArguments().getString("userId"));
+        } else {
+            Log.i("Profile fragment", "no user id");
+        }
     }
 
     @Override
