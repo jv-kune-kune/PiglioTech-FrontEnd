@@ -15,7 +15,7 @@ public enum Region {
 
     public final int region;
 
-    private Region(int region) {
+    Region(int region) {
         this.region = region;
     }
 }
