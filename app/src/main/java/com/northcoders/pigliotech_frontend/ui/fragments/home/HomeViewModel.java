@@ -27,7 +27,13 @@ public class HomeViewModel extends ViewModel {
       if (userLibraries != null){
           Log.i("User Libraries Consumer Called", userLibraries.toString());
           state.setValue(
-                  new HomeState.Loaded(userLibraries)
+//                  new HomeState.Loaded(userLibraries)
+                  new HomeState.Loaded(new ArrayList<>(List.of(
+                          new User("1", "user1", "email1@email.com", "LONDON", "url.com"),
+                          new User("2", "user2", "email2@email.com", "LONDON", "url.com"),
+                          new User("3", "user3", "email3@email.com", "LONDON", "url.com")
+                  )))
+
           );
       }
     };
