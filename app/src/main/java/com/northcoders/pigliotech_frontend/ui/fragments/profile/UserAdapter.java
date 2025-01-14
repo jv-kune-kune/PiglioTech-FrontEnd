@@ -17,7 +17,7 @@ import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
-    private List<Book> books;
+    private final List<Book> books;
 
     public UserAdapter(List<Book> books) {
         this.books = books;
@@ -26,17 +26,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        BookItemBinding binding = BookItemBinding.inflate(
-//                LayoutInflater.from(parent.getContext()),
-//                parent,
-//                false
-//        );
 
-        // TODO test the different bindings
-
-        BookItemBinding binding = DataBindingUtil.inflate(
+        BookItemBinding binding = BookItemBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.book_item,
                 parent,
                 false
         );
@@ -57,8 +49,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 .placeholder(R.drawable.blank_book)
                 .error(R.drawable.blank_book)
                 .into(holder.bookCoverImageView);
-
-        // TODO Implement the clicked album item
     }
 
     @Override
