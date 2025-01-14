@@ -31,9 +31,6 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private List<User> users;
-    private  LibraryAdapter libraryAdapter;
-
-    // TODO clickability
 
     public HomeFragment() {
         // Required empty public constructor
@@ -45,23 +42,8 @@ public class HomeFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
     }
 
-    public void displayInRecyclerView() {
-        recyclerView = binding.libRecyclerView;
-        libraryAdapter = new LibraryAdapter(users, this.getContext(), viewModel);
-
-        recyclerView.setAdapter(libraryAdapter);
-        recyclerView.setLayoutManager(
-                new LinearLayoutManager(this.getContext())
-        );
-
-        recyclerView.setHasFixedSize(true);
-
-        libraryAdapter.notifyDataSetChanged();
-
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
@@ -88,12 +70,17 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        // Observers the ViewModel for when a User Library is clicked
         viewModel.getEvent().observe(getViewLifecycleOwner(), homeEvents -> {
 
-            if(homeEvents.getClickedUserId() != null) {
-                // TODO
+            if(((HomeEvents.ClickedUserLibrary) homeEvents).clickedUserId() != null) {
+
+                // Passes the clicked User's ID to the ProfileFragment
                 Bundle bundle = new Bundle();
-                bundle.putString("userId", homeEvents.getClickedUserId());
+                bundle.putString(
+                        "userId",
+                        ((HomeEvents.ClickedUserLibrary) homeEvents).clickedUserId()
+                );
 
                 ProfileFragment profileFragment = new ProfileFragment();
                 profileFragment.setArguments(bundle);
@@ -105,8 +92,21 @@ public class HomeFragment extends Fragment {
 
                 viewModel.eventSeen();
             }
-//
         });
+    }
+
+    public void displayInRecyclerView() {
+        recyclerView = binding.libRecyclerView;
+        LibraryAdapter libraryAdapter = new LibraryAdapter(users, viewModel);
+
+        recyclerView.setAdapter(libraryAdapter);
+        recyclerView.setLayoutManager(
+                new LinearLayoutManager(this.getContext())
+        );
+
+        recyclerView.setHasFixedSize(true);
+
+        libraryAdapter.notifyDataSetChanged();
     }
 
     @Override
