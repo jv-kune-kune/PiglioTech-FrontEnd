@@ -3,4 +3,34 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="book_image">Book Image</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="name">Name:</string>
+    <string name="email_hint">Email:</string>
+    <string name="password_hint">Password:</string>
+    <string name="avatar_url_hint">Avatar URL:</string>
+    <string name="confirm_button_text">Confirm</string>
+    <string name="north_west">North West</string>
+    <string name="north_east">North East</string>
+    <string name="select_region">Select Region</string>
+    <string name="yorkshire_humber">Yorkshire Humber</string>
+    <string name="west_midlands">West Midlands</string>
+    <string name="east_midlands">East Midlands</string>
+    <string name="east_anglia">East Anglia</string>
+    <string name="london">London</string>
+    <string name="south_east">South East</string>
+    <string name="south_west">South West</string>
+
+
+    <string-array name="regions">
+        <item>@string/select_region</item>
+        <item>@string/north_west</item>
+        <item>@string/north_east</item>
+        <item>@string/yorkshire_humber</item>
+        <item>@string/west_midlands</item>
+        <item>@string/east_midlands</item>
+        <item>@string/east_anglia</item>
+        <item>@string/london</item>
+        <item>@string/south_east</item>
+        <item>@string/south_west</item>
+    </string-array>
 </resources>

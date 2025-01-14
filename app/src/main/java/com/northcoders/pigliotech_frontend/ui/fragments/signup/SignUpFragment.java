@@ -14,9 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationBarView;
@@ -32,6 +34,9 @@ public class SignUpFragment extends Fragment {
     private ProgressBar progressbar;
     private FragmentSignUpBinding binding;
     private SignUpViewModel viewModel;
+    private Spinner regionSpinner;
+    private NavigationBarView bottomNavBar;
+    private FragmentActivity activity;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -40,6 +45,8 @@ public class SignUpFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(SignUpViewModel.class);
+        activity = getActivity();
     }
 
     @Override
@@ -48,7 +55,6 @@ public class SignUpFragment extends Fragment {
 
         // Inflate the layout for this fragment
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
@@ -56,19 +62,13 @@ public class SignUpFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel = new ViewModelProvider(requireActivity()).get(SignUpViewModel.class);
+        Context context = getContext();
 
-        emailTextView = binding.email;
-        passwordTextView = binding.password;
-        nameTextView = binding.name;
-        avatarUrlTextView = binding.url;
-        buttonConfirm = binding.buttonConfirm;
-        progressbar = binding.progressBar;
+        bindingUiElements();
 
         buttonConfirm.setOnClickListener(view1 -> registerNewUser());
 
-        NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
-        bottomNav.setVisibility(View.GONE);
+        bottomNavBar.setVisibility(View.GONE);
 
         viewModel.getState().observe(requireActivity(), state -> {
             if (state.getLoading()){
@@ -77,9 +77,6 @@ public class SignUpFragment extends Fragment {
                 progressbar.setVisibility(View.GONE);
             }
         });
-
-        Context context = getContext();
-        FragmentActivity activity = getActivity();
 
         /*
         events observer that uses the state of MutableLiveData<SignUpEvents> events in the
@@ -99,15 +96,20 @@ public class SignUpFragment extends Fragment {
                                 .replace(R.id.frame_layout_fragment, new ProfileFragment())
                                 .commit();
 
-                        NavigationBarView bottomNavBar = activity.findViewById(R.id.bottom_nav_bar);
                         bottomNavBar.setSelectedItemId(R.id.profile);
-
                         break;
                     case REGISTRATION_FAILED:
                         Toast.makeText(
                                         context,
                                         "Registration failed!!"
                                                 + " Please try again later",
+                                        Toast.LENGTH_LONG)
+                                .show();
+                        break;
+                    case SELECT_REGION:
+                        Toast.makeText(
+                                        context,
+                                        "Please select a Region!",
                                         Toast.LENGTH_LONG)
                                 .show();
                         break;
@@ -132,7 +134,7 @@ public class SignUpFragment extends Fragment {
         Log.i("PASSWORD", password);
         avatarUrl = avatarUrlTextView.getText().toString();
         Log.i("AVATARURL", avatarUrl);
-        region = "LONDON"; // TODO: To implement enum and spinner for Regions
+        region = regionSpinner.getSelectedItem().toString(); // TODO: To implement enum and spinner for Regions
         Log.i("REGION", region);
 
         // Validations for input email and password
@@ -151,7 +153,26 @@ public class SignUpFragment extends Fragment {
             return;
         }
 
-        viewModel.signUp(name, email, password, avatarUrl, "LONDON");
+        viewModel.signUp(name, email, password, avatarUrl, region);
+    }
 
+    private void bindingUiElements(){
+        emailTextView = binding.email;
+        passwordTextView = binding.password;
+        nameTextView = binding.name;
+        avatarUrlTextView = binding.url;
+        buttonConfirm = binding.buttonConfirm;
+        progressbar = binding.progressBar;
+        bottomNavBar = activity.findViewById(R.id.bottom_nav_bar);
+
+        // Setting up the spinner
+        regionSpinner = binding.region;
+        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.regions,
+                R.layout.spinner_item
+        );
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        regionSpinner.setAdapter(arrayAdapter);
     }
 }

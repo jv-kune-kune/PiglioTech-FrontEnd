@@ -7,7 +7,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.model.Book;
+import com.northcoders.pigliotech_frontend.model.Region;
 import com.northcoders.pigliotech_frontend.model.User;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
@@ -32,7 +34,7 @@ public class ProfileViewModel extends ViewModel {
             state.setValue(new ProfileState.Loaded(
                     user.getName(),
                     user.getEmail(),
-                    user.getRegion(),
+                    regionEnumToString(user.getRegion()),
                     user.getThumbnail(),
                     new ArrayList<>(List.of( // TODO test Books
                             new Book("ISBN", "BOOK 1", "Author 1", "pic.com"),
@@ -61,5 +63,14 @@ public class ProfileViewModel extends ViewModel {
     public void signOut(){
         authRepository.getmAuth().signOut();
         FirebaseAuth.getInstance().signOut();
+    }
+
+    private int regionEnumToString(String backendRegion){
+        for (Region region : Region.values()){
+            if (backendRegion.equals(region.toString())){
+                return region.region;
+            }
+        }
+        return R.string.select_region;
     }
 }
