@@ -1,6 +1,8 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.home;
 
+
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -19,10 +21,12 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryV
 
     List<User> users;
     Context context;
+    HomeViewModel viewmodel;
 
-    public LibraryAdapter(List<User> users, Context context) {
+    public LibraryAdapter(List<User> users, Context context, HomeViewModel viewmodel) {
         this.users = users;
         this.context = context;
+        this.viewmodel = viewmodel;
     }
 
     public static class LibraryViewHolder extends RecyclerView.ViewHolder {
@@ -57,6 +61,9 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryV
 
         holder.libraryItemBinding.setUser(user);
 
+        holder.libraryItemBinding.libraryCard.setOnClickListener(view -> {
+            Log.i("Library Adapter", "RecyclerView item clicked" );
+        });
     }
 
     @Override

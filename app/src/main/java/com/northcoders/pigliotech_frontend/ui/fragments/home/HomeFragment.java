@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment {
 
     public void displayInRecyclerView() {
         recyclerView = binding.libRecyclerView;
-        libraryAdapter = new LibraryAdapter(users, this.getContext());
+        libraryAdapter = new LibraryAdapter(users, this.getContext(), viewModel);
 
         recyclerView.setAdapter(libraryAdapter);
         recyclerView.setLayoutManager(
