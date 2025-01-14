@@ -15,11 +15,11 @@ public interface ProfileState {
     class Loaded implements ProfileState {
         private final String name;
         private final String email;
-        private final String region;
+        private final int region;
         private final String artworkUrl;
         private final List<Book> books;
 
-        public Loaded(String name, String email, String region, String artworkUrl, List<Book> books) {
+        public Loaded(String name, String email, int region, String artworkUrl, List<Book> books) {
             this.name = name;
             this.email = email;
             this.region = region;
@@ -35,7 +35,7 @@ public interface ProfileState {
             return email;
         }
 
-        public String getRegion() {
+        public int getRegion() {
             return region;
         }
 
