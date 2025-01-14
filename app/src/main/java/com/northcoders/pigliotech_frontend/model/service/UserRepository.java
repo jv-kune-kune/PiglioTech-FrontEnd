@@ -2,10 +2,9 @@ package com.northcoders.pigliotech_frontend.model.service;
 
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.northcoders.pigliotech_frontend.model.User;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import retrofit2.Call;
@@ -78,6 +77,44 @@ public class UserRepository {
                 );
             }
         });
+    }
 
+    public void getUsersByRegion(String regionEnum,
+                                 String currentUserId,
+                                 Consumer<List<User>> usersByRegionConsumer
+    ){
+
+        Call<List<User>> call = userApiService.getUsersByRegion(regionEnum, currentUserId);
+        Log.i(TAG, "getUsersByRegion Called, Region: " + regionEnum + ", UserID: " + currentUserId);
+
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (response.code() == 200 && response.body() != null){
+                    List<User> usersByRegion = response.body();
+                    usersByRegionConsumer.accept(usersByRegion);
+                    Log.i(
+                            TAG,
+                            "GET USERS BY REGION: Successfully retrieved " + response.body().toString()
+                    );
+                }else {
+                    usersByRegionConsumer.accept(null);
+                    Log.e(
+                            TAG,
+                            "GET USERS BY REGION: Successfully retrieved "+ response.code()
+                    );
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                usersByRegionConsumer.accept(null);
+                Log.e(
+                        TAG,
+                        "GET USER BY REGION: Network failure",
+                        t
+                );
+            }
+        });
     }
 }
