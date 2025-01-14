@@ -24,24 +24,39 @@ public class ProfileViewModel extends ViewModel {
     private final UserRepository userRepository;
 
     private final MutableLiveData<ProfileState> state = new MutableLiveData<>(
-            new ProfileState.Loading()
+            new ProfileState.Loading(true)
     );
 
     private final Consumer<User> userConsumer = user ->{
         if (user != null){
-
-            Log.i("User Consumer Called", user.toString());
-            state.setValue(new ProfileState.Loaded(
-                    user.getName(),
-                    user.getEmail(),
-                    regionEnumToString(user.getRegion()),
-                    user.getThumbnail(),
-                    new ArrayList<>(List.of( // TODO test Books
-                            new Book("ISBN", "BOOK 1", "Author 1", "pic.com"),
-                            new Book("ISBNISBN", "BOOK 2", "Author 2", "pic.com"),
-                            new Book("ISBNISBNISBN", "BOOK 3", "Author3 ", "pic.com")
-                    ))
-            ));
+            ProfileState.Loading currentState = (ProfileState.Loading) state.getValue();
+            if(currentState.isUser()) {
+                Log.i("User Consumer Called", user.toString());
+                state.setValue(new ProfileState.Loaded(
+                        user.getName(),
+                        user.getEmail(),
+                        regionEnumToString(user.getRegion()),
+                        user.getThumbnail(),
+                        new ArrayList<>(List.of( // TODO test Books
+                                new Book("ISBN", "BOOK 1", "Author 1", "pic.com"),
+                                new Book("ISBNISBN", "BOOK 2", "Author 2", "pic.com"),
+                                new Book("ISBNISBNISBN", "BOOK 3", "Author3 ", "pic.com")
+                        ))
+                ));
+            } else {
+                Log.i("Other User", user.toString());
+                state.setValue(new ProfileState.OtherUserLoaded(
+                        user.getName(),
+                        user.getEmail(),
+                        regionEnumToString(user.getRegion()),
+                        user.getThumbnail(),
+                        new ArrayList<>(List.of( // TODO test Books
+                                new Book("ISBN", "BOOK 1", "Author 1", "pic.com"),
+                                new Book("ISBNISBN", "BOOK 2", "Author 2", "pic.com"),
+                                new Book("ISBNISBNISBN", "BOOK 3", "Author3 ", "pic.com")
+                        ))
+                ));
+            }
         }
     };
 
@@ -50,10 +65,18 @@ public class ProfileViewModel extends ViewModel {
         this.userRepository = new UserRepository();
     }
 
-    public void load(){
-        state.setValue(new ProfileState.Loading());
-        String userID = authRepository.getmAuth().getCurrentUser().getUid();
-        userRepository.getUser(userID, userConsumer);
+    public void load(String s){
+        if(s != null){
+            state.setValue(new ProfileState.Loading(false));
+            String userID = s;
+            userRepository.getUser(userID, userConsumer);
+
+        } else {
+            state.setValue(new ProfileState.Loading(true));
+            String userID = authRepository.getmAuth().getCurrentUser().getUid();
+            userRepository.getUser(userID, userConsumer);
+        }
+
     }
 
     public LiveData<ProfileState> getState() {

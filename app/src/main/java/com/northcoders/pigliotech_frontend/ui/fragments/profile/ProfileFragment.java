@@ -44,11 +44,13 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
-        viewModel.load();
+
 
         if(getArguments() != null) {
+            viewModel.load(getArguments().getString("userId"));
             Log.i("Profile fragment", "passed user id: " + getArguments().getString("userId"));
         } else {
+            viewModel.load(null);
             Log.i("Profile fragment", "no user id");
         }
     }
@@ -82,10 +84,20 @@ public class ProfileFragment extends Fragment {
                 progressBar.setVisibility(View.VISIBLE);
             }else if (state instanceof ProfileState.Loaded){
                 progressBar.setVisibility(View.GONE);
-                textViewName.setText(((ProfileState.Loaded) state).getName());
-                textViewEmail.setText(((ProfileState.Loaded) state).getEmail());
-                textViewRegion.setText(((ProfileState.Loaded) state).getRegion());
-                userBooks = (ArrayList<Book>) ((ProfileState.Loaded) state).getBooks();
+                textViewName.setText(((ProfileState.Loaded) state).name());
+                textViewEmail.setText(((ProfileState.Loaded) state).email());
+                textViewRegion.setText(((ProfileState.Loaded) state).region());
+                userBooks = (ArrayList<Book>) ((ProfileState.Loaded) state).books();
+                displayUserRecyclerView(); // Initialise the RecyclerView when the userBooks has data
+                Log.i("ProfileFragment: Books", userBooks.toString());
+
+            } else if (state instanceof ProfileState.OtherUserLoaded) {
+                progressBar.setVisibility(View.GONE);
+                textViewName.setText(((ProfileState.OtherUserLoaded) state).name());
+                textViewEmail.setVisibility(View.GONE);
+                textViewRegion.setVisibility(View.GONE);
+                btnSignOut.setVisibility(View.GONE);
+                userBooks = (ArrayList<Book>) ((ProfileState.OtherUserLoaded) state).books();
                 displayUserRecyclerView(); // Initialise the RecyclerView when the userBooks has data
                 Log.i("ProfileFragment: Books", userBooks.toString());
             }

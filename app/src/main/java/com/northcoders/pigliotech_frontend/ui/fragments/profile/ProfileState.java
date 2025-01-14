@@ -6,47 +6,25 @@ import java.util.List;
 
 public interface ProfileState {
 
-    class Loading implements ProfileState {
-        public Loading() {
-        }
+    record Loading(boolean isUser) implements ProfileState {
 
     }
 
-    class Loaded implements ProfileState {
-        private final String name;
-        private final String email;
-        private final int region;
-        private final String artworkUrl;
-        private final List<Book> books;
-
-        public Loaded(String name, String email, int region, String artworkUrl, List<Book> books) {
-            this.name = name;
-            this.email = email;
-            this.region = region;
-            this.artworkUrl = artworkUrl;
-            this.books = books;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public int getRegion() {
-            return region;
-        }
-
-        public String getArtworkUrl() {
-            return artworkUrl;
-        }
-
-        public List<Book> getBooks() {
-            return books;
-        }
+    record Loaded(String name,
+                  String email,
+                  int region,
+                  String artworkUrl,
+                  List<Book> books) implements ProfileState {
     }
+
+    record OtherUserLoaded(String name,
+                  String email,
+                  int region,
+                  String artworkUrl,
+                  List<Book> books) implements ProfileState {
+    }
+
+
 
     // TODO LOOK INTO HANDLING ERRORS
 }
