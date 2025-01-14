@@ -4,27 +4,26 @@ import com.northcoders.pigliotech_frontend.model.Book;
 
 import java.util.List;
 
+// The states that the ProfileFragment can be in
 public interface ProfileState {
 
-    record Loading(boolean isUser) implements ProfileState {
+    record Loading(Boolean isUser) implements ProfileState {}
 
-    }
+    record Loaded(
+            String name,
+            String email,
+            int region,
+            String artworkUrl,
+            List<Book> books
+    ) implements ProfileState {}
 
-    record Loaded(String name,
-                  String email,
-                  int region,
-                  String artworkUrl,
-                  List<Book> books) implements ProfileState {
-    }
-
-    record OtherUserLoaded(String name,
-                  String email,
-                  int region,
-                  String artworkUrl,
-                  List<Book> books) implements ProfileState {
-    }
-
-
+    record OtherUserLoaded(
+            String name,
+            String email,
+            int region,
+            String artworkUrl,
+            List<Book> books
+    ) implements ProfileState {}
 
     // TODO LOOK INTO HANDLING ERRORS
 }
