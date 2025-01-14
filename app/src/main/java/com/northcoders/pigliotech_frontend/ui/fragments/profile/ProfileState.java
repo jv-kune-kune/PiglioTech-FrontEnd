@@ -7,7 +7,7 @@ import java.util.List;
 // The states that the ProfileFragment can be in
 public interface ProfileState {
 
-    record Loading(Boolean isUser) implements ProfileState {}
+    record Loading() implements ProfileState {}
 
     record Loaded(
             String name,
