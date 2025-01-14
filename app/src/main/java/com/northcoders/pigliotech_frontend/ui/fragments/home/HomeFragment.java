@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +20,9 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentHomeBinding;
 import com.northcoders.pigliotech_frontend.model.User;
-import com.northcoders.pigliotech_frontend.model.service.FirebaseInstance;
-import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileFragment;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class HomeFragment extends Fragment {
 
@@ -87,7 +83,7 @@ public class HomeFragment extends Fragment {
                 progressBar.setVisibility(VISIBLE);
             }else if (homeState instanceof  HomeState.Loaded){
                 progressBar.setVisibility(GONE);
-                users = ((HomeState.Loaded) homeState).getOtherUserLibraries();
+                users = ((HomeState.Loaded) homeState).otherUserLibraries();
                 displayInRecyclerView();
             }
         });
