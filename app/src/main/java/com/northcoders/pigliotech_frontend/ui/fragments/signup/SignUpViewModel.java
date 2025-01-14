@@ -47,25 +47,31 @@ public class SignUpViewModel extends ViewModel {
                     .createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
+                            if(authRepository.getmAuth().getCurrentUser() != null){
 
-                            // Set events value to registration successful for the observer in SignUpFragment
-                            events.setValue(SignUpEvents.REGISTRATION_SUCCESSFUL);
+                                // Set events value to registration successful for the observer in SignUpFragment
+                                events.setValue(SignUpEvents.REGISTRATION_SUCCESSFUL);
 
-                            // On sign in success, update the user's display name
-                            updateFirebaseDisplayName(name);
+                                // On sign in success, update the user's display name
+                                updateFirebaseDisplayName(name);
 
-                            // Update the state for the progress loading bar
-                            state.setValue(new SignUpState(false));
+                                // Update the state for the progress loading bar
+                                state.setValue(new SignUpState(false));
 
-                            User newUser = new User(
-                                    authRepository.getmAuth().getCurrentUser().getUid(),
-                                    name,
-                                    email,
-                                    regionStringToEnum(region),
-                                    imageUrl
-                            );
+                                User newUser = new User(
+                                        authRepository.getmAuth().getCurrentUser().getUid(),
+                                        name,
+                                        email,
+                                        regionStringToEnum(region),
+                                        imageUrl
+                                );
+                                userRepository.addUser(newUser);
+                            } else {
+                                // Update the state for the progress loading bar
+                                state.setValue(new SignUpState(false));
 
-                            userRepository.addUser(newUser);
+                                events.setValue(SignUpEvents.REGISTRATION_FAILED);
+                            }
                         }
                         else {
                             // Update the state for the progress loading bar
@@ -79,7 +85,7 @@ public class SignUpViewModel extends ViewModel {
 
     private String regionStringToEnum(String regionString){
         Log.i(TAG, "Region Name: " + regionString);
-        String regionEnum = "";
+        String regionEnum;
         switch (regionString){
             case "North West" -> regionEnum = Region.NORTH_WEST.name();
             case "North East" -> regionEnum = Region.NORTH_EAST.name();
@@ -108,7 +114,7 @@ public class SignUpViewModel extends ViewModel {
             user.updateProfile(profileUpdates)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Log.d("Display Name", "User profile updated.");
+                            Log.d(TAG, "Display Name updated to : " + name);
                         }
                     });
         }
