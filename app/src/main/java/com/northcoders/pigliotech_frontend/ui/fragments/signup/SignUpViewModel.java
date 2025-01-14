@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.northcoders.pigliotech_frontend.model.Region;
 import com.northcoders.pigliotech_frontend.model.User;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
@@ -17,7 +18,7 @@ public class SignUpViewModel extends ViewModel {
     TODO: User class implementation
         Create methods to replace TextUtils.isEmpty calls'
      */
-
+    private final String TAG = "SignUpViewModel";
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
 
@@ -36,40 +37,65 @@ public class SignUpViewModel extends ViewModel {
             String imageUrl,
             String region
     ){
-        // Update the state for the progress loading bar
-        state.setValue(new SignUpState(true));
-        // create new user or register new user
-        authRepository.getmAuth()
-                .createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
+        if(region.equals("Select Region")){
+            events.setValue(SignUpEvents.SELECT_REGION);
+        } else {
+            // Update the state for the progress loading bar
+            state.setValue(new SignUpState(true));
+            // create new user or register new user
+            authRepository.getmAuth()
+                    .createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
 
-                        // Set events value to registration successful for the observer in SignUpFragment
-                        events.setValue(SignUpEvents.REGISTRATION_SUCCESSFUL);
+                            // Set events value to registration successful for the observer in SignUpFragment
+                            events.setValue(SignUpEvents.REGISTRATION_SUCCESSFUL);
 
-                        // On sign in success, update the user's display name
-                        updateFirebaseDisplayName(name);
+                            // On sign in success, update the user's display name
+                            updateFirebaseDisplayName(name);
 
-                        // Update the state for the progress loading bar
-                        state.setValue(new SignUpState(false));
+                            // Update the state for the progress loading bar
+                            state.setValue(new SignUpState(false));
 
-                        User newUser = new User(
-                                authRepository.getmAuth().getCurrentUser().getUid(),
-                                name,
-                                email,
-                                region,
-                                imageUrl
-                        );
+                            User newUser = new User(
+                                    authRepository.getmAuth().getCurrentUser().getUid(),
+                                    name,
+                                    email,
+                                    regionStringToEnum(region),
+                                    imageUrl
+                            );
 
-                        userRepository.addUser(newUser);
-                    }
-                    else {
-                        // Update the state for the progress loading bar
-                        state.setValue(new SignUpState(false));
+                            userRepository.addUser(newUser);
+                        }
+                        else {
+                            // Update the state for the progress loading bar
+                            state.setValue(new SignUpState(false));
 
-                        events.setValue(SignUpEvents.REGISTRATION_FAILED);
-                    }
-                });
+                            events.setValue(SignUpEvents.REGISTRATION_FAILED);
+                        }
+                    });
+        }
+    }
+
+    private String regionStringToEnum(String regionString){
+        Log.i(TAG, "Region Name: " + regionString);
+        String regionEnum = "";
+        switch (regionString){
+            case "North West" -> regionEnum = Region.NORTH_WEST.name();
+            case "North East" -> regionEnum = Region.NORTH_EAST.name();
+            case "Yorkshire Humber" -> regionEnum = Region.YORKSHIRE_HUMBER.name();
+            case "West Midlands" -> regionEnum = Region.WEST_MIDLANDS.name();
+            case "East Midlands" -> regionEnum = Region.EAST_MIDLANDS.name();
+            case "East Anglia" -> regionEnum = Region.EAST_ANGLIA.name();
+            case "London" -> regionEnum = Region.LONDON.name();
+            case "South East" -> regionEnum = Region.SOUTH_EAST.name();
+            case "South West" -> regionEnum = Region.SOUTH_WEST.name();
+
+            default -> regionEnum = "Select Region";
+        }
+
+        Log.i(TAG, "Region Enum: " + regionEnum);
+        return regionEnum;
     }
 
     // Updates the DisplayName for the current Firebase user

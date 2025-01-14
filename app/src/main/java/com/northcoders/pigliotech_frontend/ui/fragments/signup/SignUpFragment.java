@@ -44,6 +44,7 @@ public class SignUpFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(SignUpViewModel.class);
     }
 
     @Override
@@ -59,14 +60,7 @@ public class SignUpFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel = new ViewModelProvider(requireActivity()).get(SignUpViewModel.class);
-
-        emailTextView = binding.email;
-        passwordTextView = binding.password;
-        nameTextView = binding.name;
-        avatarUrlTextView = binding.url;
-        buttonConfirm = binding.buttonConfirm;
-        progressbar = binding.progressBar;
+        bindingUiElements();
 
         buttonConfirm.setOnClickListener(view1 -> registerNewUser());
 
@@ -114,22 +108,19 @@ public class SignUpFragment extends Fragment {
                                         Toast.LENGTH_LONG)
                                 .show();
                         break;
+                    case SELECT_REGION:
+                        Toast.makeText(
+                                        context,
+                                        "Please select a Region!",
+                                        Toast.LENGTH_LONG)
+                                .show();
+                        break;
                     default:
                         break;
                 }
                 viewModel.eventSeen();
             }
         });
-
-
-        regionSpinner = binding.region;
-        arrayAdapter = ArrayAdapter.createFromResource(
-                requireContext(),
-                R.array.regions,
-                R.layout.spinner_item
-        );
-        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        regionSpinner.setAdapter(arrayAdapter);
     }
 
     private void registerNewUser(){
@@ -145,7 +136,7 @@ public class SignUpFragment extends Fragment {
         Log.i("PASSWORD", password);
         avatarUrl = avatarUrlTextView.getText().toString();
         Log.i("AVATARURL", avatarUrl);
-        region = "LONDON"; // TODO: To implement enum and spinner for Regions
+        region = regionSpinner.getSelectedItem().toString(); // TODO: To implement enum and spinner for Regions
         Log.i("REGION", region);
 
         // Validations for input email and password
@@ -164,7 +155,25 @@ public class SignUpFragment extends Fragment {
             return;
         }
 
-        viewModel.signUp(name, email, password, avatarUrl, "LONDON");
+        viewModel.signUp(name, email, password, avatarUrl, region);
+    }
 
+    private void bindingUiElements(){
+        emailTextView = binding.email;
+        passwordTextView = binding.password;
+        nameTextView = binding.name;
+        avatarUrlTextView = binding.url;
+        buttonConfirm = binding.buttonConfirm;
+        progressbar = binding.progressBar;
+
+        // Setting up the spinner
+        regionSpinner = binding.region;
+        arrayAdapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.regions,
+                R.layout.spinner_item
+        );
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        regionSpinner.setAdapter(arrayAdapter);
     }
 }
