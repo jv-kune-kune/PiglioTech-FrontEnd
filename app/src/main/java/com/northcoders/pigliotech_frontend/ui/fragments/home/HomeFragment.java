@@ -104,6 +104,7 @@ public class HomeFragment extends Fragment {
 
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_layout_fragment, profileFragment)
+                        .addToBackStack(null)
                         .commit();
 
                 viewModel.eventSeen();
