@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,11 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentHomeBinding;
 import com.northcoders.pigliotech_frontend.model.User;
+import com.northcoders.pigliotech_frontend.model.service.FirebaseInstance;
+import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class HomeFragment extends Fragment {
 
@@ -44,6 +48,14 @@ public class HomeFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
         viewModel.load();
 
+//        UserRepository userRepository = new UserRepository();
+//
+//        Consumer<List<User>> usersConsumer = list -> {};
+//
+//        userRepository.getUsersByRegion("LONDON", "", usersConsumer);
+//
+//        String region = FirebaseInstance.getFirebaseAuth().getCurrentUser().getDisplayName();
+//        Log.i("FIREBASE HACK", region);
 
     }
 
