@@ -22,7 +22,7 @@ public class UserRepository {
         this.userApiService = RetrofitInstance.getService();
     }
 
-    public void addUser(User user){
+    public void addUser(User user, Consumer<Integer> addUserConsumer){
 
         Call<User> call = userApiService.addUser(user);
 
@@ -30,20 +30,23 @@ public class UserRepository {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.code() == 201 && response.body() != null){
-                    Log.i(TAG, "ADD USER: " +response.body());
+                    addUserConsumer.accept(response.code());
+                    Log.i(TAG, "ADDED USER: " +response.body());
                 }else {
-                    Log.e(TAG, "ADD USER: " + (response.code()));
+                    addUserConsumer.accept(response.code());
+                    Log.e(TAG, "USER NOT ADDED: " + (response.code()));
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
+                addUserConsumer.accept(null);
                 Log.e(TAG, "ADD USER NETWORK FAILURE", t);
             }
         });
     }
 
-    public void getUser(String id, Consumer<User> userConsumer){
+    public void getUser(String id, Consumer<User> getUserConsumer){
 
         Call<User> call = userApiService.getCurrentUser(id);
         Log.i(TAG, "Requested User Id: "+ id);
@@ -53,13 +56,13 @@ public class UserRepository {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.code() == 200 && response.body() != null){
                     User user = response.body();
-                    userConsumer.accept(user);
+                    getUserConsumer.accept(user);
                     Log.i(
                             TAG,
                             "GET USER: Successfully retrieved " + response.body().toString()
                     );
                 }else {
-                    userConsumer.accept(null);
+                    getUserConsumer.accept(null);
                     Log.e(
                             TAG,
                             "GET USER: Unsuccessful response code" + response.code()
@@ -69,7 +72,7 @@ public class UserRepository {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                userConsumer.accept(null);
+                getUserConsumer.accept(null);
                 Log.e(
                         TAG,
                         "GET USER: Network failure",

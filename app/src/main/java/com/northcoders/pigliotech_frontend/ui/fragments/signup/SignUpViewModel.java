@@ -12,6 +12,10 @@ import com.northcoders.pigliotech_frontend.model.Region;
 import com.northcoders.pigliotech_frontend.model.User;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
+import com.northcoders.pigliotech_frontend.ui.fragments.addbook.AddBookEvents;
+import com.northcoders.pigliotech_frontend.ui.fragments.addbook.AddBookState;
+
+import java.util.function.Consumer;
 
 public class SignUpViewModel extends ViewModel {
     /*
@@ -24,6 +28,27 @@ public class SignUpViewModel extends ViewModel {
 
     private final MutableLiveData<SignUpState> state = new MutableLiveData<>(new SignUpState(false));
     private final MutableLiveData<SignUpEvents> events = new MutableLiveData<>(null);
+
+    private final Consumer<Integer> addUserConsumer = responseCode ->{
+        if (responseCode != null){
+            if (responseCode == 201){
+                // Set events value to registration successful for the observer in SignUpFragment
+                events.setValue(SignUpEvents.REGISTRATION_SUCCESSFUL);
+                Log.i(TAG, "User Added: " + responseCode);
+            }else {
+                events.setValue(SignUpEvents.REGISTRATION_FAILED);
+                deleteFirebaseUser();
+                Log.e(TAG, "User Not Added: " + responseCode);
+            }
+            // Update the state for the progress loading bar
+            state.setValue(new SignUpState(false));
+        }else {
+            // For A Network Error
+            deleteFirebaseUser();
+            events.setValue(SignUpEvents.NETWORK_ERROR);
+            Log.e(TAG, "NetworkError");
+        }
+    };
 
     public SignUpViewModel() {
         this.authRepository = new AuthRepository();
@@ -49,14 +74,8 @@ public class SignUpViewModel extends ViewModel {
                         if (task.isSuccessful()) {
                             if(authRepository.getmAuth().getCurrentUser() != null){
 
-                                // Set events value to registration successful for the observer in SignUpFragment
-                                events.setValue(SignUpEvents.REGISTRATION_SUCCESSFUL);
-
                                 // On sign in success, update the Firebase DisplayName property to the Region Enum
                                 updateFirebaseDisplayName(regionStringToEnum(region));
-
-                                // Update the state for the progress loading bar
-                                state.setValue(new SignUpState(false));
 
                                 User newUser = new User(
                                         authRepository.getmAuth().getCurrentUser().getUid(),
@@ -65,7 +84,7 @@ public class SignUpViewModel extends ViewModel {
                                         regionStringToEnum(region),
                                         imageUrl
                                 );
-                                userRepository.addUser(newUser);
+                                userRepository.addUser(newUser, addUserConsumer);
                             } else {
                                 // Update the state for the progress loading bar
                                 state.setValue(new SignUpState(false));
@@ -117,6 +136,22 @@ public class SignUpViewModel extends ViewModel {
                             Log.d(TAG, "Display Name updated REGION : " + region);
                         }
                     });
+        }
+    }
+
+    // Deletes the FirebaseUser Account if the user account it not created in the backend
+    private void deleteFirebaseUser(){
+        FirebaseUser user = authRepository.getmAuth().getCurrentUser();
+        if(user != null){
+            user.delete().addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
+                    Log.i(TAG, "Firebase User Account Deleted");
+                }else {
+                    Log.e(TAG, "Firebase User NOT Deleted");
+                }
+            });
+        }else {
+            Log.i(TAG, "No Firebase User Account to delete");
         }
     }
 
