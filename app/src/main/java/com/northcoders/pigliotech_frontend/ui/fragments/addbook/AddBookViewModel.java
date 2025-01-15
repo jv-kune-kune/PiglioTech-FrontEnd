@@ -1,5 +1,7 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.addbook;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -14,6 +16,7 @@ public class AddBookViewModel extends ViewModel {
 
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
+    private final String TAG = "AddBookViewModel";
 
     private final MutableLiveData<AddBookState> state = new MutableLiveData<>(new AddBookState(false));
     private final MutableLiveData<AddBookEvents> events = new MutableLiveData<>(null);
@@ -23,9 +26,15 @@ public class AddBookViewModel extends ViewModel {
             state.setValue(new AddBookState(false));
             if (responseCode == 201){
                 events.setValue(AddBookEvents.BOOK_ADDED);
+                Log.i(TAG, "Book Added: " + responseCode);
             }else {
                events.setValue(AddBookEvents.BOOK_NOT_ADDED);
+                Log.e(TAG, "Book Not Added: " + responseCode);
             }
+        }else {
+            state.setValue(new AddBookState(false));
+            events.setValue(AddBookEvents.NETWORK_ERROR);
+            Log.e(TAG, "NetworkError");
         }
     };
 
@@ -44,9 +53,11 @@ public class AddBookViewModel extends ViewModel {
             String userId = authRepository.getmAuth().getCurrentUser().getUid();
             Isbn isbnObject = new Isbn(isbnRemovedHyphens);
             userRepository.addBook(userId, isbnObject, addBookConsumer);
+            Log.i(TAG, "Valid ISBN");
         }else {
             // TODO Add Firebase Error Handling
             events.setValue(AddBookEvents.INVALID_ISBN);
+            Log.i(TAG, "Invalid ISBN");
         }
     }
 
