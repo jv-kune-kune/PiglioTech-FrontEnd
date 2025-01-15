@@ -26,7 +26,11 @@ public class AddBookViewModel extends ViewModel {
             if (responseCode == 201){
                 events.setValue(AddBookEvents.BOOK_ADDED);
                 Log.i(TAG, "Book Added: " + responseCode);
-            }else {
+            }else if (responseCode == 409){
+                events.setValue(AddBookEvents.BOOK_ALREADY_OWNED);
+                Log.i(TAG, "Book Already Owned: " + responseCode);
+            }
+            else {
                events.setValue(AddBookEvents.BOOK_NOT_ADDED);
                 Log.e(TAG, "Book Not Added: " + responseCode);
             }

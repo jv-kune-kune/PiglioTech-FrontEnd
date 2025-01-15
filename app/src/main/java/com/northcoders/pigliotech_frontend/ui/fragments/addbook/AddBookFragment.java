@@ -96,6 +96,12 @@ public class AddBookFragment extends Fragment {
                                         Toast.LENGTH_LONG)
                                 .show();
                         break;
+                    case BOOK_ALREADY_OWNED:
+                        Toast.makeText(context,
+                                        "This Book Is Already In Your Library!",
+                                        Toast.LENGTH_LONG)
+                                .show();
+                        break;
                     case INVALID_ISBN:
                         Toast.makeText(context,
                                         "Please Enter a valid ISBN!",
