@@ -26,6 +26,6 @@ public interface UserApiService {
                                       @Query("exclude") String currentUserId
     );
 
-    @POST("{id}/books")
+    @POST("users/{id}/books")
     Call<User> addBook(@Path("id") String userId, @Body Isbn isbn);
 }
