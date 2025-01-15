@@ -1,10 +1,12 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.addbook;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.firebase.auth.FirebaseUser;
+import com.northcoders.pigliotech_frontend.model.Isbn;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 
@@ -14,35 +16,52 @@ public class AddBookViewModel extends ViewModel {
 
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
-    private final FirebaseUser currentUser;
+    private final String TAG = "AddBookViewModel";
 
     private final MutableLiveData<AddBookState> state = new MutableLiveData<>(new AddBookState(false));
     private final MutableLiveData<AddBookEvents> events = new MutableLiveData<>(null);
 
     private final Consumer<Integer> addBookConsumer = responseCode ->{
         if (responseCode !=null){
-            state.setValue(new AddBookState(false));
             if (responseCode == 201){
                 events.setValue(AddBookEvents.BOOK_ADDED);
-            }else {
-               events.setValue(AddBookEvents.BOOK_NOT_ADDED);
+                Log.i(TAG, "Book Added: " + responseCode);
+            }else if (responseCode == 409){
+                events.setValue(AddBookEvents.BOOK_ALREADY_OWNED);
+                Log.i(TAG, "Book Already Owned: " + responseCode);
             }
+            else {
+               events.setValue(AddBookEvents.BOOK_NOT_ADDED);
+                Log.e(TAG, "Book Not Added: " + responseCode);
+            }
+            state.setValue(new AddBookState(false));
+        }else {
+            state.setValue(new AddBookState(false));
+            events.setValue(AddBookEvents.NETWORK_ERROR);
+            Log.e(TAG, "NetworkError");
         }
     };
 
     public AddBookViewModel() {
         this.authRepository = new AuthRepository();
         this.userRepository = new UserRepository();
-        this.currentUser = authRepository.getmAuth().getCurrentUser();
     }
 
-    public void addBook(String isbn){
-        if (isIsbnValid(isbn)){
+    public void addBook(String userIsbnInput){
+
+        // Will remove any hyphens input by the User
+        String isbnRemovedHyphens = userIsbnInput.replaceAll("-","");
+        // Validates the length of the ISBN
+        if (isIsbnValid(isbnRemovedHyphens) && authRepository.getmAuth().getCurrentUser() != null){
             state.setValue(new AddBookState(true));
-            // TODO call the method from the Repo with the consumer
-            addBookConsumer.accept(201);
+            String userId = authRepository.getmAuth().getCurrentUser().getUid();
+            Isbn isbnObject = new Isbn(isbnRemovedHyphens);
+            userRepository.addBook(userId, isbnObject, addBookConsumer);
+            Log.i(TAG, "Valid ISBN");
         }else {
+            // TODO Add Firebase Error Handling
             events.setValue(AddBookEvents.INVALID_ISBN);
+            Log.i(TAG, "Invalid ISBN");
         }
     }
 
