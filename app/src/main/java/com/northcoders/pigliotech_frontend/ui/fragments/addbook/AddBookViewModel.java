@@ -23,7 +23,6 @@ public class AddBookViewModel extends ViewModel {
 
     private final Consumer<Integer> addBookConsumer = responseCode ->{
         if (responseCode !=null){
-            state.setValue(new AddBookState(false));
             if (responseCode == 201){
                 events.setValue(AddBookEvents.BOOK_ADDED);
                 Log.i(TAG, "Book Added: " + responseCode);
@@ -31,6 +30,7 @@ public class AddBookViewModel extends ViewModel {
                events.setValue(AddBookEvents.BOOK_NOT_ADDED);
                 Log.e(TAG, "Book Not Added: " + responseCode);
             }
+            state.setValue(new AddBookState(false));
         }else {
             state.setValue(new AddBookState(false));
             events.setValue(AddBookEvents.NETWORK_ERROR);
