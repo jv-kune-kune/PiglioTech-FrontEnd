@@ -1,5 +1,7 @@
 package com.northcoders.pigliotech_frontend.model.service;
 
+import com.northcoders.pigliotech_frontend.model.Book;
+import com.northcoders.pigliotech_frontend.model.Isbn;
 import com.northcoders.pigliotech_frontend.model.User;
 
 import java.util.List;
@@ -23,4 +25,7 @@ public interface UserApiService {
     Call<List<User>> getUsersByRegion(@Query("region") String regionEnum,
                                       @Query("exclude") String currentUserId
     );
+
+    @POST("{id}/books")
+    Call<User> addBook(@Path("id") String userId, @Body Isbn isbn);
 }

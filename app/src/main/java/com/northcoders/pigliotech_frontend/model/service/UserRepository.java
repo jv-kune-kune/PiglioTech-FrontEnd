@@ -2,6 +2,7 @@ package com.northcoders.pigliotech_frontend.model.service;
 
 import android.util.Log;
 
+import com.northcoders.pigliotech_frontend.model.Isbn;
 import com.northcoders.pigliotech_frontend.model.User;
 
 import java.util.List;
@@ -16,7 +17,6 @@ public class UserRepository {
     private final String TAG = "UserRepository";
     private final UserApiService userApiService;
 
-
     public UserRepository() {
 
         this.userApiService = RetrofitInstance.getService();
@@ -30,15 +30,15 @@ public class UserRepository {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.code() == 201 && response.body() != null){
-                    Log.i("ADD USER", response.body().toString());
+                    Log.i(TAG, "ADD USER: " +response.body());
                 }else {
-                    Log.e("ADD USER", Integer.toString(response.code()));
+                    Log.e(TAG, "ADD USER: " + (response.code()));
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.i("ADD USER", t.getMessage());
+                Log.e(TAG, "ADD USER NETWORK FAILURE", t);
             }
         });
     }
@@ -114,6 +114,31 @@ public class UserRepository {
                         "GET USER BY REGION: Network failure",
                         t
                 );
+            }
+        });
+    }
+
+    public void addBook(String userId, Isbn isbn, Consumer<Integer> addBookConsumer){
+
+        Call<User> call = userApiService.addBook(userId, isbn);
+        Log.i(TAG, "addBook Called, userId: " + userId + ", ISBN: " + isbn);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.code() == 201 && response.body() != null){
+                    addBookConsumer.accept(response.code());
+                    Log.i(TAG, "ADD BOOK: " +response.body());
+                }else {
+                    addBookConsumer.accept(response.code());
+                    Log.e(TAG, "ADD BOOK: " + (response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                addBookConsumer.accept(null);
+                Log.e(TAG, "ADD USER NETWORK FAILURE", t);
             }
         });
     }
