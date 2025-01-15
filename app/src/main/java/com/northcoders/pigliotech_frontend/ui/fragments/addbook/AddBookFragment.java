@@ -17,8 +17,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentAddBookBinding;
+import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileFragment;
 
 public class AddBookFragment extends Fragment {
 
@@ -44,7 +47,6 @@ public class AddBookFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentAddBookBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
@@ -52,10 +54,11 @@ public class AddBookFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        editTextIsbn = binding.isbn;
-        progressBar = binding.progressBar;
-        buttonSubmit = binding.buttonSubmit;
+        uiElementBinding(); // Bind UI Elements
 
+        buttonSubmit.setOnClickListener(
+                view1 -> viewModel.addBook(editTextIsbn.getText().toString())
+        );
 
         // State observer
         viewModel.getState().observe(getViewLifecycleOwner(), addBookState -> {
@@ -66,22 +69,50 @@ public class AddBookFragment extends Fragment {
             }
         });
 
-        // For toasts and supportFragmentManager
+        // For toasts and supportFragmentManager in the Events Observer
         Context context = getContext();
         FragmentActivity activity = getActivity();
 
         // Events observer
         viewModel.getEvents().observe(getViewLifecycleOwner(), event ->{
-            if (event != null){
+            if (event != null && activity != null){
                 switch (event){
                     case BOOK_ADDED:
-                        // TODO
+                        Toast.makeText(context,
+                                        "Book Added!",
+                                        Toast.LENGTH_LONG)
+                                .show();
+
+                        activity.getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(
+                                        R.id.frame_layout_fragment,
+                                        new ProfileFragment())
+                                .commit();
                         break;
                     case BOOK_NOT_ADDED:
-                        // TODO
+                        Toast.makeText(context,
+                                        "Book Was Not Added!",
+                                        Toast.LENGTH_LONG)
+                                .show();
+                        break;
+                    case BOOK_ALREADY_OWNED:
+                        Toast.makeText(context,
+                                        "This Book Is Already In Your Library!",
+                                        Toast.LENGTH_LONG)
+                                .show();
                         break;
                     case INVALID_ISBN:
-                        // TODO
+                        Toast.makeText(context,
+                                        "Please Enter a valid ISBN!",
+                                        Toast.LENGTH_LONG)
+                                .show();
+                        break;
+                    case NETWORK_ERROR:
+                        Toast.makeText(context,
+                                        "Network Error Please Try Again Later!",
+                                        Toast.LENGTH_LONG)
+                                .show();
                         break;
                     default:
                         break;
@@ -89,5 +120,11 @@ public class AddBookFragment extends Fragment {
                 viewModel.eventSeen(); // sets the event back to null
             }
         });
+    }
+
+    private void uiElementBinding(){
+        editTextIsbn = binding.isbn;
+        progressBar = binding.progressBar;
+        buttonSubmit = binding.buttonSubmit;
     }
 }
