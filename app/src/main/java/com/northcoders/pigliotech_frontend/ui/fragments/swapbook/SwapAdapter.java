@@ -2,6 +2,7 @@ package com.northcoders.pigliotech_frontend.ui.fragments.swapbook;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,9 +15,11 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
 
     // TODO: To implement
     private final List<Object> swaps;
+    private final SwapViewModel viewModel;
 
-    public SwapAdapter(List<Object> swaps) {
+    public SwapAdapter(List<Object> swaps, SwapViewModel viewModel) {
         this.swaps = swaps;
+        this.viewModel = viewModel;
     }
 
     @NonNull
@@ -38,6 +41,14 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
         Object swap = swaps.get(position); // TODO
         // TODO implement data binding in the xml
         // holder.swapItemBinding.setSwap(swap)
+
+        holder.acceptButton.setOnClickListener(view -> {
+            // TODO
+        });
+
+        holder.declineButton.setOnClickListener(view -> {
+            // TODO
+        });
     }
 
     @Override
@@ -47,10 +58,15 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
 
     public static class SwapViewHolder extends RecyclerView.ViewHolder{
         private final SwapItemBinding swapItemBinding;
+        private final Button acceptButton;
+        private final Button declineButton;
+
 
         public SwapViewHolder(SwapItemBinding swapItemBinding) {
             super(swapItemBinding.getRoot());
             this.swapItemBinding = swapItemBinding;
+            this.acceptButton = swapItemBinding.acceptBtn;
+            this.declineButton = swapItemBinding.declineBtn;
         }
     }
 }
