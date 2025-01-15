@@ -39,7 +39,6 @@ public class HomeViewModel extends ViewModel {
     public HomeViewModel() {
         this.authRepository = new AuthRepository();
         this.userRepository = new UserRepository();
-        load(); // Load the users on ViewModel Instantiation
     }
 
     // Load the users by Region Excluding the the user.
