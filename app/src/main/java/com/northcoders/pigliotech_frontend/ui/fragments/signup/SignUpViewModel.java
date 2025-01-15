@@ -12,8 +12,6 @@ import com.northcoders.pigliotech_frontend.model.Region;
 import com.northcoders.pigliotech_frontend.model.User;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
-import com.northcoders.pigliotech_frontend.ui.fragments.addbook.AddBookEvents;
-import com.northcoders.pigliotech_frontend.ui.fragments.addbook.AddBookState;
 
 import java.util.function.Consumer;
 
