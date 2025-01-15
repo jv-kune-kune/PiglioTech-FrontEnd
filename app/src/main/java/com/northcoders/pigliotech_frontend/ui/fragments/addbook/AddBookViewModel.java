@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.firebase.auth.FirebaseUser;
+import com.northcoders.pigliotech_frontend.model.Isbn;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 
@@ -14,7 +14,6 @@ public class AddBookViewModel extends ViewModel {
 
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
-    private final FirebaseUser currentUser;
 
     private final MutableLiveData<AddBookState> state = new MutableLiveData<>(new AddBookState(false));
     private final MutableLiveData<AddBookEvents> events = new MutableLiveData<>(null);
@@ -33,15 +32,20 @@ public class AddBookViewModel extends ViewModel {
     public AddBookViewModel() {
         this.authRepository = new AuthRepository();
         this.userRepository = new UserRepository();
-        this.currentUser = authRepository.getmAuth().getCurrentUser();
     }
 
-    public void addBook(String isbn){
-        if (isIsbnValid(isbn)){
+    public void addBook(String userIsbnInput){
+
+        // Will remove any hyphens input by the User
+        String isbnRemovedHyphens = userIsbnInput.replaceAll("-","");
+        // Validates the length of the ISBN
+        if (isIsbnValid(isbnRemovedHyphens) && authRepository.getmAuth().getCurrentUser() != null){
             state.setValue(new AddBookState(true));
-            // TODO call the method from the Repo with the consumer
-            addBookConsumer.accept(201);
+            String userId = authRepository.getmAuth().getCurrentUser().getUid();
+            Isbn isbnObject = new Isbn(isbnRemovedHyphens);
+            userRepository.addBook(userId, isbnObject, addBookConsumer);
         }else {
+            // TODO Add Firebase Error Handling
             events.setValue(AddBookEvents.INVALID_ISBN);
         }
     }
