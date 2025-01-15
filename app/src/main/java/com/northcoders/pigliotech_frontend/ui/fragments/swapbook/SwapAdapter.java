@@ -44,10 +44,12 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
 
         holder.acceptButton.setOnClickListener(view -> {
             // TODO
+            viewModel.acceptButtonClicked();
         });
 
         holder.declineButton.setOnClickListener(view -> {
             // TODO
+            viewModel.declineButtonClicked();
         });
     }
 
