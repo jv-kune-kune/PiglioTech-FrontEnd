@@ -31,9 +31,9 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private Button btnSignOut;
     private ProfileViewModel viewModel;
-    private RecyclerView recyclerView;
-    private UserAdapter userAdapter;
     private ArrayList<Book> userBooks;
+    private ProgressBar progressBar;
+    private final String TAG = "ProfileFragment";
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -44,14 +44,21 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
-        viewModel.load();
+
+        // If getArguments is not null it will pass the User id from Home as a param.
+        if(getArguments() != null) {
+            viewModel.load(getArguments().getString("userId"));
+            Log.i(TAG, "passed user id: " + getArguments().getString("userId"));
+        } else {
+            viewModel.load(null);
+            Log.i(TAG, "no user id");
+        }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -62,12 +69,7 @@ public class ProfileFragment extends Fragment {
 
         LandingPageFragment landingPageFragment = new LandingPageFragment();
 
-        textViewEmail = binding.email;
-        textViewName = binding.name;
-        textViewRegion = binding.region;
-        ProgressBar progressBar = binding.progressBar;
-
-        btnSignOut = binding.buttonSignOut;
+        bindingUiElements();
 
         // Observe the state from the viewModel
         viewModel.getState().observe(getViewLifecycleOwner(), state -> {
@@ -75,13 +77,12 @@ public class ProfileFragment extends Fragment {
             if (state instanceof ProfileState.Loading){
                 progressBar.setVisibility(View.VISIBLE);
             }else if (state instanceof ProfileState.Loaded){
-                progressBar.setVisibility(View.GONE);
-                textViewName.setText(((ProfileState.Loaded) state).getName());
-                textViewEmail.setText(((ProfileState.Loaded) state).getEmail());
-                textViewRegion.setText(((ProfileState.Loaded) state).getRegion());
-                userBooks = (ArrayList<Book>) ((ProfileState.Loaded) state).getBooks();
-                displayUserRecyclerView(); // Initialise the RecyclerView when the userBooks has data
-                Log.i("ProfileFragment: Books", userBooks.toString());
+
+                setUpCurrentUserScreen((ProfileState.Loaded) state);
+
+            } else if (state instanceof ProfileState.OtherUserLoaded) {
+
+                setUpNonCurrentUserScreen((ProfileState.OtherUserLoaded) state);
             }
         });
 
@@ -100,15 +101,46 @@ public class ProfileFragment extends Fragment {
         bottomNav.setVisibility(View.VISIBLE);
     }
 
+    private void bindingUiElements(){
+        textViewEmail = binding.email;
+        textViewName = binding.name;
+        textViewRegion = binding.region;
+        progressBar = binding.progressBar;
+        btnSignOut = binding.buttonSignOut;
+    }
+
     private void displayUserRecyclerView(){
         //RecyclerView Set Up
-        recyclerView = binding.bookListRecyclerView;
-        userAdapter = new UserAdapter(userBooks);
+        RecyclerView recyclerView = binding.bookListRecyclerView;
+        UserAdapter userAdapter = new UserAdapter(userBooks);
         recyclerView.setAdapter(userAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         userAdapter.notifyDataSetChanged();
+    }
+
+    // Setup the ProfileScreen View for the current user
+    private void setUpCurrentUserScreen(ProfileState.Loaded state){
+        progressBar.setVisibility(View.GONE);
+        textViewName.setText(state.name());
+        textViewEmail.setText(state.email());
+        textViewRegion.setText(state.region());
+        userBooks = (ArrayList<Book>) state.books();
+        displayUserRecyclerView(); // Initialise the RecyclerView when the userBooks has data
+        Log.i(TAG,"Books: "+ userBooks.toString());
+    }
+
+    // Setup the ProfileScreen View for selected Non-current user Library
+    private void setUpNonCurrentUserScreen(ProfileState.OtherUserLoaded state){
+        progressBar.setVisibility(View.GONE);
+        textViewName.setText(state.name());
+        textViewEmail.setVisibility(View.GONE);
+        textViewRegion.setVisibility(View.GONE);
+        btnSignOut.setVisibility(View.GONE);
+        userBooks = (ArrayList<Book>) state.books();
+        displayUserRecyclerView(); // Initialise the RecyclerView when the userBooks has data
+        Log.i(TAG,"Books: "+ userBooks.toString());
     }
 
     @Override

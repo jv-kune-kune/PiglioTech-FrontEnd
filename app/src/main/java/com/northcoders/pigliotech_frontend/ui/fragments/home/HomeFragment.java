@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +20,9 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentHomeBinding;
 import com.northcoders.pigliotech_frontend.model.User;
-import com.northcoders.pigliotech_frontend.model.service.FirebaseInstance;
-import com.northcoders.pigliotech_frontend.model.service.UserRepository;
+import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileFragment;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class HomeFragment extends Fragment {
 
@@ -34,9 +31,6 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private List<User> users;
-    private  LibraryAdapter libraryAdapter;
-
-    // TODO clickability
 
     public HomeFragment() {
         // Required empty public constructor
@@ -46,25 +40,11 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-    }
-
-    public void displayInRecyclerView() {
-        recyclerView = binding.libRecyclerView;
-        libraryAdapter = new LibraryAdapter(users, this.getContext());
-
-        recyclerView.setAdapter(libraryAdapter);
-        recyclerView.setLayoutManager(
-                new LinearLayoutManager(this.getContext())
-        );
-
-        recyclerView.setHasFixedSize(true);
-
-        libraryAdapter.notifyDataSetChanged();
-
+        viewModel.load();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
@@ -86,10 +66,48 @@ public class HomeFragment extends Fragment {
                 progressBar.setVisibility(VISIBLE);
             }else if (homeState instanceof  HomeState.Loaded){
                 progressBar.setVisibility(GONE);
-                users = ((HomeState.Loaded) homeState).getOtherUserLibraries();
+                users = ((HomeState.Loaded) homeState).otherUserLibraries();
                 displayInRecyclerView();
             }
         });
+
+        // Observers the ViewModel for when a User Library is clicked
+        viewModel.getEvent().observe(getViewLifecycleOwner(), homeEvents -> {
+
+            if(((HomeEvents.ClickedUserLibrary) homeEvents).clickedUserId() != null) {
+
+                // Passes the clicked User's ID to the ProfileFragment
+                Bundle bundle = new Bundle();
+                bundle.putString(
+                        "userId",
+                        ((HomeEvents.ClickedUserLibrary) homeEvents).clickedUserId()
+                );
+
+                ProfileFragment profileFragment = new ProfileFragment();
+                profileFragment.setArguments(bundle);
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout_fragment, profileFragment)
+                        .addToBackStack(null)
+                        .commit();
+
+                viewModel.eventSeen();
+            }
+        });
+    }
+
+    public void displayInRecyclerView() {
+        recyclerView = binding.libRecyclerView;
+        LibraryAdapter libraryAdapter = new LibraryAdapter(users, viewModel);
+
+        recyclerView.setAdapter(libraryAdapter);
+        recyclerView.setLayoutManager(
+                new LinearLayoutManager(this.getContext())
+        );
+
+        recyclerView.setHasFixedSize(true);
+
+        libraryAdapter.notifyDataSetChanged();
     }
 
     @Override

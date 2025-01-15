@@ -1,8 +1,10 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.home;
 
-import android.content.Context;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -18,21 +20,11 @@ import java.util.List;
 public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryViewHolder> {
 
     List<User> users;
-    Context context;
+    HomeViewModel viewmodel;
 
-    public LibraryAdapter(List<User> users, Context context) {
+    public LibraryAdapter(List<User> users, HomeViewModel viewmodel) {
         this.users = users;
-        this.context = context;
-    }
-
-    public static class LibraryViewHolder extends RecyclerView.ViewHolder {
-        private LibraryViewBinding libraryItemBinding;
-
-        public LibraryViewHolder(LibraryViewBinding libraryItemBinding) {
-            super(libraryItemBinding.getRoot());
-            this.libraryItemBinding = libraryItemBinding;
-
-        }
+        this.viewmodel = viewmodel;
     }
 
     @NonNull
@@ -50,13 +42,17 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryV
         User user = users.get(position);
         String url = user.getThumbnail();
 
-        Glide.with(holder.itemView.getContext())
+        Glide.with(holder.pfpImageView.getContext())
                         .load(url)
                         .placeholder(R.drawable.blank_pfp)
-                        .into(holder.libraryItemBinding.pfpImage);
+                        .into(holder.pfpImageView);
 
         holder.libraryItemBinding.setUser(user);
 
+        holder.libraryItemBinding.libraryCard.setOnClickListener(view -> {
+            viewmodel.onUserClicked(user.getUid());
+            Log.i("LibraryAdapter", "RecyclerView item clicked" );
+        });
     }
 
     @Override
@@ -64,4 +60,14 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryV
         return users.size();
     }
 
+    public static class LibraryViewHolder extends RecyclerView.ViewHolder {
+        private final LibraryViewBinding libraryItemBinding;
+        private final ImageView pfpImageView;
+
+        public LibraryViewHolder(LibraryViewBinding libraryItemBinding) {
+            super(libraryItemBinding.getRoot());
+            this.libraryItemBinding = libraryItemBinding;
+            this.pfpImageView = libraryItemBinding.pfpImage;
+        }
+    }
 }

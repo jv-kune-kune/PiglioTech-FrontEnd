@@ -6,20 +6,8 @@ import java.util.List;
 
 public interface HomeState {
 
-    class Loading implements HomeState {
-        public Loading() {
-        }
-    }
+    record Loading() implements HomeState {}
 
-    class Loaded implements HomeState {
-        private final List<User> otherUserLibraries;
-
-        public Loaded(List<User> otherUserLibraries) {
-            this.otherUserLibraries = otherUserLibraries;
-        }
-
-        public List<User> getOtherUserLibraries() {
-            return otherUserLibraries;
-        }
+    record Loaded(List<User> otherUserLibraries) implements HomeState {
     }
 }

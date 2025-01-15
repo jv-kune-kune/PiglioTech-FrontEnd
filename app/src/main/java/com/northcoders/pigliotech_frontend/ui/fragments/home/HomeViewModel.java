@@ -18,6 +18,10 @@ public class HomeViewModel extends ViewModel {
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
 
+    private final MutableLiveData<HomeEvents> events = new MutableLiveData<>(
+            new HomeEvents.ClickedUserLibrary(null)
+    );
+
     private final MutableLiveData<HomeState> state = new MutableLiveData<>(
             new HomeState.Loading()
     );
@@ -35,24 +39,40 @@ public class HomeViewModel extends ViewModel {
     public HomeViewModel() {
         this.authRepository = new AuthRepository();
         this.userRepository = new UserRepository();
-        load(); // Load the users on ViewModel Instantiation
     }
 
-    // Load the users by Region Exlcuding the the user.
+    // Load the users by Region Excluding the the user.
     public void load(){
-        state.setValue(new HomeState.Loading());
-        // TODO Implementation of method from the repo
-        String userRegion = authRepository.getmAuth().getCurrentUser().getDisplayName();
-        String userId = authRepository.getmAuth().getCurrentUser().getUid();
 
-        userRepository.getUsersByRegion(
-                userRegion,
-                userId,
-                userLibrariesConsumer
-        );
+        state.setValue(new HomeState.Loading());
+        if (authRepository.getmAuth().getCurrentUser() != null){
+            String userRegion = authRepository.getmAuth().getCurrentUser().getDisplayName();
+            String userId = authRepository.getmAuth().getCurrentUser().getUid();
+
+            userRepository.getUsersByRegion(
+                    userRegion,
+                    userId,
+                    userLibrariesConsumer
+            );
+        }
+    }
+
+    public LiveData<HomeEvents> getEvent() {
+        return events;
     }
 
     public LiveData<HomeState> getState() {
         return state;
+    }
+
+    // Called by the Adapter when an item in the RecyclerView is clicked and the id is passed to
+    // this method and assigned to the Event
+    public void onUserClicked(String id) {
+        events.setValue(new HomeEvents.ClickedUserLibrary(id));
+    }
+
+    // Sets the value of the clicked User back to null after the event has been "seen"
+    public void eventSeen(){
+        events.setValue(new HomeEvents.ClickedUserLibrary(null));
     }
 }
