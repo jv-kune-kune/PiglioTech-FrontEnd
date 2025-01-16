@@ -21,6 +21,7 @@ public class ProfileViewModel extends ViewModel {
     private final UserRepository userRepository;
     private Boolean isCurrentUser;
     private final String TAG = "ProfileViewModel";
+    private String nonUserId;
 
     private final MutableLiveData<ProfileState> state = new MutableLiveData<>(
             new ProfileState.Loading()
@@ -62,6 +63,22 @@ public class ProfileViewModel extends ViewModel {
         }
     };
 
+
+    private final Consumer<Integer> likeBookConsumer = responseCode ->{
+        // TODO update codes if required
+        if(responseCode != null){
+            if(responseCode == 201){
+                events.setValue(ProfileEvents.BOOK_LIKED);
+            }else if(responseCode == 409){
+                events.setValue(ProfileEvents.BOOK_ALREADY_LIKED);
+            } else {
+                events.setValue(ProfileEvents.LIKE_ERROR);
+            }
+            // TODO think about how to refresh the library the user is viewing
+        }
+    };
+
+
     public ProfileViewModel() {
         this.authRepository = new AuthRepository();
         this.userRepository = new UserRepository();
@@ -70,6 +87,7 @@ public class ProfileViewModel extends ViewModel {
     public void load(String nonUserId){
         // If nonUserId is not null, will send their id in the User request instead current user's id
         if(nonUserId != null){
+            this.nonUserId = nonUserId;
             state.setValue(new ProfileState.Loading());
             this.isCurrentUser = false;
             userRepository.getUser(nonUserId, getUserConsumer);
@@ -94,6 +112,14 @@ public class ProfileViewModel extends ViewModel {
         userRepository.deleteBook(userID, isbnString, deleteBookConsumer);
 
         Log.i(TAG, "DELETE BOOK BUTTON CLICKED User: " + userID + ", ISBN: " + isbnString);
+    }
+
+
+    public void likeBook(String isbnString){
+        state.setValue(new ProfileState.Loading());
+        // TODO repo method
+
+        Log.i(TAG, "LIKE BOOK BUTTON CLICKED nonUser: " + nonUserId + ", ISBN: " + isbnString);
     }
 
     private String getUserId(){

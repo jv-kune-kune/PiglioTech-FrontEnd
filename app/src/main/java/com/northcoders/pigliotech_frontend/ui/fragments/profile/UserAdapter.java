@@ -60,8 +60,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             viewModel.deleteBook(book.getIsbn());
         });
 
+        holder.likeBookButton.setOnClickListener(view -> {
+            viewModel.likeBook(book.getIsbn());
+        });
+
         if(profileState instanceof ProfileState.OtherUserLoaded){
             holder.deleteBookButton.setVisibility(View.GONE);
+            holder.likeBookButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -75,13 +80,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         private final BookItemBinding bookItemBinding;
         private final ImageView bookCoverImageView;
         private final Button deleteBookButton;
+        private final Button likeBookButton;
 
         public UserViewHolder(BookItemBinding bookItemBinding) {
             super(bookItemBinding.getRoot());
             this.bookItemBinding = bookItemBinding;
             this.bookCoverImageView = bookItemBinding.pfpImage;
             this.deleteBookButton = bookItemBinding.buttonDeleteBook;
-
+            this.likeBookButton = bookItemBinding.buttonLikeBook;
         }
     }
 }
