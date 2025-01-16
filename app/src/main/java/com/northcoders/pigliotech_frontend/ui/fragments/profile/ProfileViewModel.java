@@ -14,6 +14,7 @@ import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class ProfileViewModel extends ViewModel {
 
@@ -71,6 +72,20 @@ public class ProfileViewModel extends ViewModel {
             }
             // TODO: Error State for this else
         }
+    }
+
+    public void deleteBook(String isbnString){
+        String userID = getUserId();
+        Log.i(TAG, "DELETE BOOK BUTTON CLICKED User: " + userID + ", ISBN: " + isbnString);
+    }
+
+    private String getUserId(){
+        if(authRepository.getmAuth().getCurrentUser() != null){
+            state.setValue(new ProfileState.Loading());
+            this.isCurrentUser = true;
+            return authRepository.getmAuth().getCurrentUser().getUid();
+    }
+        return null;
     }
 
     public LiveData<ProfileState> getState() {

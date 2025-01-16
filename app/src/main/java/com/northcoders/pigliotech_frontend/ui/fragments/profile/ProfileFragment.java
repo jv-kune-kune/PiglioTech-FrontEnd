@@ -112,7 +112,7 @@ public class ProfileFragment extends Fragment {
     private void displayUserRecyclerView(){
         //RecyclerView Set Up
         RecyclerView recyclerView = binding.bookListRecyclerView;
-        UserAdapter userAdapter = new UserAdapter(userBooks);
+        UserAdapter userAdapter = new UserAdapter(userBooks, viewModel);
         recyclerView.setAdapter(userAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
