@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.northcoders.pigliotech_frontend.model.Isbn;
+import com.northcoders.pigliotech_frontend.model.SwapRequest;
 import com.northcoders.pigliotech_frontend.model.User;
 
 import java.util.List;
@@ -169,6 +170,30 @@ public class UserRepository {
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 deleteBookConsumer.accept(null);
                 Log.e(TAG, "ADD USER NETWORK FAILURE", t);
+            }
+        });
+    }
+
+    public void createSwapRequest(SwapRequest swapRequest, Consumer<Integer> likeBookConsumer){
+
+        Call<SwapRequest> call = userApiService.createSwapRequest(swapRequest);
+
+        call.enqueue(new Callback<SwapRequest>() {
+            @Override
+            public void onResponse(Call<SwapRequest> call, Response<SwapRequest> response) {
+                if (response.code() == 201 && response.body() != null){
+                    likeBookConsumer.accept(response.code());
+                    Log.i(TAG, "CREATED SWAP REQUEST: " +response.body());
+                }else {
+                    likeBookConsumer.accept(response.code());
+                    Log.e(TAG, "SWAP REQUEST NOT CREATED: " + (response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SwapRequest> call, Throwable t) {
+                likeBookConsumer.accept(null);
+                Log.e(TAG, "SWAP REQUEST NETWORK FAILURE", t);
             }
         });
     }

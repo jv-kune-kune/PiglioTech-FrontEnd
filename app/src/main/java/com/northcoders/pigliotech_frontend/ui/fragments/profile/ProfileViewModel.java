@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.model.Region;
+import com.northcoders.pigliotech_frontend.model.SwapRequest;
 import com.northcoders.pigliotech_frontend.model.User;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
@@ -118,7 +119,9 @@ public class ProfileViewModel extends ViewModel {
     public void likeBook(String isbnString){
         state.setValue(new ProfileState.Loading());
         // TODO repo method
-
+        SwapRequest swapRequest = new SwapRequest(getUserId(), nonUserId, isbnString);
+//      TODO awaiting backend
+//      userRepository.createSwapRequest(swapRequest, likeBookConsumer);
         Log.i(TAG, "LIKE BOOK BUTTON CLICKED nonUser: " + nonUserId + ", ISBN: " + isbnString);
     }
 
