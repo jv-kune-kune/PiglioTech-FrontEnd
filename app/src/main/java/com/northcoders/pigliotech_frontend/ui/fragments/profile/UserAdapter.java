@@ -2,6 +2,7 @@ package com.northcoders.pigliotech_frontend.ui.fragments.profile;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,10 +21,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     private final List<Book> books;
     private final ProfileViewModel viewModel;
+    private final ProfileState profileState;
 
-    public UserAdapter(List<Book> books, ProfileViewModel viewModel) {
+    public UserAdapter(List<Book> books, ProfileViewModel viewModel, ProfileState profileState) {
         this.books = books;
         this.viewModel = viewModel;
+        this.profileState = profileState;
     }
 
     @NonNull
@@ -56,6 +59,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.deleteBookButton.setOnClickListener(view -> {
             viewModel.deleteBook(book.getIsbn());
         });
+
+        if(profileState instanceof ProfileState.OtherUserLoaded){
+            holder.deleteBookButton.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -74,6 +81,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             this.bookItemBinding = bookItemBinding;
             this.bookCoverImageView = bookItemBinding.pfpImage;
             this.deleteBookButton = bookItemBinding.buttonDeleteBook;
+
         }
     }
 }
