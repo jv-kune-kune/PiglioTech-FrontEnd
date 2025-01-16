@@ -97,16 +97,10 @@ public class HomeFragment extends Fragment {
     }
 
     public void displayInRecyclerView() {
-        recyclerView = binding.libRecyclerView;
         LibraryAdapter libraryAdapter = new LibraryAdapter(users, viewModel);
-
         recyclerView.setAdapter(libraryAdapter);
-        recyclerView.setLayoutManager(
-                new LinearLayoutManager(this.getContext())
-        );
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setHasFixedSize(true);
-
         libraryAdapter.notifyDataSetChanged();
     }
 

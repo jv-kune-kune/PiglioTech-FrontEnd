@@ -19,8 +19,8 @@ import java.util.List;
 
 public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryViewHolder> {
 
-    List<User> users;
-    HomeViewModel viewmodel;
+    private final List<User> users;
+    private final HomeViewModel viewmodel;
 
     public LibraryAdapter(List<User> users, HomeViewModel viewmodel) {
         this.users = users;
