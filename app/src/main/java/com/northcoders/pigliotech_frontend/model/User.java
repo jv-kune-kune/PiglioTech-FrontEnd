@@ -79,6 +79,13 @@ public class User extends BaseObservable {
         return books;
     }
 
+    public String createLabel(List<Book> books) {
+        if(books.size() == 1) {
+            return "Book";
+        }
+        return "Books";
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -89,4 +96,6 @@ public class User extends BaseObservable {
                 ", thumbnail='" + thumbnail + '\'' +
                 '}';
     }
+
+
 }
