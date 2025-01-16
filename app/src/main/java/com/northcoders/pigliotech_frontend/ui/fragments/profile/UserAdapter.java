@@ -2,7 +2,9 @@ package com.northcoders.pigliotech_frontend.ui.fragments.profile;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -18,9 +20,13 @@ import java.util.List;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
     private final List<Book> books;
+    private final ProfileViewModel viewModel;
+    private final ProfileState profileState;
 
-    public UserAdapter(List<Book> books) {
+    public UserAdapter(List<Book> books, ProfileViewModel viewModel, ProfileState profileState) {
         this.books = books;
+        this.viewModel = viewModel;
+        this.profileState = profileState;
     }
 
     @NonNull
@@ -49,6 +55,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 .placeholder(R.drawable.blank_book)
                 .error(R.drawable.blank_book)
                 .into(holder.bookCoverImageView);
+
+        holder.deleteBookButton.setOnClickListener(view -> {
+            viewModel.deleteBook(book.getIsbn());
+        });
+
+        if(profileState instanceof ProfileState.OtherUserLoaded){
+            holder.deleteBookButton.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -60,11 +74,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
         private final BookItemBinding bookItemBinding;
         private final ImageView bookCoverImageView;
+        private final Button deleteBookButton;
 
         public UserViewHolder(BookItemBinding bookItemBinding) {
             super(bookItemBinding.getRoot());
             this.bookItemBinding = bookItemBinding;
             this.bookCoverImageView = bookItemBinding.pfpImage;
+            this.deleteBookButton = bookItemBinding.buttonDeleteBook;
+
         }
     }
 }

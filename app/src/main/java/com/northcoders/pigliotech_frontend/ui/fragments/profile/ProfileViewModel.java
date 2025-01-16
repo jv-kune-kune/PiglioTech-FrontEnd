@@ -25,9 +25,9 @@ public class ProfileViewModel extends ViewModel {
     private final MutableLiveData<ProfileState> state = new MutableLiveData<>(
             new ProfileState.Loading()
     );
+    private final MutableLiveData<ProfileEvents> events = new MutableLiveData<>(null);
 
-    private final Consumer<User> userConsumer = user ->{
-
+    private final Consumer<User> getUserConsumer = user ->{
         if (user != null){
             if(isCurrentUser) {
                 Log.i(TAG, "User Callback Consumer: " + user);
@@ -51,6 +51,17 @@ public class ProfileViewModel extends ViewModel {
         }
     };
 
+    private final Consumer<Integer> deleteBookConsumer = responseCode ->{
+        if(responseCode != null){
+            if(responseCode == 204){
+                events.setValue(ProfileEvents.BOOK_DELETED);
+            }else {
+                events.setValue(ProfileEvents.BOOK_NOT_DELETED);
+            }
+            getCurrentUserLibrary();
+        }
+    };
+
     public ProfileViewModel() {
         this.authRepository = new AuthRepository();
         this.userRepository = new UserRepository();
@@ -61,20 +72,37 @@ public class ProfileViewModel extends ViewModel {
         if(nonUserId != null){
             state.setValue(new ProfileState.Loading());
             this.isCurrentUser = false;
-            userRepository.getUser(nonUserId, userConsumer);
+            userRepository.getUser(nonUserId, getUserConsumer);
         } else {
-            if(authRepository.getmAuth().getCurrentUser() != null){
-                state.setValue(new ProfileState.Loading());
-                this.isCurrentUser = true;
-                String userID = authRepository.getmAuth().getCurrentUser().getUid();
-                userRepository.getUser(userID, userConsumer);
-            }
+            getCurrentUserLibrary();
             // TODO: Error State for this else
         }
     }
 
-    public LiveData<ProfileState> getState() {
-        return state;
+    private void getCurrentUserLibrary(){
+        if(authRepository.getmAuth().getCurrentUser() != null){
+            state.setValue(new ProfileState.Loading());
+            this.isCurrentUser = true;
+            String userID = authRepository.getmAuth().getCurrentUser().getUid();
+            userRepository.getUser(userID, getUserConsumer);
+        }
+    }
+
+    public void deleteBook(String isbnString){
+        state.setValue(new ProfileState.Loading());
+        String userID = getUserId();
+        userRepository.deleteBook(userID, isbnString, deleteBookConsumer);
+
+        Log.i(TAG, "DELETE BOOK BUTTON CLICKED User: " + userID + ", ISBN: " + isbnString);
+    }
+
+    private String getUserId(){
+        if(authRepository.getmAuth().getCurrentUser() != null){
+            state.setValue(new ProfileState.Loading());
+            this.isCurrentUser = true;
+            return authRepository.getmAuth().getCurrentUser().getUid();
+        }
+        return null;
     }
 
     public void signOut(){
@@ -90,5 +118,17 @@ public class ProfileViewModel extends ViewModel {
             }
         }
         return R.string.select_region;
+    }
+
+    public LiveData<ProfileState> getState() {
+        return state;
+    }
+
+    public LiveData<ProfileEvents> getEvents() {
+        return events;
+    }
+
+    public void eventSeen(){
+        events.setValue(null);
     }
 }

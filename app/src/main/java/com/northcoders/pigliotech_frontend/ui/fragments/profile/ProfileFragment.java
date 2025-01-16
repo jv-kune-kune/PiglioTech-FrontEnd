@@ -1,5 +1,6 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.profile;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
@@ -71,6 +73,8 @@ public class ProfileFragment extends Fragment {
 
         bindingUiElements();
 
+        Context context = getContext();
+
         // Observe the state from the viewModel
         viewModel.getState().observe(getViewLifecycleOwner(), state -> {
 
@@ -83,6 +87,28 @@ public class ProfileFragment extends Fragment {
             } else if (state instanceof ProfileState.OtherUserLoaded) {
 
                 setUpNonCurrentUserScreen((ProfileState.OtherUserLoaded) state);
+            }
+        });
+
+        viewModel.getEvents().observe(getViewLifecycleOwner(), profileEvents -> {
+            if (profileEvents != null){
+                switch (profileEvents) {
+                    case BOOK_DELETED -> {
+                        Toast.makeText(
+                                        context,
+                                        "Book Deleted",
+                                        Toast.LENGTH_LONG)
+                                .show();
+                    }
+                    case BOOK_NOT_DELETED -> {
+                        Toast.makeText(
+                                        context,
+                                        "Book Not Deleted!",
+                                        Toast.LENGTH_LONG)
+                                .show();
+                    }
+                }
+                viewModel.eventSeen();
             }
         });
 
@@ -112,7 +138,7 @@ public class ProfileFragment extends Fragment {
     private void displayUserRecyclerView(){
         //RecyclerView Set Up
         RecyclerView recyclerView = binding.bookListRecyclerView;
-        UserAdapter userAdapter = new UserAdapter(userBooks);
+        UserAdapter userAdapter = new UserAdapter(userBooks, viewModel, viewModel.getState().getValue());
         recyclerView.setAdapter(userAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
