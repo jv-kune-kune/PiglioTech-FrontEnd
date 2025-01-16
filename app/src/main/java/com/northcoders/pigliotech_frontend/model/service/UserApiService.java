@@ -8,6 +8,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -28,4 +29,7 @@ public interface UserApiService {
 
     @POST("users/{id}/books")
     Call<User> addBook(@Path("id") String userId, @Body Isbn isbn);
+
+    @DELETE("users/{id}/books/{isbn}")
+    Call<Void> deleteBook(@Path("id") String userID, @Path("isbn") String isbnString);
 }

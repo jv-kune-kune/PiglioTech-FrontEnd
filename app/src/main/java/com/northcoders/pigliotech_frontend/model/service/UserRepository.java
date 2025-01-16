@@ -2,6 +2,8 @@ package com.northcoders.pigliotech_frontend.model.service;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.northcoders.pigliotech_frontend.model.Isbn;
 import com.northcoders.pigliotech_frontend.model.User;
 
@@ -141,6 +143,31 @@ public class UserRepository {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 addBookConsumer.accept(null);
+                Log.e(TAG, "ADD USER NETWORK FAILURE", t);
+            }
+        });
+    }
+
+    public void deleteBook(String userId, String isbnString, Consumer<Integer> deleteBookConsumer){
+
+        Call<Void> call = userApiService.deleteBook(userId, isbnString);
+        Log.i(TAG, "deleteBook Called, userId: " + userId + ", ISBN: " + isbnString);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.code() == 204){
+                    deleteBookConsumer.accept(response.code());
+                    Log.i(TAG, "DELETE BOOK: Successful");
+                }else {
+                    deleteBookConsumer.accept(response.code());
+                    Log.e(TAG, "DELETE BOOK: Failed: " + (response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                deleteBookConsumer.accept(null);
                 Log.e(TAG, "ADD USER NETWORK FAILURE", t);
             }
         });
