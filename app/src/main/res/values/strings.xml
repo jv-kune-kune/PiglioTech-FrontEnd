@@ -19,6 +19,9 @@
     <string name="london">London</string>
     <string name="south_east">South East</string>
     <string name="south_west">South West</string>
+    <string name="swap_text">Would like to swap:</string>
+    <string name="for_text_view">For:</string>
+    <string name="exchange">Exchange</string>
 
 
     <string-array name="regions">

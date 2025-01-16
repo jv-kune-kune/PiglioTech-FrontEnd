@@ -18,6 +18,7 @@ import com.northcoders.pigliotech_frontend.ui.fragments.home.HomeFragment;
 import com.northcoders.pigliotech_frontend.ui.fragments.landingpage.LandingPageFragment;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileFragment;
+import com.northcoders.pigliotech_frontend.ui.fragments.swapbook.SwapFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 
@@ -70,6 +71,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         if(item.getItemId() == R.id.home) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout_fragment, new HomeFragment())
+                    .commit();
+            return true;
+        }
+        if(item.getItemId() == R.id.swap) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_layout_fragment, new SwapFragment())
                     .commit();
             return true;
         }
