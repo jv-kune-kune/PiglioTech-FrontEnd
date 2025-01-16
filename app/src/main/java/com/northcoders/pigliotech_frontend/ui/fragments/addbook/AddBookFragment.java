@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +68,12 @@ public class AddBookFragment extends Fragment {
                 view1 -> {viewModel.useBarcodeScanner();
                 GmsBarcodeScanner scanner = GmsBarcodeScanning.getClient(getContext());
                 scanner.startScan()
-                        .addOnSuccessListener(barcode -> {editTextIsbn.setText((CharSequence) barcode);
+                        .addOnSuccessListener(barcode -> {
+                            if(barcode.getRawValue()!= null){
+                                editTextIsbn.setText(barcode.getRawValue());
+                                Log.i("AddBookFragment", barcode.getRawValue());
+                            }
+
                         });
                 }
         );
