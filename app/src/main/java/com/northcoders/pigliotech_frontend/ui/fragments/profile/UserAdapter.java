@@ -1,5 +1,6 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.profile;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -42,7 +43,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.bookItemBinding.setBook(book);
 
         String bookCoverUrl = book.getThumbnail();
-
+        Log.i("UserAdapter", "Book Cover URL: " + bookCoverUrl);
         Glide.with(holder.bookCoverImageView.getContext())
                 .load(bookCoverUrl)
                 .placeholder(R.drawable.blank_book)
