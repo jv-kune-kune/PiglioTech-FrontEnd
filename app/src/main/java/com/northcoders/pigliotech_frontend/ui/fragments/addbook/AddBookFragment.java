@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentAddBookBinding;
 import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileFragment;
@@ -29,6 +32,7 @@ public class AddBookFragment extends Fragment {
     private EditText editTextIsbn;
     private ProgressBar progressBar;
     private Button buttonSubmit;
+    private Button buttonScan;
     private FragmentAddBookBinding binding;
 
     public AddBookFragment() {
@@ -58,6 +62,20 @@ public class AddBookFragment extends Fragment {
 
         buttonSubmit.setOnClickListener(
                 view1 -> viewModel.addBook(editTextIsbn.getText().toString())
+        );
+
+        buttonScan.setOnClickListener(
+                view1 -> {viewModel.useBarcodeScanner();
+                GmsBarcodeScanner scanner = GmsBarcodeScanning.getClient(getContext());
+                scanner.startScan()
+                        .addOnSuccessListener(barcode -> {
+                            if(barcode.getRawValue()!= null){
+                                editTextIsbn.setText(barcode.getRawValue());
+                                Log.i("AddBookFragment", barcode.getRawValue());
+                            }
+
+                        });
+                }
         );
 
         // State observer
@@ -126,5 +144,6 @@ public class AddBookFragment extends Fragment {
         editTextIsbn = binding.isbn;
         progressBar = binding.progressBar;
         buttonSubmit = binding.buttonSubmit;
+        buttonScan = binding.buttonScanBook;
     }
 }
