@@ -21,7 +21,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/acceptBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:insetLeft="0dp"
@@ -41,7 +41,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/declineBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:insetLeft="0dp"
