@@ -6,8 +6,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.northcoders.pigliotech_frontend.model.Match;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
+
+import java.util.List;
+import java.util.function.Consumer;
 
 public class SwapViewModel extends ViewModel {
 
@@ -19,6 +23,12 @@ public class SwapViewModel extends ViewModel {
     private final MutableLiveData<SwapEvents> events = new MutableLiveData<>(null);
 
     // TODO possibly create a consumer
+    private final Consumer<List<Match>> userMatchesConsumer = userMatches ->{
+        if (userMatches != null){
+            Log.i(TAG, "User Matches Consumer Called: " + userMatches);
+            state.setValue(new SwapState.Loaded(userMatches));
+        }
+    };
 
     public SwapViewModel() {
         this.authRepository = new AuthRepository();
@@ -29,13 +39,12 @@ public class SwapViewModel extends ViewModel {
         if (authRepository.getmAuth().getCurrentUser() != null){
             state.setValue(new SwapState.Loading());
             // TODO Repo methods method calls
-
+            String currentUserId = authRepository.getmAuth().getCurrentUser().getUid();
+            userRepository.getMatchesForCurrentUser(
+                    currentUserId,
+                    userMatchesConsumer
+            );
         }
-    }
-
-    public void acceptButtonClicked(){
-        // TODO
-        Log.i(TAG, "Accept Button Clicked");
     }
 
     public void declineButtonClicked(){
