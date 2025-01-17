@@ -33,6 +33,8 @@ public class HomeViewModel extends ViewModel {
             state.setValue(
                     new HomeState.Loaded(userLibraries)
             );
+        } else {
+            state.setValue(new HomeState.Error());
         }
     };
 

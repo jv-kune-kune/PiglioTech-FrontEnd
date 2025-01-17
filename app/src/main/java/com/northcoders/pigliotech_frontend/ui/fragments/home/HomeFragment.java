@@ -20,6 +20,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentHomeBinding;
 import com.northcoders.pigliotech_frontend.model.User;
+import com.northcoders.pigliotech_frontend.ui.fragments.errorpage.ErrorFragment;
 import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileFragment;
 
 import java.util.List;
@@ -68,31 +69,38 @@ public class HomeFragment extends Fragment {
                 progressBar.setVisibility(GONE);
                 users = ((HomeState.Loaded) homeState).otherUserLibraries();
                 displayInRecyclerView();
+            } else if (homeState instanceof HomeState.Error) {
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout_fragment, new ErrorFragment())
+                        .commit();
+
+                requireActivity().getSupportFragmentManager().popBackStack();
             }
         });
 
         // Observers the ViewModel for when a User Library is clicked
         viewModel.getEvent().observe(getViewLifecycleOwner(), homeEvents -> {
 
-            if(((HomeEvents.ClickedUserLibrary) homeEvents).clickedUserId() != null) {
+                if (((HomeEvents.ClickedUserLibrary) homeEvents).clickedUserId() != null) {
 
-                // Passes the clicked User's ID to the ProfileFragment
-                Bundle bundle = new Bundle();
-                bundle.putString(
-                        "userId",
-                        ((HomeEvents.ClickedUserLibrary) homeEvents).clickedUserId()
-                );
+                    // Passes the clicked User's ID to the ProfileFragment
+                    Bundle bundle = new Bundle();
+                    bundle.putString(
+                            "userId",
+                            ((HomeEvents.ClickedUserLibrary) homeEvents).clickedUserId()
+                    );
 
-                ProfileFragment profileFragment = new ProfileFragment();
-                profileFragment.setArguments(bundle);
+                    ProfileFragment profileFragment = new ProfileFragment();
+                    profileFragment.setArguments(bundle);
 
-                requireActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout_fragment, profileFragment)
-                        .addToBackStack(null) // Add fragment to backstack
-                        .commit();
+                    requireActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.frame_layout_fragment, profileFragment)
+                            .addToBackStack(null) // Add fragment to backstack
+                            .commit();
 
-                viewModel.eventSeen();
-            }
+                    viewModel.eventSeen();
+                }
         });
     }
 
