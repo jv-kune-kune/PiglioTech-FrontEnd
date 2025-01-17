@@ -20,7 +20,6 @@ import com.northcoders.pigliotech_frontend.ui.fragments.signup.SignUpFragment;
 
 public class LandingPageFragment extends Fragment {
 
-    private Button btnLogin, btnSignUp;
     private FragmentLandingPageBinding binding;
 
     public LandingPageFragment() {
@@ -46,29 +45,29 @@ public class LandingPageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btnLogin = binding.btnLogin;
-        btnSignUp = binding.btnSignUp;
+        Button btnLogin = binding.btnLogin;
+        Button btnSignUp = binding.btnSignUp;
 
         LoginFragment loginFragment = new LoginFragment();
         SignUpFragment signUpFragment = new SignUpFragment();
 
-        btnLogin.setOnClickListener(view1 -> {
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frame_layout_fragment, loginFragment)
-                    .addToBackStack(null)
-                    .commit();
-        });
+        btnLogin.setOnClickListener(view1 ->
+                requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout_fragment, loginFragment)
+                .addToBackStack(null)
+                .commit()
+        );
 
-        btnSignUp.setOnClickListener(view1 -> {
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frame_layout_fragment, signUpFragment)
-                    .addToBackStack(null)
-                    .commit();
-        });
+        btnSignUp.setOnClickListener(view1 ->
+                requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout_fragment, signUpFragment)
+                .addToBackStack(null)
+                .commit()
+        );
 
-        NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
+        NavigationBarView bottomNav = requireActivity().findViewById(R.id.bottom_nav_bar);
         bottomNav.setVisibility(View.GONE);
     }
 }

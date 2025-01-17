@@ -186,6 +186,9 @@ public class UserRepository {
                 if (response.code() == 201 && response.body() != null){
                     likeBookConsumer.accept(response.code());
                     Log.i(TAG, "CREATED SWAP REQUEST: " +response.body());
+                }else if (response.code() == 409) {
+                    likeBookConsumer.accept(response.code());
+                    Log.i(TAG, "SWAP REQUEST ALREADY EXISTS: " + (response.code()));
                 }else {
                     likeBookConsumer.accept(response.code());
                     Log.e(TAG, "SWAP REQUEST NOT CREATED: " + (response.code()));
