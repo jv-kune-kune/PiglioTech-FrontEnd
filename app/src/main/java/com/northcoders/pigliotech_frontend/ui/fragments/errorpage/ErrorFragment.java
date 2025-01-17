@@ -2,13 +2,18 @@ package com.northcoders.pigliotech_frontend.ui.fragments.errorpage;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.northcoders.pigliotech_frontend.R;
+import com.northcoders.pigliotech_frontend.databinding.FragmentErrorBinding;
+import com.northcoders.pigliotech_frontend.ui.fragments.landingpage.LandingPageFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +21,8 @@ import com.northcoders.pigliotech_frontend.R;
  * create an instance of this fragment.
  */
 public class ErrorFragment extends Fragment {
+
+    private FragmentErrorBinding binding;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +68,25 @@ public class ErrorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_error, container, false);
+        binding = FragmentErrorBinding.inflate(inflater, container, false);
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Button tryAgainBtn = binding.tryAgainBtn;
+        tryAgainBtn.setOnClickListener(view1 -> {requireActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout_fragment, new LandingPageFragment())
+                .commit();
+
+        requireActivity().getSupportFragmentManager().popBackStack();}
+
+        );
+
+
     }
 }
