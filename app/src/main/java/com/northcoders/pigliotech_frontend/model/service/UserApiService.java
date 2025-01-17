@@ -1,7 +1,9 @@
 package com.northcoders.pigliotech_frontend.model.service;
 
-import com.northcoders.pigliotech_frontend.model.Book;
 import com.northcoders.pigliotech_frontend.model.Isbn;
+import com.northcoders.pigliotech_frontend.model.Match;
+import com.northcoders.pigliotech_frontend.model.SwapDismissal;
+import com.northcoders.pigliotech_frontend.model.SwapRequest;
 import com.northcoders.pigliotech_frontend.model.User;
 
 import java.util.List;
@@ -32,4 +34,13 @@ public interface UserApiService {
 
     @DELETE("users/{id}/books/{isbn}")
     Call<Void> deleteBook(@Path("id") String userID, @Path("isbn") String isbnString);
+
+    @POST("swaps")
+    Call<SwapRequest> createSwapRequest(@Body SwapRequest swapRequest);
+
+    @GET("swaps")
+    Call<List<Match>> getMatches(@Query("userId") String currentUserId);
+
+    @POST("swaps/dismiss")
+    Call<Void> dismissMatch(@Body SwapDismissal swapDismissal);
 }
