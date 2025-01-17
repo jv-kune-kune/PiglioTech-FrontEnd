@@ -65,16 +65,18 @@ public class AddBookFragment extends Fragment {
         );
 
         buttonScan.setOnClickListener(
-                view1 -> {viewModel.useBarcodeScanner();
-                GmsBarcodeScanner scanner = GmsBarcodeScanning.getClient(getContext());
-                scanner.startScan()
-                        .addOnSuccessListener(barcode -> {
-                            if(barcode.getRawValue()!= null){
-                                editTextIsbn.setText(barcode.getRawValue());
-                                Log.i("AddBookFragment", barcode.getRawValue());
-                            }
+                view1 -> {
+                    if (getContext() != null){
+                        GmsBarcodeScanner scanner = GmsBarcodeScanning.getClient(getContext());
+                        scanner.startScan()
+                                .addOnSuccessListener(barcode -> {
+                                    if(barcode.getRawValue()!= null){
+                                        editTextIsbn.setText(barcode.getRawValue());
+                                        Log.i("AddBookFragment", barcode.getRawValue());
+                                    }
 
-                        });
+                                });
+                    }
                 }
         );
 

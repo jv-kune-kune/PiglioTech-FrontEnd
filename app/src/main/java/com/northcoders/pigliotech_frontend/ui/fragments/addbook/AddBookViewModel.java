@@ -65,12 +65,6 @@ public class AddBookViewModel extends ViewModel {
         }
     }
 
-    public String useBarcodeScanner() {
-        Log.i(TAG, "Barcode scanner in use");
-
-        return "barcode";
-    }
-
     private boolean isIsbnValid(String isbn){
         String trimmedIsbn = isbn.trim(); // remove whitespace
         return trimmedIsbn.length() == 10|| trimmedIsbn.length() == 13;
