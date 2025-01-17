@@ -121,7 +121,7 @@ public class ProfileViewModel extends ViewModel {
         // TODO repo method
         SwapRequest swapRequest = new SwapRequest(getUserId(), nonUserId, isbnString);
 //      TODO awaiting backend
-//      userRepository.createSwapRequest(swapRequest, likeBookConsumer);
+        userRepository.createSwapRequest(swapRequest, likeBookConsumer);
         Log.i(TAG, "LIKE BOOK BUTTON CLICKED nonUser: " + nonUserId + ", ISBN: " + isbnString);
     }
 
