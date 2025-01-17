@@ -10,8 +10,6 @@ import com.northcoders.pigliotech_frontend.model.Match;
 import com.northcoders.pigliotech_frontend.model.SwapDismissal;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
-import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileEvents;
-import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileState;
 
 import java.util.List;
 import java.util.function.Consumer;

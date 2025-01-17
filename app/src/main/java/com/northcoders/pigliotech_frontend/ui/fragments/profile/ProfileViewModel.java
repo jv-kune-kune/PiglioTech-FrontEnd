@@ -64,7 +64,6 @@ public class ProfileViewModel extends ViewModel {
         }
     };
 
-
     private final Consumer<Integer> likeBookConsumer = responseCode ->{
         // TODO update codes if required
         if(responseCode != null){
