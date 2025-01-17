@@ -74,10 +74,8 @@ public class ProfileViewModel extends ViewModel {
             } else {
                 events.setValue(ProfileEvents.LIKE_ERROR);
             }
-            // TODO think about how to refresh the library the user is viewing
         }
     };
-
 
     public ProfileViewModel() {
         this.authRepository = new AuthRepository();
@@ -98,12 +96,9 @@ public class ProfileViewModel extends ViewModel {
     }
 
     private void getCurrentUserLibrary(){
-        if(authRepository.getmAuth().getCurrentUser() != null){
-            state.setValue(new ProfileState.Loading());
-            this.isCurrentUser = true;
-            String userID = authRepository.getmAuth().getCurrentUser().getUid();
-            userRepository.getUser(userID, getUserConsumer);
-        }
+        state.setValue(new ProfileState.Loading());
+        this.isCurrentUser = true;
+        userRepository.getUser(getUserId(), getUserConsumer);
     }
 
     public void deleteBook(String isbnString){
@@ -114,19 +109,14 @@ public class ProfileViewModel extends ViewModel {
         Log.i(TAG, "DELETE BOOK BUTTON CLICKED User: " + userID + ", ISBN: " + isbnString);
     }
 
-
     public void likeBook(String isbnString){
-        state.setValue(new ProfileState.Loading());
-        // TODO repo method
         SwapRequest swapRequest = new SwapRequest(getUserId(), nonUserId, isbnString);
-//      TODO awaiting backend
         userRepository.createSwapRequest(swapRequest, likeBookConsumer);
         Log.i(TAG, "LIKE BOOK BUTTON CLICKED nonUser: " + nonUserId + ", ISBN: " + isbnString);
     }
 
     private String getUserId(){
         if(authRepository.getmAuth().getCurrentUser() != null){
-            state.setValue(new ProfileState.Loading()); // FIXME ADDRESS THIS
             this.isCurrentUser = true;
             return authRepository.getmAuth().getCurrentUser().getUid();
         }

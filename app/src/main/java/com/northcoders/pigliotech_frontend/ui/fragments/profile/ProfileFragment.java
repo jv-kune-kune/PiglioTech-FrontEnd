@@ -107,6 +107,27 @@ public class ProfileFragment extends Fragment {
                                         Toast.LENGTH_LONG)
                                 .show();
                     }
+                    case BOOK_LIKED -> {
+                        Toast.makeText(
+                                        requireContext(),
+                                        "Book Liked",
+                                        Toast.LENGTH_LONG)
+                                .show();
+                    }
+                    case BOOK_ALREADY_LIKED -> {
+                        Toast.makeText(
+                                        requireContext(),
+                                        "Book Already Liked",
+                                        Toast.LENGTH_LONG)
+                                .show();
+                    }
+                    case LIKE_ERROR -> {
+                        Toast.makeText(
+                                        requireContext(),
+                                        "Sorry, Could Not Like Book!",
+                                        Toast.LENGTH_LONG)
+                                .show();
+                    }
                 }
                 viewModel.eventSeen();
             }
