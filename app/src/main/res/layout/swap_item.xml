@@ -4,6 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="matchUi"
+            type="com.northcoders.pigliotech_frontend.model.MatchUi" />
+    </data>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/swapCard"
         android:layout_width="match_parent"
@@ -55,6 +61,7 @@
                     android:textColor="@color/white"
                     android:textSize="30sp"
                     android:textStyle="bold"
+                    android:text="@{matchUi.requesterName}"
                     tools:text="Username" />
 
                 <TextView
@@ -72,6 +79,7 @@
                     android:textSize="24sp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
+                    android:text="@{matchUi.requesterBookTitle}"
                     tools:text="Their Book"/>
 
                 <TextView
@@ -89,6 +97,7 @@
                     android:textSize="24sp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
+                    android:text="@{matchUi.userBookTitle}"
                     tools:text="Your Book"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

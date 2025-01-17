@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.northcoders.pigliotech_frontend.databinding.SwapItemBinding;
 import com.northcoders.pigliotech_frontend.model.Book;
 import com.northcoders.pigliotech_frontend.model.Match;
+import com.northcoders.pigliotech_frontend.model.MatchUi;
 import com.northcoders.pigliotech_frontend.model.User;
 
 import java.util.List;
@@ -54,13 +55,27 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
         // TODO SET UP MODEL
 
         if (viewModel.getUserId().equals(userOne.getUid())){
-            holder.requesterNameTextView.setText(userTwo.getName());
-            holder.requestBookTitleTextView.setText(userTwoBook.getTitle());
-            holder.userBookTitleTextView.setText(userOneBook.getTitle());
+//            holder.requesterNameTextView.setText(userTwo.getName());
+//            holder.requestBookTitleTextView.setText(userTwoBook.getTitle());
+//            holder.userBookTitleTextView.setText(userOneBook.getTitle());
+
+            MatchUi matchUi = new MatchUi(
+                    userTwo.getName(),
+                    userTwoBook.getTitle(),
+                    userOneBook.getTitle()
+            );
+            holder.swapItemBinding.setMatchUi(matchUi);
         }else {
-            holder.requesterNameTextView.setText(userOne.getName());
-            holder.requestBookTitleTextView.setText(userOneBook.getTitle());
-            holder.userBookTitleTextView.setText(userTwoBook.getTitle());
+//            holder.requesterNameTextView.setText(userOne.getName());
+//            holder.requestBookTitleTextView.setText(userOneBook.getTitle());
+//            holder.userBookTitleTextView.setText(userTwoBook.getTitle());
+
+            MatchUi matchUi = new MatchUi(
+                    userOne.getName(),
+                    userOneBook.getTitle(),
+                    userTwoBook.getTitle()
+            );
+            holder.swapItemBinding.setMatchUi(matchUi);
         }
 
         holder.declineButton.setOnClickListener(
