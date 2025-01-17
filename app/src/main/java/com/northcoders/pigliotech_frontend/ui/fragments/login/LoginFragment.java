@@ -92,12 +92,14 @@ public class LoginFragment extends Fragment {
                                 Toast.LENGTH_LONG
                         ).show();
 
-                        activity.getSupportFragmentManager()
+                        requireActivity().getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(
                                         R.id.frame_layout_fragment,
                                         new HomeFragment()
                                 ).commit();
+
+                        requireActivity().getSupportFragmentManager().popBackStack();
 
                         // Sets the selected item in the BottomNavBar to the Home Icon.
                         bottomNav.setSelectedItemId(R.id.home);

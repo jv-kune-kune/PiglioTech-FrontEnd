@@ -91,10 +91,12 @@ public class SignUpFragment extends Fragment {
                                         Toast.LENGTH_LONG)
                                 .show();
 
-                        activity.getSupportFragmentManager()
+                        requireActivity().getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.frame_layout_fragment, new ProfileFragment())
                                 .commit();
+
+                        requireActivity().getSupportFragmentManager().popBackStack();
 
                         bottomNavBar.setSelectedItemId(R.id.profile);
                         break;
