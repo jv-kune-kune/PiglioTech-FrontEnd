@@ -90,44 +90,40 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        // The Events observer for the ProfileFragment
         viewModel.getEvents().observe(getViewLifecycleOwner(), profileEvents -> {
             if (profileEvents != null){
                 switch (profileEvents) {
-                    case BOOK_DELETED -> {
-                        Toast.makeText(
-                                        context,
-                                        "Book Deleted",
-                                        Toast.LENGTH_LONG)
-                                .show();
-                    }
-                    case BOOK_NOT_DELETED -> {
-                        Toast.makeText(
-                                        context,
-                                        "Book Not Deleted!",
-                                        Toast.LENGTH_LONG)
-                                .show();
-                    }
-                    case BOOK_LIKED -> {
-                        Toast.makeText(
-                                        requireContext(),
-                                        "Book Liked",
-                                        Toast.LENGTH_LONG)
-                                .show();
-                    }
-                    case BOOK_ALREADY_LIKED -> {
-                        Toast.makeText(
-                                        requireContext(),
-                                        "Book Already Liked",
-                                        Toast.LENGTH_LONG)
-                                .show();
-                    }
-                    case LIKE_ERROR -> {
-                        Toast.makeText(
-                                        requireContext(),
-                                        "Sorry, Could Not Like Book!",
-                                        Toast.LENGTH_LONG)
-                                .show();
-                    }
+                    case BOOK_DELETED ->
+                            Toast.makeText(
+                                            context,
+                                            "Book Deleted",
+                                            Toast.LENGTH_LONG)
+                                    .show();
+                    case BOOK_NOT_DELETED -> Toast.makeText(
+                                    context,
+                                    "Book Not Deleted!",
+                                    Toast.LENGTH_LONG)
+                            .show();
+                    case BOOK_LIKED ->
+                            Toast.makeText(
+                                            requireContext(),
+                                            "Book Liked",
+                                            Toast.LENGTH_LONG)
+                                    .show();
+                    case BOOK_ALREADY_LIKED ->
+                            Toast.makeText(
+                                            requireContext(),
+                                            "Book Already Liked",
+                                            Toast.LENGTH_LONG)
+                                    .show();
+
+                    case LIKE_ERROR ->
+                            Toast.makeText(
+                                            requireContext(),
+                                            "Sorry, Could Not Like Book!",
+                                            Toast.LENGTH_LONG)
+                                    .show();
                 }
                 viewModel.eventSeen();
             }
@@ -137,14 +133,14 @@ public class ProfileFragment extends Fragment {
 
             viewModel.signOut();
 
-            getActivity().getSupportFragmentManager()
+            requireActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.frame_layout_fragment, landingPageFragment)
                     .commit();
         });
 
         // Instantiate the BottomNavigationBarView and set it to Visible
-        NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
+        NavigationBarView bottomNav = requireActivity().findViewById(R.id.bottom_nav_bar);
         bottomNav.setVisibility(View.VISIBLE);
     }
 
