@@ -22,8 +22,7 @@
     <string name="swap_text">Would like to swap:</string>
     <string name="for_text_view">For:</string>
     <string name="exchange">Exchange</string>
-    <string name="something_went_wrong">Something Went Wrong</string>
-    <string name="something_n_went_wrong">Something \n Went wrong</string>
+    <string name="something_n_went_wrong">Something \n Went Wrong.</string>
 
 
     <string-array name="regions">
