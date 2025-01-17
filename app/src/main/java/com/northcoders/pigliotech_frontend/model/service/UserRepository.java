@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.northcoders.pigliotech_frontend.model.Isbn;
+import com.northcoders.pigliotech_frontend.model.Match;
 import com.northcoders.pigliotech_frontend.model.SwapRequest;
 import com.northcoders.pigliotech_frontend.model.User;
 
@@ -107,7 +108,7 @@ public class UserRepository {
                     usersByRegionConsumer.accept(null);
                     Log.e(
                             TAG,
-                            "GET USERS BY REGION: Successfully retrieved "+ response.code()
+                            "GET USERS BY REGION: NOT retrieved "+ response.code()
                     );
                 }
             }
@@ -194,6 +195,45 @@ public class UserRepository {
             public void onFailure(Call<SwapRequest> call, Throwable t) {
                 likeBookConsumer.accept(null);
                 Log.e(TAG, "SWAP REQUEST NETWORK FAILURE", t);
+            }
+        });
+    }
+
+    public void getMatchesForCurrentUser(
+            String currentUserId,
+            Consumer<List<Match>> usersMatchesConsumer
+    ){
+
+        Call<List<Match>> call = userApiService.getMatches(currentUserId);
+        Log.i(TAG, "getMatches UserID: " + currentUserId);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
+                if (response.code() == 200 && response.body() != null){
+                    List<Match> usersMatches = response.body();
+                    usersMatchesConsumer.accept(usersMatches);
+                    Log.i(
+                            TAG,
+                            "GET USERS MATCHES: Successfully retrieved " + response.body().toString()
+                    );
+                }else {
+                    usersMatchesConsumer.accept(null);
+                    Log.e(
+                            TAG,
+                            "GET USERS MATCHES: Successfully retrieved "+ response.code()
+                    );
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Match>> call, Throwable t) {
+                usersMatchesConsumer.accept(null);
+                Log.e(
+                        TAG,
+                        "GET USER MATCHES: Network failure",
+                        t
+                );
             }
         });
     }

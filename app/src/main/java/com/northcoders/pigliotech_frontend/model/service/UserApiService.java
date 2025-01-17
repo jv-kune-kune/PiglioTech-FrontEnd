@@ -2,6 +2,7 @@ package com.northcoders.pigliotech_frontend.model.service;
 
 import com.northcoders.pigliotech_frontend.model.Book;
 import com.northcoders.pigliotech_frontend.model.Isbn;
+import com.northcoders.pigliotech_frontend.model.Match;
 import com.northcoders.pigliotech_frontend.model.SwapRequest;
 import com.northcoders.pigliotech_frontend.model.User;
 
@@ -36,4 +37,7 @@ public interface UserApiService {
 
     @POST("swaps")
     Call<SwapRequest> createSwapRequest(@Body SwapRequest swapRequest);
+
+    @GET("swaps")
+    Call<List<Match>> getMatches(@Query("userId") String currentUserId);
 }
