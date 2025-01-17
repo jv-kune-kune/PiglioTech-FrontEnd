@@ -71,20 +71,20 @@ public class SwapFragment extends Fragment {
         viewModel.getEvents().observe(getViewLifecycleOwner(), swapEvents -> {
             if (swapEvents != null){
                 switch (swapEvents){
-                    case DISMISS_MATCH -> {
+                    case DISMISS_MATCH ->
                         Toast.makeText(
                                         requireContext(),
                                         "Swap Request Dismissed",
                                         Toast.LENGTH_LONG)
                                 .show();
-                    }
-                    case DISMISS_MATCH_FAILED -> {
+
+                    case DISMISS_MATCH_FAILED ->
                         Toast.makeText(
                                         requireContext(),
                                         "Swap Request Dismissal Failed!",
                                         Toast.LENGTH_LONG)
                                 .show();
-                    }
+
                     case NETWORK_ERROR -> {
                         // TODO
                     }
