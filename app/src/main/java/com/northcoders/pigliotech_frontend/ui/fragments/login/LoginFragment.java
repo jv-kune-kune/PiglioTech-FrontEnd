@@ -1,6 +1,5 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.login;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,14 +13,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentLoginBinding;
 import com.northcoders.pigliotech_frontend.ui.fragments.home.HomeFragment;
-
 
 public class LoginFragment extends Fragment {
 
@@ -34,7 +31,6 @@ public class LoginFragment extends Fragment {
     public LoginFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,14 +52,11 @@ public class LoginFragment extends Fragment {
         // Create ViewModel Instance
         viewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
 
-        editTextEmail = binding.email;
-        editTextPassword = binding.password;
-        progressBar = binding.progressBar;
-        btnLogin = binding.buttonLogin;
+        bindUiElements();
 
         btnLogin.setOnClickListener(view1 -> loginUserAccount());
 
-        NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
+        NavigationBarView bottomNav = requireActivity().findViewById(R.id.bottom_nav_bar);
         bottomNav.setVisibility(View.GONE);
 
         viewModel.getState().observe(requireActivity(), loginState -> {
@@ -73,9 +66,6 @@ public class LoginFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
             }
         });
-
-        Context context = getContext();
-        FragmentActivity activity = getActivity();
 
         /*
         events observer that uses the state of MutableLiveData<Login> events in the
@@ -87,7 +77,7 @@ public class LoginFragment extends Fragment {
                     case LOGIN_SUCCESSFUL:
                         // On successful login, create a toast and navigate to home fragment
                         Toast.makeText(
-                                context,
+                                requireContext(),
                                 "Login successful!!",
                                 Toast.LENGTH_LONG
                         ).show();
@@ -106,7 +96,7 @@ public class LoginFragment extends Fragment {
                         break;
                     case LOGIN_FAILED:
                         Toast.makeText(
-                                context,
+                                requireContext(),
                                 "Login failed!!",
                                 Toast.LENGTH_LONG
                         ).show();
@@ -118,7 +108,6 @@ public class LoginFragment extends Fragment {
     }
 
     private void loginUserAccount(){
-
         // Take the value of two edit texts in Strings
         String email, password;
         email = editTextEmail.getText().toString();
@@ -126,21 +115,29 @@ public class LoginFragment extends Fragment {
 
         // validations for input email and password
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(getContext(),
-                            "Please enter email!!",
-                            Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(
+                    requireContext(),
+                    "Please enter email!!",
+                    Toast.LENGTH_LONG
+            ).show();
             return;
         }
 
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(getContext(),
-                            "Please enter password!!",
-                            Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(
+                    requireContext(),
+                    "Please enter password!!",
+                    Toast.LENGTH_LONG
+            ).show();
             return;
         }
-
         viewModel.login(email, password);
+    }
+
+    private void bindUiElements(){
+        editTextEmail = binding.email;
+        editTextPassword = binding.password;
+        progressBar = binding.progressBar;
+        btnLogin = binding.buttonLogin;
     }
 }
