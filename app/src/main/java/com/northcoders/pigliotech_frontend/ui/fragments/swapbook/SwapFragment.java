@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.northcoders.pigliotech_frontend.databinding.FragmentSwapBinding;
 import com.northcoders.pigliotech_frontend.model.Match;
@@ -70,10 +71,21 @@ public class SwapFragment extends Fragment {
         viewModel.getEvents().observe(getViewLifecycleOwner(), swapEvents -> {
             if (swapEvents != null){
                 switch (swapEvents){
-                    case ACCEPT_SWAP -> {
-                        // TODO
+                    case DISMISS_MATCH -> {
+                        Toast.makeText(
+                                        requireContext(),
+                                        "Swap Request Dismissed",
+                                        Toast.LENGTH_LONG)
+                                .show();
                     }
-                    case DENY_SWAP -> {
+                    case DISMISS_MATCH_FAILED -> {
+                        Toast.makeText(
+                                        requireContext(),
+                                        "Swap Request Dismissal Failed!",
+                                        Toast.LENGTH_LONG)
+                                .show();
+                    }
+                    case NETWORK_ERROR -> {
                         // TODO
                     }
                 }
