@@ -52,13 +52,8 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
 
         Log.i("SwapAdapter", "Current Match: " + match);
 
-        // TODO SET UP MODEL
-
+        // To Determine which information from the Match object is bound to the View
         if (viewModel.getUserId().equals(userOne.getUid())){
-//            holder.requesterNameTextView.setText(userTwo.getName());
-//            holder.requestBookTitleTextView.setText(userTwoBook.getTitle());
-//            holder.userBookTitleTextView.setText(userOneBook.getTitle());
-
             MatchUi matchUi = new MatchUi(
                     userTwo.getName(),
                     userTwoBook.getTitle(),
@@ -66,10 +61,6 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
             );
             holder.swapItemBinding.setMatchUi(matchUi);
         }else {
-//            holder.requesterNameTextView.setText(userOne.getName());
-//            holder.requestBookTitleTextView.setText(userOneBook.getTitle());
-//            holder.userBookTitleTextView.setText(userTwoBook.getTitle());
-
             MatchUi matchUi = new MatchUi(
                     userOne.getName(),
                     userOneBook.getTitle(),
