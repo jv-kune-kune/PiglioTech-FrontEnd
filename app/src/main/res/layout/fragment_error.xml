@@ -26,5 +26,22 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
+        <Button
+            android:id="@+id/try_again_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="128dp"
+            android:backgroundTint="@android:color/transparent"
+            android:fontFamily="@font/lin_libertine_r"
+            android:text="@string/try_again"
+            android:textSize="28sp"
+            app:layout_constraintTop_toBottomOf="@id/heading"
+            app:cornerRadius="10dp"
+            app:strokeColor="@color/white"
+            app:strokeWidth="1.5dp"
+            tools:layout_editor_absoluteX="0dp"
+            />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
