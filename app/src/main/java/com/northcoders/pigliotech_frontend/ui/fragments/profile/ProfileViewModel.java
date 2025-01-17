@@ -127,7 +127,7 @@ public class ProfileViewModel extends ViewModel {
 
     private String getUserId(){
         if(authRepository.getmAuth().getCurrentUser() != null){
-            state.setValue(new ProfileState.Loading());
+            state.setValue(new ProfileState.Loading()); // FIXME ADDRESS THIS
             this.isCurrentUser = true;
             return authRepository.getmAuth().getCurrentUser().getUid();
         }
