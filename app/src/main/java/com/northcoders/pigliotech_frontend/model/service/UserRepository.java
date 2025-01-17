@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.northcoders.pigliotech_frontend.model.Isbn;
 import com.northcoders.pigliotech_frontend.model.Match;
+import com.northcoders.pigliotech_frontend.model.SwapDismissal;
 import com.northcoders.pigliotech_frontend.model.SwapRequest;
 import com.northcoders.pigliotech_frontend.model.User;
 
@@ -234,6 +235,31 @@ public class UserRepository {
                         "GET USER MATCHES: Network failure",
                         t
                 );
+            }
+        });
+    }
+
+    public void dismissMatch(SwapDismissal swapDismissal, Consumer<Integer> dismissMatchConsumer){
+
+        Call<Void> call = userApiService.dismissMatch(swapDismissal);
+        Log.i(TAG, "dismissMatch Called : " + swapDismissal);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.code() == 204){
+                    dismissMatchConsumer.accept(response.code());
+                    Log.i(TAG, "DISMISS MATCH: Successful");
+                }else {
+                    dismissMatchConsumer.accept(response.code());
+                    Log.e(TAG, "DISMISS MATCH: Failed: " + (response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                dismissMatchConsumer.accept(null);
+                Log.e(TAG, "DISMISS MATCH NETWORK FAILURE", t);
             }
         });
     }
