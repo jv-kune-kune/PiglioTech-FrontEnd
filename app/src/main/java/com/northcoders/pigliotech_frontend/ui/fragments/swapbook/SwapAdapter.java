@@ -8,17 +8,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.northcoders.pigliotech_frontend.databinding.SwapItemBinding;
+import com.northcoders.pigliotech_frontend.model.Match;
 
 import java.util.List;
 
 public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder> {
 
     // TODO: To implement
-    private final List<Object> swaps;
+    private final List<Match> matches;
     private final SwapViewModel viewModel;
 
-    public SwapAdapter(List<Object> swaps, SwapViewModel viewModel) {
-        this.swaps = swaps;
+    public SwapAdapter(List<Match> matches, SwapViewModel viewModel) {
+        this.matches = matches;
         this.viewModel = viewModel;
     }
 
@@ -38,14 +39,10 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
     @Override
     public void onBindViewHolder(@NonNull SwapViewHolder holder, int position) {
 
-        Object swap = swaps.get(position); // TODO
+        Match match = matches.get(position); // TODO
         // TODO implement data binding in the xml
         // holder.swapItemBinding.setSwap(swap)
 
-        holder.acceptButton.setOnClickListener(view -> {
-            // TODO
-            viewModel.acceptButtonClicked();
-        });
 
         holder.declineButton.setOnClickListener(view -> {
             // TODO
@@ -55,19 +52,17 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
 
     @Override
     public int getItemCount() {
-        return swaps.size();
+        return matches.size();
     }
 
     public static class SwapViewHolder extends RecyclerView.ViewHolder{
         private final SwapItemBinding swapItemBinding;
-        private final Button acceptButton;
         private final Button declineButton;
 
 
         public SwapViewHolder(SwapItemBinding swapItemBinding) {
             super(swapItemBinding.getRoot());
             this.swapItemBinding = swapItemBinding;
-            this.acceptButton = swapItemBinding.acceptBtn;
             this.declineButton = swapItemBinding.declineBtn;
         }
     }

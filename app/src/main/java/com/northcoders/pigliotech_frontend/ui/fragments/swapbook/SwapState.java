@@ -2,6 +2,8 @@ package com.northcoders.pigliotech_frontend.ui.fragments.swapbook;
 
 
 
+import com.northcoders.pigliotech_frontend.model.Match;
+
 import java.util.List;
 
 
@@ -11,7 +13,7 @@ public interface SwapState {
     record Loading() implements SwapState {}
 
     record Loaded(
-            List<Object> swaps
+            List<Match> matches
             // TODO update list type with Swap object
     ) implements SwapState {}
 
