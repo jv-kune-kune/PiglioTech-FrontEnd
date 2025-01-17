@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentErrorBinding;
 import com.northcoders.pigliotech_frontend.ui.fragments.landingpage.LandingPageFragment;
@@ -77,6 +78,9 @@ public class ErrorFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Button tryAgainBtn = binding.tryAgainBtn;
+        NavigationBarView bottomNavBar = requireActivity().findViewById(R.id.bottom_nav_bar);
+        bottomNavBar.setVisibility(View.GONE);
+
         tryAgainBtn.setOnClickListener(view1 -> {requireActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
