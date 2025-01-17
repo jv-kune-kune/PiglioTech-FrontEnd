@@ -70,7 +70,8 @@ public class SwapViewModel extends ViewModel {
         Log.i(TAG, "Decline Button Clicked: " + swapDismissal);
     }
 
-    private String getUserId(){
+    // TODO address this
+    public String getUserId(){
         if(authRepository.getmAuth().getCurrentUser() != null){
             return authRepository.getmAuth().getCurrentUser().getUid();
         }
