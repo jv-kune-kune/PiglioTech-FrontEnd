@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        NavigationBarView bottomNav = getActivity().findViewById(R.id.bottom_nav_bar);
+        NavigationBarView bottomNav = requireActivity().findViewById(R.id.bottom_nav_bar);
         bottomNav.setVisibility(VISIBLE);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -86,9 +86,9 @@ public class HomeFragment extends Fragment {
                 ProfileFragment profileFragment = new ProfileFragment();
                 profileFragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction()
+                requireActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_layout_fragment, profileFragment)
-                        .addToBackStack(null)
+                        .addToBackStack(null) // Add fragment to backstack
                         .commit();
 
                 viewModel.eventSeen();
