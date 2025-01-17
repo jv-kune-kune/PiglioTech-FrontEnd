@@ -1,6 +1,7 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.swapbook;
 
 public enum SwapEvents {
-    ACCEPT_SWAP,
-    DENY_SWAP
+    DISMISS_MATCH,
+    DISMISS_MATCH_FAILED,
+    NETWORK_ERROR
 }

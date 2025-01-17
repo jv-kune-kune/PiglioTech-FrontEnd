@@ -5,6 +5,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.northcoders.pigliotech_frontend.model.Isbn;
+import com.northcoders.pigliotech_frontend.model.Match;
+import com.northcoders.pigliotech_frontend.model.SwapDismissal;
+import com.northcoders.pigliotech_frontend.model.SwapRequest;
 import com.northcoders.pigliotech_frontend.model.User;
 
 import java.util.List;
@@ -106,7 +109,7 @@ public class UserRepository {
                     usersByRegionConsumer.accept(null);
                     Log.e(
                             TAG,
-                            "GET USERS BY REGION: Successfully retrieved "+ response.code()
+                            "GET USERS BY REGION: NOT retrieved "+ response.code()
                     );
                 }
             }
@@ -169,6 +172,94 @@ public class UserRepository {
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 deleteBookConsumer.accept(null);
                 Log.e(TAG, "ADD USER NETWORK FAILURE", t);
+            }
+        });
+    }
+
+    public void createSwapRequest(SwapRequest swapRequest, Consumer<Integer> likeBookConsumer){
+
+        Call<SwapRequest> call = userApiService.createSwapRequest(swapRequest);
+
+        call.enqueue(new Callback<SwapRequest>() {
+            @Override
+            public void onResponse(Call<SwapRequest> call, Response<SwapRequest> response) {
+                if (response.code() == 201 && response.body() != null){
+                    likeBookConsumer.accept(response.code());
+                    Log.i(TAG, "CREATED SWAP REQUEST: " +response.body());
+                }else {
+                    likeBookConsumer.accept(response.code());
+                    Log.e(TAG, "SWAP REQUEST NOT CREATED: " + (response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SwapRequest> call, Throwable t) {
+                likeBookConsumer.accept(null);
+                Log.e(TAG, "SWAP REQUEST NETWORK FAILURE", t);
+            }
+        });
+    }
+
+    public void getMatchesForCurrentUser(
+            String currentUserId,
+            Consumer<List<Match>> usersMatchesConsumer
+    ){
+
+        Call<List<Match>> call = userApiService.getMatches(currentUserId);
+        Log.i(TAG, "getMatches UserID: " + currentUserId);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
+                if (response.code() == 200 && response.body() != null){
+                    List<Match> usersMatches = response.body();
+                    usersMatchesConsumer.accept(usersMatches);
+                    Log.i(
+                            TAG,
+                            "GET USERS MATCHES: Successfully retrieved " + response.body().toString()
+                    );
+                }else {
+                    usersMatchesConsumer.accept(null);
+                    Log.e(
+                            TAG,
+                            "GET USERS MATCHES: Successfully retrieved "+ response.code()
+                    );
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Match>> call, Throwable t) {
+                usersMatchesConsumer.accept(null);
+                Log.e(
+                        TAG,
+                        "GET USER MATCHES: Network failure",
+                        t
+                );
+            }
+        });
+    }
+
+    public void dismissMatch(SwapDismissal swapDismissal, Consumer<Integer> dismissMatchConsumer){
+
+        Call<Void> call = userApiService.dismissMatch(swapDismissal);
+        Log.i(TAG, "dismissMatch Called : " + swapDismissal);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.code() == 204){
+                    dismissMatchConsumer.accept(response.code());
+                    Log.i(TAG, "DISMISS MATCH: Successful");
+                }else {
+                    dismissMatchConsumer.accept(response.code());
+                    Log.e(TAG, "DISMISS MATCH: Failed: " + (response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                dismissMatchConsumer.accept(null);
+                Log.e(TAG, "DISMISS MATCH NETWORK FAILURE", t);
             }
         });
     }
