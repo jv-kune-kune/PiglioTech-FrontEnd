@@ -18,8 +18,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentSwapBinding;
 import com.northcoders.pigliotech_frontend.model.Match;
+import com.northcoders.pigliotech_frontend.ui.fragments.errorpage.ErrorFragment;
 
 import java.util.List;
 
@@ -64,6 +66,16 @@ public class SwapFragment extends Fragment {
                 progressBar.setVisibility(GONE);
                 matches = ((SwapState.Loaded) swapState).matches();
                 displayInRecyclerView();
+            } else if (swapState instanceof SwapState.Error) {
+                requireActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout_fragment, new ErrorFragment())
+                        .commit();
+
+                requireActivity()
+                        .getSupportFragmentManager()
+                        .popBackStack();
             }
         });
 
