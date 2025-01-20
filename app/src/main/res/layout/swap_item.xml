@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="10dp"
+        android:layout_marginVertical="5dp"
         app:cardBackgroundColor="#433871"
         app:cardCornerRadius="8dp">
 
@@ -70,6 +70,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/white"
                     android:text="@string/swap_text"
+                    android:textStyle="italic"
                     android:layout_marginTop="16dp"/>
 
                 <TextView
@@ -88,6 +89,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/white"
                     android:text="@string/for_text_view"
+                    android:textStyle="italic"
                     android:layout_marginTop="4dp"/>
 
                 <TextView

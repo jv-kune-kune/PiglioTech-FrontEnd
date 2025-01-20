@@ -50,6 +50,7 @@
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="20sp"
+                android:inputType="text"
                 app:layout_constraintTop_toBottomOf="@+id/heading"
                 tools:layout_editor_absoluteX="28dp"/>
         </com.google.android.material.card.MaterialCardView>
@@ -74,6 +75,7 @@
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="20sp"
+                android:inputType="textEmailAddress"
                 tools:layout_editor_absoluteX="28dp" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -119,7 +121,8 @@
                 android:maxLines="1"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:inputType="textUri"/>
         </com.google.android.material.card.MaterialCardView>
 
 
