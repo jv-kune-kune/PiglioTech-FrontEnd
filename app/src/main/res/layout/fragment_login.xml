@@ -54,9 +54,11 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lin_libertine_r"
                 android:hint="Email:"
+                android:maxLines="1"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="20sp"
+                android:inputType="textEmailAddress"
                 app:layout_constraintTop_toBottomOf="@+id/heading"
                 tools:layout_editor_absoluteX="28dp" />
 
@@ -80,6 +82,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lin_libertine_r"
                 android:hint="Password:"
+                android:maxLines="1"
                 android:inputType="textPassword"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
