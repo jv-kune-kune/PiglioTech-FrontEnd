@@ -1,5 +1,6 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.login;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationBarView;
@@ -67,36 +69,39 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        FragmentActivity activity = requireActivity();
+        Context context  = requireContext();
+
         /*
         events observer that uses the state of MutableLiveData<Login> events in the
         SignUpFragment ViewModel
          */
-        viewModel.getEvents().observe(requireActivity(), loginEvent -> {
+        viewModel.getEvents().observe(activity, loginEvent -> {
             if(loginEvent != null){
                 switch(loginEvent){
                     case LOGIN_SUCCESSFUL:
                         // On successful login, create a toast and navigate to home fragment
                         Toast.makeText(
-                                requireContext(),
+                                context,
                                 "Login successful!!",
                                 Toast.LENGTH_LONG
                         ).show();
 
-                        requireActivity().getSupportFragmentManager()
+                       activity.getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(
                                         R.id.frame_layout_fragment,
                                         new HomeFragment()
                                 ).commit();
 
-                        requireActivity().getSupportFragmentManager().popBackStack();
+                        activity.getSupportFragmentManager().popBackStack();
 
                         // Sets the selected item in the BottomNavBar to the Home Icon.
                         bottomNav.setSelectedItemId(R.id.home);
                         break;
                     case LOGIN_FAILED:
                         Toast.makeText(
-                                requireContext(),
+                                context,
                                 "Login failed!!",
                                 Toast.LENGTH_LONG
                         ).show();
