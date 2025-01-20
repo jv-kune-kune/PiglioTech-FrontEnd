@@ -114,4 +114,10 @@ public class SwapFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         swapAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }
