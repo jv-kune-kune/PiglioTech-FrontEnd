@@ -148,4 +148,10 @@ public class AddBookFragment extends Fragment {
         buttonSubmit = binding.buttonSubmit;
         buttonScan = binding.buttonScanBook;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

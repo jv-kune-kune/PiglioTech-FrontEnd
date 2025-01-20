@@ -28,6 +28,9 @@ public class SwapViewModel extends ViewModel {
         if (userMatches != null){
             Log.i(TAG, "User Matches Consumer Called: " + userMatches);
             state.setValue(new SwapState.Loaded(userMatches));
+        } else {
+            Log.e(TAG, "Error Retrieving User's Matches");
+            state.setValue(new SwapState.Error());
         }
     };
 

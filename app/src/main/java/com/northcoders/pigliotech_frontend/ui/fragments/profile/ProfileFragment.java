@@ -23,6 +23,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentProfileBinding;
 import com.northcoders.pigliotech_frontend.model.Book;
+import com.northcoders.pigliotech_frontend.ui.fragments.errorpage.ErrorFragment;
 import com.northcoders.pigliotech_frontend.ui.fragments.landingpage.LandingPageFragment;
 
 import java.util.ArrayList;
@@ -87,6 +88,20 @@ public class ProfileFragment extends Fragment {
             } else if (state instanceof ProfileState.OtherUserLoaded) {
 
                 setUpNonCurrentUserScreen((ProfileState.OtherUserLoaded) state);
+
+            } else if (state instanceof ProfileState.Error) {
+
+                requireActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout_fragment, new ErrorFragment())
+                        .commit();
+
+                requireActivity()
+                        .getSupportFragmentManager()
+                        .popBackStack();
+
+                viewModel.signOut();
             }
         });
 

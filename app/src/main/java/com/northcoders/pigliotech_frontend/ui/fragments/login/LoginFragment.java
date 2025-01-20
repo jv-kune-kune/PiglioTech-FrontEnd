@@ -140,4 +140,10 @@ public class LoginFragment extends Fragment {
         progressBar = binding.progressBar;
         btnLogin = binding.buttonLogin;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

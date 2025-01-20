@@ -50,6 +50,9 @@ public class ProfileViewModel extends ViewModel {
                         user.getBooks()
                 ));
             }
+        } else {
+            state.setValue(new ProfileState.Error());
+            Log.e(TAG, "Error Retrieving User Information");
         }
     };
 
@@ -91,6 +94,7 @@ public class ProfileViewModel extends ViewModel {
             userRepository.getUser(nonUserId, getUserConsumer);
         } else {
             getCurrentUserLibrary();
+
             // TODO: Error State for this else
         }
     }

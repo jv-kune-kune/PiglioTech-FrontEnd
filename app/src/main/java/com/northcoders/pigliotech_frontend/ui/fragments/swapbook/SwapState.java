@@ -17,5 +17,7 @@ public interface SwapState {
             // TODO update list type with Swap object
     ) implements SwapState {}
 
+    record Error () implements SwapState {}
+
     // TODO LOOK INTO HANDLING ERRORS
 }

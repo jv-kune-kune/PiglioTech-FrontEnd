@@ -177,4 +177,10 @@ public class SignUpFragment extends Fragment {
         arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         regionSpinner.setAdapter(arrayAdapter);
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

@@ -1,6 +1,7 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.profile;
 
 import com.northcoders.pigliotech_frontend.model.Book;
+import com.northcoders.pigliotech_frontend.ui.fragments.home.HomeState;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ public interface ProfileState {
             String artworkUrl,
             List<Book> books
     ) implements ProfileState {}
+
+    record Error() implements ProfileState {}
 
     // TODO LOOK INTO HANDLING ERRORS
 }

@@ -10,4 +10,6 @@ public interface HomeState {
 
     record Loaded(List<User> otherUserLibraries) implements HomeState {
     }
+
+    record Error() implements HomeState {}
 }
