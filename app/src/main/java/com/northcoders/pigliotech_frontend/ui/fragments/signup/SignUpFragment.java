@@ -36,7 +36,7 @@ public class SignUpFragment extends Fragment {
     private SignUpViewModel viewModel;
     private Spinner regionSpinner;
     private NavigationBarView bottomNavBar;
-    private FragmentActivity activity;
+
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -46,7 +46,6 @@ public class SignUpFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(SignUpViewModel.class);
-        activity = getActivity();
     }
 
     @Override
@@ -62,7 +61,8 @@ public class SignUpFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Context context = getContext();
+        FragmentActivity activity = requireActivity();
+        Context context = requireContext();
 
         bindingUiElements();
 
@@ -70,7 +70,7 @@ public class SignUpFragment extends Fragment {
 
         bottomNavBar.setVisibility(View.GONE);
 
-        viewModel.getState().observe(requireActivity(), state -> {
+        viewModel.getState().observe(activity, state -> {
             if (state.getLoading()){
                 progressbar.setVisibility(View.VISIBLE);
             }else {
@@ -82,38 +82,38 @@ public class SignUpFragment extends Fragment {
         events observer that uses the state of MutableLiveData<SignUpEvents> events in the
         SignUpFragment ViewModel
          */
-        viewModel.getEvents().observe(requireActivity(), event -> {
+        viewModel.getEvents().observe(activity, event -> {
             if(event != null){
                 switch (event){
                     case REGISTRATION_SUCCESSFUL:
-                        Toast.makeText(context,
-                                        "Registration successful!",
-                                        Toast.LENGTH_LONG)
-                                .show();
+                        Toast.makeText(
+                                context,
+                                "Registration successful!",
+                                Toast.LENGTH_LONG
+                        ).show();
 
-                        requireActivity().getSupportFragmentManager()
+                        activity.getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.frame_layout_fragment, new ProfileFragment())
                                 .commit();
 
-                        requireActivity().getSupportFragmentManager().popBackStack();
+                        activity.getSupportFragmentManager().popBackStack();
 
                         bottomNavBar.setSelectedItemId(R.id.profile);
                         break;
                     case REGISTRATION_FAILED:
                         Toast.makeText(
-                                        context,
-                                        "Registration failed!!"
-                                                + " Please try again later",
-                                        Toast.LENGTH_LONG)
-                                .show();
+                                context,
+                                "Registration failed!! Please try again later",
+                                Toast.LENGTH_LONG
+                        ).show();
                         break;
                     case SELECT_REGION:
                         Toast.makeText(
-                                        context,
-                                        "Please select a Region!",
-                                        Toast.LENGTH_LONG)
-                                .show();
+                                context,
+                                "Please select a Region!",
+                                Toast.LENGTH_LONG
+                        ).show();
                         break;
                     default:
                         break;
@@ -141,17 +141,19 @@ public class SignUpFragment extends Fragment {
 
         // Validations for input email and password
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(getContext(),
-                            "Please enter email!!",
-                            Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(
+                    requireContext(),
+                    "Please enter email!!",
+                    Toast.LENGTH_LONG
+            ).show();
             return;
         }
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(getContext(),
-                            "Please enter password!!",
-                            Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(
+                    requireContext(),
+                    "Please enter password!!",
+                    Toast.LENGTH_LONG
+            ).show();
             return;
         }
 
@@ -165,7 +167,7 @@ public class SignUpFragment extends Fragment {
         avatarUrlTextView = binding.url;
         buttonConfirm = binding.buttonConfirm;
         progressbar = binding.progressBar;
-        bottomNavBar = activity.findViewById(R.id.bottom_nav_bar);
+        bottomNavBar = requireActivity().findViewById(R.id.bottom_nav_bar);
 
         // Setting up the spinner
         regionSpinner = binding.region;
