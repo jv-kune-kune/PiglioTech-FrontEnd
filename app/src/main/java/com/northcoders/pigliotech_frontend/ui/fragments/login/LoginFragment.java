@@ -37,6 +37,8 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Create ViewModel Instance
+        viewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
     }
 
     @Override
@@ -51,26 +53,23 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Create ViewModel Instance
-        viewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+        FragmentActivity activity = requireActivity();
+        Context context  = requireContext();
 
         bindUiElements();
 
         btnLogin.setOnClickListener(view1 -> loginUserAccount());
 
-        NavigationBarView bottomNav = requireActivity().findViewById(R.id.bottom_nav_bar);
+        NavigationBarView bottomNav = activity.findViewById(R.id.bottom_nav_bar);
         bottomNav.setVisibility(View.GONE);
 
-        viewModel.getState().observe(requireActivity(), loginState -> {
+        viewModel.getState().observe(activity, loginState -> {
             if(loginState.getLoading()){
                 progressBar.setVisibility(View.VISIBLE);
             }else {
                 progressBar.setVisibility(View.GONE);
             }
         });
-
-        FragmentActivity activity = requireActivity();
-        Context context  = requireContext();
 
         /*
         events observer that uses the state of MutableLiveData<Login> events in the
