@@ -24,6 +24,8 @@
     <string name="exchange">Exchange</string>
     <string name="something_n_went_wrong">Something \n Went Wrong.</string>
     <string name="try_again">Try again</string>
+    <string name="sign_out_btn_text">Sign Out</string>
+    <string name="profile_picture_content_description">Your profile picture</string>
 
 
     <string-array name="regions">
