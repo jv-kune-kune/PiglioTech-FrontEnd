@@ -15,10 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentProfileBinding;
@@ -36,6 +38,7 @@ public class ProfileFragment extends Fragment {
     private ProfileViewModel viewModel;
     private ArrayList<Book> userBooks;
     private ProgressBar progressBar;
+    private ImageView imageViewProfilePic;
     private final String TAG = "ProfileFragment";
 
     public ProfileFragment() {
@@ -165,6 +168,7 @@ public class ProfileFragment extends Fragment {
         textViewRegion = binding.region;
         progressBar = binding.progressBar;
         btnSignOut = binding.buttonSignOut;
+        imageViewProfilePic = binding.profilePic;
     }
 
     private void displayUserRecyclerView(){
@@ -187,6 +191,12 @@ public class ProfileFragment extends Fragment {
         userBooks = (ArrayList<Book>) state.books();
         displayUserRecyclerView(); // Initialise the RecyclerView when the userBooks has data
         Log.i(TAG,"Books: "+ userBooks.toString());
+
+        Glide.with(imageViewProfilePic.getContext())
+                .load(state.artworkUrl())
+                .placeholder(progressBar.getProgressDrawable())
+                .error(R.drawable.blank_pfp)
+                .into(imageViewProfilePic);
     }
 
     // Setup the ProfileScreen View for selected Non-current user Library
