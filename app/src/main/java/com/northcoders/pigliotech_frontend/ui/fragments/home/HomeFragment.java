@@ -72,10 +72,14 @@ public class HomeFragment extends Fragment {
             } else if (homeState instanceof HomeState.Error) {
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.frame_layout_fragment, new ErrorFragment())
-                        .commit();
+                        .replace(
+                                R.id.frame_layout_fragment,
+                                new ErrorFragment()
+                        ).commit();
 
                 requireActivity().getSupportFragmentManager().popBackStack();
+
+                viewModel.signOut();
             }
         });
 

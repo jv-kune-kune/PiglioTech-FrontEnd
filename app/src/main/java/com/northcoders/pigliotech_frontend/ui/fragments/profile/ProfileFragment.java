@@ -100,6 +100,8 @@ public class ProfileFragment extends Fragment {
                 requireActivity()
                         .getSupportFragmentManager()
                         .popBackStack();
+
+                viewModel.signOut();
             }
         });
 

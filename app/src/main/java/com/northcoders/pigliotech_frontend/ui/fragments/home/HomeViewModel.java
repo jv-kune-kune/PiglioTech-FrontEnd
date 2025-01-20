@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.northcoders.pigliotech_frontend.model.User;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
@@ -57,6 +58,11 @@ public class HomeViewModel extends ViewModel {
                     userLibrariesConsumer
             );
         }
+    }
+
+    public void signOut(){
+        authRepository.getmAuth().signOut();
+        FirebaseAuth.getInstance().signOut();
     }
 
     public LiveData<HomeEvents> getEvent() {
