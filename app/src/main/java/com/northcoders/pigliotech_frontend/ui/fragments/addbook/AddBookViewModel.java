@@ -59,7 +59,6 @@ public class AddBookViewModel extends ViewModel {
             userRepository.addBook(userId, isbnObject, addBookConsumer);
             Log.i(TAG, "Valid ISBN");
         }else {
-            // TODO Add Firebase Error Handling
             events.setValue(AddBookEvents.INVALID_ISBN);
             Log.i(TAG, "Invalid ISBN");
         }

@@ -4,7 +4,6 @@ import androidx.databinding.BaseObservable;
 
 import java.util.List;
 
-//TODO : possibly might need to extend parcelable
 public class User extends BaseObservable {
     private String uid;
     private String name;

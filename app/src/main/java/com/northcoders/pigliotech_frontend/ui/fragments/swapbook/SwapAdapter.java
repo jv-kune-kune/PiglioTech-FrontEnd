@@ -19,7 +19,6 @@ import java.util.List;
 
 public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder> {
 
-    // TODO: To implement
     private final List<Match> matches;
     private final SwapViewModel viewModel;
 

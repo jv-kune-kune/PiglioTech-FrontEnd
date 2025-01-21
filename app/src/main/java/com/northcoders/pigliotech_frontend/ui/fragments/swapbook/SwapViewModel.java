@@ -23,7 +23,6 @@ public class SwapViewModel extends ViewModel {
     private final MutableLiveData<SwapState> state = new MutableLiveData<>(new SwapState.Loading());
     private final MutableLiveData<SwapEvents> events = new MutableLiveData<>(null);
 
-    // TODO possibly create a consumer
     private final Consumer<List<Match>> userMatchesConsumer = userMatches ->{
         if (userMatches != null){
             Log.i(TAG, "User Matches Consumer Called: " + userMatches);
@@ -73,7 +72,6 @@ public class SwapViewModel extends ViewModel {
         Log.i(TAG, "Decline Button Clicked: " + swapDismissal);
     }
 
-    // TODO address this
     public String getUserId(){
         if(authRepository.getmAuth().getCurrentUser() != null){
             return authRepository.getmAuth().getCurrentUser().getUid();

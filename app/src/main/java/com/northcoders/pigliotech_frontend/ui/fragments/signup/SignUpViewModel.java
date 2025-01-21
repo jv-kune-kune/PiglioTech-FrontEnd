@@ -16,10 +16,7 @@ import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 import java.util.function.Consumer;
 
 public class SignUpViewModel extends ViewModel {
-    /*
-    TODO: User class implementation
-        Create methods to replace TextUtils.isEmpty calls'
-     */
+
     private final String TAG = "SignUpViewModel";
     private final AuthRepository authRepository;
     private final UserRepository userRepository;

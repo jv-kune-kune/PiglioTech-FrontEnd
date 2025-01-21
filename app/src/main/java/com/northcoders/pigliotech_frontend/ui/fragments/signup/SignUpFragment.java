@@ -93,8 +93,10 @@ public class SignUpFragment extends Fragment {
 
                         activity.getSupportFragmentManager()
                                 .beginTransaction()
-                                .replace(R.id.frame_layout_fragment, new ProfileFragment())
-                                .commit();
+                                .replace(
+                                        R.id.frame_layout_fragment,
+                                        new ProfileFragment()
+                                ).commit();
 
                         activity.getSupportFragmentManager().popBackStack();
 
@@ -156,7 +158,7 @@ public class SignUpFragment extends Fragment {
         Log.i("PASSWORD", password);
         avatarUrl = avatarUrlTextView.getText().toString();
         Log.i("AVATARURL", avatarUrl);
-        region = regionSpinner.getSelectedItem().toString(); // TODO: To implement enum and spinner for Regions
+        region = regionSpinner.getSelectedItem().toString();
         Log.i("REGION", region);
 
         viewModel.signUp(name, email, password, avatarUrl, region);
