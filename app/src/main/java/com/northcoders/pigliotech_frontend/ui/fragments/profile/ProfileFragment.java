@@ -191,12 +191,7 @@ public class ProfileFragment extends Fragment {
         userBooks = (ArrayList<Book>) state.books();
         displayUserRecyclerView(); // Initialise the RecyclerView when the userBooks has data
         Log.i(TAG,"Books: "+ userBooks.toString());
-
-        Glide.with(imageViewProfilePic.getContext())
-                .load(state.artworkUrl())
-                .placeholder(progressBar.getProgressDrawable())
-                .error(R.drawable.blank_pfp)
-                .into(imageViewProfilePic);
+        setUpProfilePicture(state.artworkUrl());
     }
 
     // Setup the ProfileScreen View for selected Non-current user Library
@@ -208,7 +203,16 @@ public class ProfileFragment extends Fragment {
         btnSignOut.setVisibility(View.GONE);
         userBooks = (ArrayList<Book>) state.books();
         displayUserRecyclerView(); // Initialise the RecyclerView when the userBooks has data
+        setUpProfilePicture(state.artworkUrl());
         Log.i(TAG,"Books: "+ userBooks.toString());
+    }
+
+    private void setUpProfilePicture(String pictureURI){
+        Glide.with(imageViewProfilePic.getContext())
+                .load(pictureURI)
+                .placeholder(progressBar.getProgressDrawable())
+                .error(R.drawable.blank_pfp)
+                .into(imageViewProfilePic);
     }
 
     @Override
