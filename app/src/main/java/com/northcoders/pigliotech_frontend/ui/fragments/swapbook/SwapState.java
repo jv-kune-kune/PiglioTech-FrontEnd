@@ -18,5 +18,4 @@ public interface SwapState {
 
     record Error () implements SwapState {}
 
-    // TODO LOOK INTO HANDLING ERRORS
 }
