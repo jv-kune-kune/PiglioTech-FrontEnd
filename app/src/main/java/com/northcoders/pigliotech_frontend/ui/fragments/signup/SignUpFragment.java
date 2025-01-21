@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,14 +93,16 @@ public class SignUpFragment extends Fragment {
 
                         activity.getSupportFragmentManager()
                                 .beginTransaction()
-                                .replace(R.id.frame_layout_fragment, new ProfileFragment())
-                                .commit();
+                                .replace(
+                                        R.id.frame_layout_fragment,
+                                        new ProfileFragment()
+                                ).commit();
 
                         activity.getSupportFragmentManager().popBackStack();
 
                         bottomNavBar.setSelectedItemId(R.id.profile);
                         break;
-                    case REGISTRATION_FAILED:
+                    case REGISTRATION_FAILED, NETWORK_ERROR:
                         Toast.makeText(
                                 context,
                                 "Registration failed!! Please try again later",
@@ -112,6 +113,27 @@ public class SignUpFragment extends Fragment {
                         Toast.makeText(
                                 context,
                                 "Please select a Region!",
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                    case NAME_IS_BLANK:
+                        Toast.makeText(
+                                context,
+                                "Please enter your name!",
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                    case EMAIL_IS_BLANK:
+                        Toast.makeText(
+                                context,
+                                "Please enter email!",
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                    case PASSWORD_IS_BLANK:
+                        Toast.makeText(
+                                context,
+                                "Please enter password!",
                                 Toast.LENGTH_LONG
                         ).show();
                         break;
@@ -136,26 +158,8 @@ public class SignUpFragment extends Fragment {
         Log.i("PASSWORD", password);
         avatarUrl = avatarUrlTextView.getText().toString();
         Log.i("AVATARURL", avatarUrl);
-        region = regionSpinner.getSelectedItem().toString(); // TODO: To implement enum and spinner for Regions
+        region = regionSpinner.getSelectedItem().toString();
         Log.i("REGION", region);
-
-        // Validations for input email and password
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(
-                    requireContext(),
-                    "Please enter email!!",
-                    Toast.LENGTH_LONG
-            ).show();
-            return;
-        }
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(
-                    requireContext(),
-                    "Please enter password!!",
-                    Toast.LENGTH_LONG
-            ).show();
-            return;
-        }
 
         viewModel.signUp(name, email, password, avatarUrl, region);
     }

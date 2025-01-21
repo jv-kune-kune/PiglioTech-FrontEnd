@@ -68,7 +68,6 @@ public class ProfileViewModel extends ViewModel {
     };
 
     private final Consumer<Integer> likeBookConsumer = responseCode ->{
-        // TODO update codes if required
         if(responseCode != null){
             if(responseCode == 201){
                 events.setValue(ProfileEvents.BOOK_LIKED);
@@ -94,8 +93,6 @@ public class ProfileViewModel extends ViewModel {
             userRepository.getUser(nonUserId, getUserConsumer);
         } else {
             getCurrentUserLibrary();
-
-            // TODO: Error State for this else
         }
     }
 

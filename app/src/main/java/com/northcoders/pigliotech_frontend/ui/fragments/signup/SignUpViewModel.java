@@ -16,10 +16,7 @@ import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 import java.util.function.Consumer;
 
 public class SignUpViewModel extends ViewModel {
-    /*
-    TODO: User class implementation
-        Create methods to replace TextUtils.isEmpty calls'
-     */
+
     private final String TAG = "SignUpViewModel";
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
@@ -60,7 +57,13 @@ public class SignUpViewModel extends ViewModel {
             String imageUrl,
             String region
     ){
-        if(region.equals("Select Region")){
+        if(name.isBlank()){
+            events.setValue(SignUpEvents.NAME_IS_BLANK);
+        }else if(email.isBlank()){
+            events.setValue(SignUpEvents.EMAIL_IS_BLANK);
+        } else if (password.isBlank()) {
+            events.setValue(SignUpEvents.PASSWORD_IS_BLANK);
+        }else if(region.equals("Select Region")){
             events.setValue(SignUpEvents.SELECT_REGION);
         } else {
             // Update the state for the progress loading bar
@@ -128,6 +131,7 @@ public class SignUpViewModel extends ViewModel {
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                     .setDisplayName(region)
                     .build();
+
             user.updateProfile(profileUpdates)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {

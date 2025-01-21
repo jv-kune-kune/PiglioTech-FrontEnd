@@ -27,6 +27,4 @@ public interface ProfileState {
     ) implements ProfileState {}
 
     record Error() implements ProfileState {}
-
-    // TODO LOOK INTO HANDLING ERRORS
 }

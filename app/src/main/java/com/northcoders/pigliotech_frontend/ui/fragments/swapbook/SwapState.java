@@ -14,10 +14,8 @@ public interface SwapState {
 
     record Loaded(
             List<Match> matches
-            // TODO update list type with Swap object
     ) implements SwapState {}
 
     record Error () implements SwapState {}
 
-    // TODO LOOK INTO HANDLING ERRORS
 }
