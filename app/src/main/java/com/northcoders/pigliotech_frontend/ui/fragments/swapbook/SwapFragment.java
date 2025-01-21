@@ -3,6 +3,7 @@ package com.northcoders.pigliotech_frontend.ui.fragments.swapbook;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -58,6 +59,7 @@ public class SwapFragment extends Fragment {
 
         recyclerView = binding.swapRecyclerView;
         progressBar = binding.progressBar;
+        Context context = requireContext();
 
         viewModel.getState().observe(getViewLifecycleOwner(), swapState -> {
             if (swapState instanceof  SwapState.Loading){
@@ -85,21 +87,24 @@ public class SwapFragment extends Fragment {
                 switch (swapEvents){
                     case DISMISS_MATCH ->
                         Toast.makeText(
-                                        requireContext(),
+                                        context,
                                         "Swap Request Dismissed",
                                         Toast.LENGTH_LONG)
                                 .show();
 
                     case DISMISS_MATCH_FAILED ->
                         Toast.makeText(
-                                        requireContext(),
+                                        context,
                                         "Swap Request Dismissal Failed!",
                                         Toast.LENGTH_LONG)
                                 .show();
 
-                    case NETWORK_ERROR -> {
-                        // TODO
-                    }
+                    case NETWORK_ERROR ->
+                        Toast.makeText(
+                                        context,
+                                        "Sorry Something Went Wrong!",
+                                        Toast.LENGTH_LONG)
+                                .show();
                 }
                 viewModel.eventSeen();
             }
