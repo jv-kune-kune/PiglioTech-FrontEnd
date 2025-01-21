@@ -2,7 +2,6 @@ package com.northcoders.pigliotech_frontend.ui.fragments.login;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,6 +104,20 @@ public class LoginFragment extends Fragment {
                                 Toast.LENGTH_LONG
                         ).show();
                         break;
+                    case EMAIL_IS_BLANK:
+                        Toast.makeText(
+                                context,
+                                "Please enter email!",
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                    case PASSWORD_IS_BLANK:
+                        Toast.makeText(
+                                context,
+                                "Please enter password!",
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
                 }
                 viewModel.eventSeen(); // Set the loginEvent back to null
             }
@@ -117,24 +130,6 @@ public class LoginFragment extends Fragment {
         email = editTextEmail.getText().toString();
         password = editTextPassword.getText().toString();
 
-        // validations for input email and password
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(
-                    requireContext(),
-                    "Please enter email!!",
-                    Toast.LENGTH_LONG
-            ).show();
-            return;
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(
-                    requireContext(),
-                    "Please enter password!!",
-                    Toast.LENGTH_LONG
-            ).show();
-            return;
-        }
         viewModel.login(email, password);
     }
 
