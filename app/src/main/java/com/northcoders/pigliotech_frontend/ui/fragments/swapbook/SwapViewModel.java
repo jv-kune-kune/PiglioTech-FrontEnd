@@ -50,14 +50,15 @@ public class SwapViewModel extends ViewModel {
     }
 
     public void load(){
-        if (authRepository.getmAuth().getCurrentUser() != null){
-            state.setValue(new SwapState.Loading());
-            // TODO Refactor
-            String currentUserId = authRepository.getmAuth().getCurrentUser().getUid();
+        state.setValue(new SwapState.Loading());
+
+        if (getUserId() != null){
             userRepository.getMatchesForCurrentUser(
-                    currentUserId,
+                    getUserId(),
                     userMatchesConsumer
             );
+        }else {
+            state.setValue( new SwapState.Error());
         }
     }
 
