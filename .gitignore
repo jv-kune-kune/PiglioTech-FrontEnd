@@ -1,6 +1,7 @@
 # Gradle files
 .gradle/
 build/
+**/gradle.properties
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -14,6 +15,8 @@ captures/
 .cxx/
 *.apk
 output.json
+*.aab
+*.jks
 
 # IntelliJ
 *.iml
@@ -23,8 +26,11 @@ deploymentTargetDropDown.xml
 render.experimental.xml
 
 # Keystore files
-*.jks
 *.keystore
+keystore
+
+# Secrets
+*.env
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json
