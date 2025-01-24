@@ -23,4 +23,6 @@
 -keep class retrofit.** { *; }
 -keep class retrofit2.** { *; }
 -keep class okhttp3.** { *; }
+-keep class com.google.gson.** { *; }
+-keepclassmembers class com.northcoders.pigliotech_frontend.model.** { *; }
 -keepclassmembers class * { @retrofit2.http.* <methods>; }
