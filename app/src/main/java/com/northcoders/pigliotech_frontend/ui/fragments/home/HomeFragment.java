@@ -1,8 +1,13 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.home;
 
-import static android.view.View.*;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,11 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
@@ -63,9 +63,9 @@ public class HomeFragment extends Fragment {
         progressBar = binding.progressBar;
 
         viewModel.getState().observe(getViewLifecycleOwner(), homeState -> {
-            if (homeState instanceof HomeState.Loading){
+            if (homeState instanceof HomeState.Loading) {
                 progressBar.setVisibility(VISIBLE);
-            }else if (homeState instanceof  HomeState.Loaded){
+            } else if (homeState instanceof HomeState.Loaded) {
                 progressBar.setVisibility(GONE);
                 users = ((HomeState.Loaded) homeState).otherUserLibraries();
                 displayInRecyclerView();
@@ -86,25 +86,25 @@ public class HomeFragment extends Fragment {
         // Observers the ViewModel for when a User Library is clicked
         viewModel.getEvent().observe(getViewLifecycleOwner(), homeEvents -> {
 
-                if (((HomeEvents.ClickedUserLibrary) homeEvents).clickedUserId() != null) {
+            if (((HomeEvents.ClickedUserLibrary) homeEvents).clickedUserId() != null) {
 
-                    // Passes the clicked User's ID to the ProfileFragment
-                    Bundle bundle = new Bundle();
-                    bundle.putString(
-                            "userId",
-                            ((HomeEvents.ClickedUserLibrary) homeEvents).clickedUserId()
-                    );
+                // Passes the clicked User's ID to the ProfileFragment
+                Bundle bundle = new Bundle();
+                bundle.putString(
+                        "userId",
+                        ((HomeEvents.ClickedUserLibrary) homeEvents).clickedUserId()
+                );
 
-                    ProfileFragment profileFragment = new ProfileFragment();
-                    profileFragment.setArguments(bundle);
+                ProfileFragment profileFragment = new ProfileFragment();
+                profileFragment.setArguments(bundle);
 
-                    requireActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame_layout_fragment, profileFragment)
-                            .addToBackStack(null) // Add fragment to backstack
-                            .commit();
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout_fragment, profileFragment)
+                        .addToBackStack(null) // Add fragment to backstack
+                        .commit();
 
-                    viewModel.eventSeen();
-                }
+                viewModel.eventSeen();
+            }
         });
     }
 

@@ -5,6 +5,11 @@ import static android.view.View.VISIBLE;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,12 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentSwapBinding;
@@ -62,9 +61,9 @@ public class SwapFragment extends Fragment {
         Context context = requireContext();
 
         viewModel.getState().observe(getViewLifecycleOwner(), swapState -> {
-            if (swapState instanceof  SwapState.Loading){
+            if (swapState instanceof SwapState.Loading) {
                 progressBar.setVisibility(VISIBLE);
-            } else if (swapState instanceof SwapState.Loaded){
+            } else if (swapState instanceof SwapState.Loaded) {
                 progressBar.setVisibility(GONE);
                 matches = ((SwapState.Loaded) swapState).matches();
                 displayInRecyclerView();
@@ -83,39 +82,36 @@ public class SwapFragment extends Fragment {
 
         // Events observer
         viewModel.getEvents().observe(getViewLifecycleOwner(), swapEvents -> {
-            if (swapEvents != null){
-                switch (swapEvents){
-                    case DISMISS_MATCH ->
-                        Toast.makeText(
-                                        context,
-                                        "Swap Request Dismissed",
-                                        Toast.LENGTH_LONG)
-                                .show();
+            if (swapEvents != null) {
+                switch (swapEvents) {
+                    case DISMISS_MATCH -> Toast.makeText(
+                                    context,
+                                    "Swap Request Dismissed",
+                                    Toast.LENGTH_LONG)
+                            .show();
 
-                    case DISMISS_MATCH_FAILED ->
-                        Toast.makeText(
-                                        context,
-                                        "Swap Request Dismissal Failed!",
-                                        Toast.LENGTH_LONG)
-                                .show();
+                    case DISMISS_MATCH_FAILED -> Toast.makeText(
+                                    context,
+                                    "Swap Request Dismissal Failed!",
+                                    Toast.LENGTH_LONG)
+                            .show();
 
-                    case NETWORK_ERROR ->
-                        Toast.makeText(
-                                        context,
-                                        "Sorry Something Went Wrong!",
-                                        Toast.LENGTH_LONG)
-                                .show();
+                    case NETWORK_ERROR -> Toast.makeText(
+                                    context,
+                                    "Sorry Something Went Wrong!",
+                                    Toast.LENGTH_LONG)
+                            .show();
                 }
                 viewModel.eventSeen();
             }
         });
     }
 
-    public void displayInRecyclerView(){
+    public void displayInRecyclerView() {
 
         SwapAdapter swapAdapter = new SwapAdapter(matches, viewModel);
         recyclerView.setAdapter(swapAdapter);
-        recyclerView.setLayoutManager( new LinearLayoutManager(this.getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setHasFixedSize(true);
         swapAdapter.notifyDataSetChanged();
     }

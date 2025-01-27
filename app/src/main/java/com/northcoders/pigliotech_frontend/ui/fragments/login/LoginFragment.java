@@ -53,7 +53,7 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         FragmentActivity activity = requireActivity();
-        Context context  = requireContext();
+        Context context = requireContext();
 
         bindUiElements();
 
@@ -63,9 +63,9 @@ public class LoginFragment extends Fragment {
         bottomNav.setVisibility(View.GONE);
 
         viewModel.getState().observe(activity, loginState -> {
-            if(loginState.getLoading()){
+            if (loginState.getLoading()) {
                 progressBar.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 progressBar.setVisibility(View.GONE);
             }
         });
@@ -75,8 +75,8 @@ public class LoginFragment extends Fragment {
         SignUpFragment ViewModel
          */
         viewModel.getEvents().observe(activity, loginEvent -> {
-            if(loginEvent != null){
-                switch(loginEvent){
+            if (loginEvent != null) {
+                switch (loginEvent) {
                     case LOGIN_SUCCESSFUL:
                         // On successful login, create a toast and navigate to home fragment
                         Toast.makeText(
@@ -85,7 +85,7 @@ public class LoginFragment extends Fragment {
                                 Toast.LENGTH_LONG
                         ).show();
 
-                       activity.getSupportFragmentManager()
+                        activity.getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(
                                         R.id.frame_layout_fragment,
@@ -124,7 +124,7 @@ public class LoginFragment extends Fragment {
         });
     }
 
-    private void loginUserAccount(){
+    private void loginUserAccount() {
         // Take the value of two edit texts in Strings
         String email, password;
         email = editTextEmail.getText().toString();
@@ -133,7 +133,7 @@ public class LoginFragment extends Fragment {
         viewModel.login(email, password);
     }
 
-    private void bindUiElements(){
+    private void bindUiElements() {
         editTextEmail = binding.email;
         editTextPassword = binding.password;
         progressBar = binding.progressBar;

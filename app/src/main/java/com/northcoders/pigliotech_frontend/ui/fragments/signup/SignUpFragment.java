@@ -2,13 +2,6 @@ package com.northcoders.pigliotech_frontend.ui.fragments.signup;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +13,13 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.material.navigation.NavigationBarView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentSignUpBinding;
 import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileFragment;
@@ -70,9 +68,9 @@ public class SignUpFragment extends Fragment {
         bottomNavBar.setVisibility(View.GONE);
 
         viewModel.getState().observe(activity, state -> {
-            if (state.getLoading()){
+            if (state.getLoading()) {
                 progressbar.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 progressbar.setVisibility(View.GONE);
             }
         });
@@ -82,8 +80,8 @@ public class SignUpFragment extends Fragment {
         SignUpFragment ViewModel
          */
         viewModel.getEvents().observe(activity, event -> {
-            if(event != null){
-                switch (event){
+            if (event != null) {
+                switch (event) {
                     case REGISTRATION_SUCCESSFUL:
                         Toast.makeText(
                                 context,
@@ -145,7 +143,7 @@ public class SignUpFragment extends Fragment {
         });
     }
 
-    private void registerNewUser(){
+    private void registerNewUser() {
 
         // Take the value of two edit texts in Strings
         String email, password, name, avatarUrl, region;
@@ -164,7 +162,7 @@ public class SignUpFragment extends Fragment {
         viewModel.signUp(name, email, password, avatarUrl, region);
     }
 
-    private void bindingUiElements(){
+    private void bindingUiElements() {
         emailTextView = binding.email;
         passwordTextView = binding.password;
         nameTextView = binding.name;

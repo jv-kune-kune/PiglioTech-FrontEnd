@@ -64,7 +64,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             viewModel.likeBook(book.getIsbn());
         });
 
-        if(profileState instanceof ProfileState.OtherUserLoaded){
+        if (profileState instanceof ProfileState.OtherUserLoaded) {
             holder.deleteBookButton.setVisibility(View.GONE);
             holder.likeBookButton.setVisibility(View.VISIBLE);
         }
@@ -75,7 +75,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         return books.size();
     }
 
-    public static class UserViewHolder extends RecyclerView.ViewHolder{
+    public static class UserViewHolder extends RecyclerView.ViewHolder {
 
         private final BookItemBinding bookItemBinding;
         private final ImageView bookCoverImageView;

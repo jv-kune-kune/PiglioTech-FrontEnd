@@ -13,7 +13,8 @@ public class User extends BaseObservable {
     private List<Book> books;
 
     // No args constructor
-    public User() {}
+    public User() {
+    }
 
     // All args
     public User(String uid, String name, String email, String region, String thumbnail, List<Book> books) {
@@ -79,7 +80,7 @@ public class User extends BaseObservable {
     }
 
     public String createLabel(List<Book> books) {
-        if(books.size() == 1) {
+        if (books.size() == 1) {
             return "Book";
         }
         return "Books";

@@ -1,15 +1,14 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.landingpage;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
@@ -53,18 +52,18 @@ public class LandingPageFragment extends Fragment {
 
         btnLogin.setOnClickListener(view1 ->
                 requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame_layout_fragment, loginFragment)
-                .addToBackStack(null)
-                .commit()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout_fragment, loginFragment)
+                        .addToBackStack(null)
+                        .commit()
         );
 
         btnSignUp.setOnClickListener(view1 ->
                 requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame_layout_fragment, signUpFragment)
-                .addToBackStack(null)
-                .commit()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout_fragment, signUpFragment)
+                        .addToBackStack(null)
+                        .commit()
         );
 
         NavigationBarView bottomNav = requireActivity().findViewById(R.id.bottom_nav_bar);

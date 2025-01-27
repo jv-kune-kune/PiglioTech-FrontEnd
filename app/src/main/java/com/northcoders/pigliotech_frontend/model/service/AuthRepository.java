@@ -18,7 +18,7 @@ public class AuthRepository {
         this.mAuth = mAuth;
     }
 
-    public void signOutUser(){
+    public void signOutUser() {
         mAuth.signOut();
     }
 }

@@ -43,15 +43,15 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryV
         String url = user.getThumbnail();
 
         Glide.with(holder.pfpImageView.getContext())
-                        .load(url)
-                        .placeholder(R.drawable.blank_pfp)
-                        .into(holder.pfpImageView);
+                .load(url)
+                .placeholder(R.drawable.blank_pfp)
+                .into(holder.pfpImageView);
 
         holder.libraryItemBinding.setUser(user);
 
         holder.libraryItemBinding.libraryCard.setOnClickListener(view -> {
             viewmodel.onUserClicked(user.getUid());
-            Log.i("LibraryAdapter", "RecyclerView item clicked" );
+            Log.i("LibraryAdapter", "RecyclerView item clicked");
         });
     }
 
