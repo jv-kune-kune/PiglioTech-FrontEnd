@@ -1,5 +1,6 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.profile;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,14 +32,16 @@ import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
 
-    private TextView textViewEmail, textViewName, textViewRegion;
+    private TextView textViewEmail;
+    private TextView textViewName;
+    private TextView textViewRegion;
     private FragmentProfileBinding binding;
     private Button btnSignOut;
     private ProfileViewModel viewModel;
     private ArrayList<Book> userBooks;
     private ProgressBar progressBar;
     private ImageView imageViewProfilePic;
-    private final String TAG = "ProfileFragment";
+    private static final String TAG = "ProfileFragment";
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -83,13 +86,13 @@ public class ProfileFragment extends Fragment {
 
             if (state instanceof ProfileState.Loading) {
                 progressBar.setVisibility(View.VISIBLE);
-            } else if (state instanceof ProfileState.Loaded) {
+            } else if (state instanceof ProfileState.Loaded loaded) {
 
-                setUpCurrentUserScreen((ProfileState.Loaded) state);
+                setUpCurrentUserScreen(loaded);
 
-            } else if (state instanceof ProfileState.OtherUserLoaded) {
+            } else if (state instanceof ProfileState.OtherUserLoaded otherUserLoaded) {
 
-                setUpNonCurrentUserScreen((ProfileState.OtherUserLoaded) state);
+                setUpNonCurrentUserScreen(otherUserLoaded);
 
             } else if (state instanceof ProfileState.Error) {
 
@@ -166,6 +169,7 @@ public class ProfileFragment extends Fragment {
         imageViewProfilePic = binding.profilePic;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void displayUserRecyclerView() {
         //RecyclerView Set Up
         RecyclerView recyclerView = binding.bookListRecyclerView;

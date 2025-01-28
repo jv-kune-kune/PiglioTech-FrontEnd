@@ -13,10 +13,11 @@ import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 public class SwapViewModel extends ViewModel {
 
-    private final String TAG = "SwapViewModel";
+    private static final String TAG = "SwapViewModel";
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
 
@@ -33,15 +34,13 @@ public class SwapViewModel extends ViewModel {
         }
     };
 
-    private final Consumer<Integer> dimissMatchConsumer = responseCode -> {
-        if (responseCode != null) {
+    private final IntConsumer dimissMatchConsumer = responseCode -> {
             if (responseCode == 204) {
                 events.setValue(SwapEvents.DISMISS_MATCH);
             } else {
                 events.setValue(SwapEvents.DISMISS_MATCH_FAILED);
             }
             load();
-        }
     };
 
     public SwapViewModel() {

@@ -2,7 +2,7 @@ name: Auto Add End Date to Issues
 
 on:
   issues:
-    types: [closed]
+    types: [ closed ]
 
 jobs:
   set-end-date:
@@ -13,7 +13,7 @@ jobs:
         uses: EndBug/project-fields@v2
         with:
           operation: set
-          fields: End date 
-          github_token: ${{ secrets.PAT_SECRET }} 
+          fields: End date
+          github_token: ${{ secrets.PAT_SECRET }}
           project_url: https://github.com/orgs/jv-kune-kune/projects/1
           values: ${{ github.event.issue.closed_at }}

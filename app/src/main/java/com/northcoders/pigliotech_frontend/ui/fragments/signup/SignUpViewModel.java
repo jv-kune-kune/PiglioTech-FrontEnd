@@ -13,19 +13,18 @@ import com.northcoders.pigliotech_frontend.model.User;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 public class SignUpViewModel extends ViewModel {
 
-    private final String TAG = "SignUpViewModel";
+    private static final String TAG = "SignUpViewModel";
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
 
     private final MutableLiveData<SignUpState> state = new MutableLiveData<>(new SignUpState(false));
     private final MutableLiveData<SignUpEvents> events = new MutableLiveData<>(null);
 
-    private final Consumer<Integer> addUserConsumer = responseCode -> {
-        if (responseCode != null) {
+    private final IntConsumer addUserConsumer = responseCode -> {
             if (responseCode == 201) {
                 // Set events value to registration successful for the observer in SignUpFragment
                 events.setValue(SignUpEvents.REGISTRATION_SUCCESSFUL);
@@ -37,12 +36,7 @@ public class SignUpViewModel extends ViewModel {
             }
             // Update the state for the progress loading bar
             state.setValue(new SignUpState(false));
-        } else {
-            // For A Network Error
-            deleteFirebaseUser();
-            events.setValue(SignUpEvents.NETWORK_ERROR);
-            Log.e(TAG, "NetworkError");
-        }
+
     };
 
     public SignUpViewModel() {

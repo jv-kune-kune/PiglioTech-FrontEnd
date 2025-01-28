@@ -1,7 +1,7 @@
 name: Auto Assign Issue Author
 on:
   issues:
-    types: [opened]
+    types: [ opened ]
 jobs:
   assignAuthor:
     name: Assign author to issue

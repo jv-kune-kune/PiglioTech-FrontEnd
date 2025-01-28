@@ -15,13 +15,14 @@ import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 
 import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 public class ProfileViewModel extends ViewModel {
 
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
     private Boolean isCurrentUser;
-    private final String TAG = "ProfileViewModel";
+    private static final String TAG = "ProfileViewModel";
     private String nonUserId;
 
     private final MutableLiveData<ProfileState> state = new MutableLiveData<>(
@@ -31,7 +32,7 @@ public class ProfileViewModel extends ViewModel {
 
     private final Consumer<User> getUserConsumer = user -> {
         if (user != null) {
-            if (isCurrentUser) {
+            if (Boolean.TRUE.equals(isCurrentUser)) {
                 Log.i(TAG, "User Callback Consumer: " + user);
                 state.setValue(new ProfileState.Loaded(
                         user.getName(),
@@ -56,19 +57,16 @@ public class ProfileViewModel extends ViewModel {
         }
     };
 
-    private final Consumer<Integer> deleteBookConsumer = responseCode -> {
-        if (responseCode != null) {
+    private final IntConsumer deleteBookConsumer = responseCode -> {
             if (responseCode == 204) {
                 events.setValue(ProfileEvents.BOOK_DELETED);
             } else {
                 events.setValue(ProfileEvents.BOOK_NOT_DELETED);
             }
             getCurrentUserLibrary();
-        }
     };
 
-    private final Consumer<Integer> likeBookConsumer = responseCode -> {
-        if (responseCode != null) {
+    private final IntConsumer likeBookConsumer = responseCode -> {
             if (responseCode == 201) {
                 events.setValue(ProfileEvents.BOOK_LIKED);
             } else if (responseCode == 409) {
@@ -76,7 +74,6 @@ public class ProfileViewModel extends ViewModel {
             } else {
                 events.setValue(ProfileEvents.LIKE_ERROR);
             }
-        }
     };
 
     public ProfileViewModel() {

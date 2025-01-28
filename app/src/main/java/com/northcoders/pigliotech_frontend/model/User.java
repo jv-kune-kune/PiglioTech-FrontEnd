@@ -1,5 +1,6 @@
 package com.northcoders.pigliotech_frontend.model;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 
 import java.util.List;
@@ -86,6 +87,7 @@ public class User extends BaseObservable {
         return "Books";
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "User{" +

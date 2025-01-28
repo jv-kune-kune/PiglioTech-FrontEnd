@@ -10,19 +10,18 @@ import com.northcoders.pigliotech_frontend.model.Isbn;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 public class AddBookViewModel extends ViewModel {
 
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
-    private final String TAG = "AddBookViewModel";
+    private static final String TAG = "AddBookViewModel";
 
     private final MutableLiveData<AddBookState> state = new MutableLiveData<>(new AddBookState(false));
     private final MutableLiveData<AddBookEvents> events = new MutableLiveData<>(null);
 
-    private final Consumer<Integer> addBookConsumer = responseCode -> {
-        if (responseCode != null) {
+    private final IntConsumer addBookConsumer = responseCode -> {
             if (responseCode == 201) {
                 events.setValue(AddBookEvents.BOOK_ADDED);
                 Log.i(TAG, "Book Added: " + responseCode);
@@ -34,11 +33,6 @@ public class AddBookViewModel extends ViewModel {
                 Log.e(TAG, "Book Not Added: " + responseCode);
             }
             state.setValue(new AddBookState(false));
-        } else {
-            state.setValue(new AddBookState(false));
-            events.setValue(AddBookEvents.NETWORK_ERROR);
-            Log.e(TAG, "NetworkError");
-        }
     };
 
     public AddBookViewModel() {
@@ -49,7 +43,7 @@ public class AddBookViewModel extends ViewModel {
     public void addBook(String userIsbnInput) {
 
         // Will remove any hyphens input by the User
-        String isbnRemovedHyphens = userIsbnInput.replaceAll("-", "");
+        String isbnRemovedHyphens = userIsbnInput.replace("-", "");
         // Validates the length of the ISBN
         if (isIsbnValid(isbnRemovedHyphens) && authRepository.getmAuth().getCurrentUser() != null) {
             state.setValue(new AddBookState(true));

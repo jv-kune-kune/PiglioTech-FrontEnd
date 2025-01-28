@@ -3,6 +3,7 @@ package com.northcoders.pigliotech_frontend.ui.fragments.home;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +31,6 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private HomeViewModel viewModel;
     private RecyclerView recyclerView;
-    private ProgressBar progressBar;
     private List<User> users;
 
     public HomeFragment() {
@@ -59,15 +59,18 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ProgressBar progressBar;
+
+
         recyclerView = binding.libRecyclerView;
         progressBar = binding.progressBar;
 
         viewModel.getState().observe(getViewLifecycleOwner(), homeState -> {
             if (homeState instanceof HomeState.Loading) {
                 progressBar.setVisibility(VISIBLE);
-            } else if (homeState instanceof HomeState.Loaded) {
+            } else if (homeState instanceof HomeState.Loaded loaded) {
                 progressBar.setVisibility(GONE);
-                users = ((HomeState.Loaded) homeState).otherUserLibraries();
+                users = loaded.otherUserLibraries();
                 displayInRecyclerView();
             } else if (homeState instanceof HomeState.Error) {
                 requireActivity().getSupportFragmentManager()
@@ -108,6 +111,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void displayInRecyclerView() {
         LibraryAdapter libraryAdapter = new LibraryAdapter(users, viewModel);
         recyclerView.setAdapter(libraryAdapter);

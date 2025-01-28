@@ -56,13 +56,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 .error(R.drawable.blank_book)
                 .into(holder.bookCoverImageView);
 
-        holder.deleteBookButton.setOnClickListener(view -> {
-            viewModel.deleteBook(book.getIsbn());
-        });
+        holder.deleteBookButton.setOnClickListener(view -> viewModel.deleteBook(book.getIsbn()));
 
-        holder.likeBookButton.setOnClickListener(view -> {
-            viewModel.likeBook(book.getIsbn());
-        });
+        holder.likeBookButton.setOnClickListener(view -> viewModel.likeBook(book.getIsbn()));
 
         if (profileState instanceof ProfileState.OtherUserLoaded) {
             holder.deleteBookButton.setVisibility(View.GONE);
