@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.northcoders.pigliotech_frontend'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.northcoders.pigliotech_frontend"
-        minSdk 24
-        targetSdk 34
+        minSdk 26
+        targetSdk 35
         versionCode 1
         versionName "1.0.0"
 
@@ -31,15 +31,15 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
-    buildFeatures{
+    buildFeatures {
         dataBinding true
     }
 }
 
 dependencies {
 
-    implementation libs.appcompat
-    implementation libs.material
+//    implementation libs.appcompat
+//    implementation libs.material
     implementation libs.activity
     implementation libs.constraintlayout
     testImplementation libs.junit
@@ -47,8 +47,8 @@ dependencies {
     androidTestImplementation libs.espresso.core
 
     // UI Design
-    implementation libs.appcompat.v110
-    implementation libs.material.v100
+    implementation libs.appcompat
+    implementation libs.material
 
     // Retrofit
     implementation libs.retrofit
