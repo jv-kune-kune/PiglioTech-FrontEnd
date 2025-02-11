@@ -1,15 +1,8 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.profile;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +12,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationBarView;
@@ -32,14 +32,16 @@ import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
 
-    private TextView textViewEmail, textViewName, textViewRegion;
+    private TextView textViewEmail;
+    private TextView textViewName;
+    private TextView textViewRegion;
     private FragmentProfileBinding binding;
     private Button btnSignOut;
     private ProfileViewModel viewModel;
     private ArrayList<Book> userBooks;
     private ProgressBar progressBar;
     private ImageView imageViewProfilePic;
-    private final String TAG = "ProfileFragment";
+    private static final String TAG = "ProfileFragment";
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -52,7 +54,7 @@ public class ProfileFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
 
         // If getArguments is not null it will pass the User id from Home as a param.
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             viewModel.load(getArguments().getString("userId"));
             Log.i(TAG, "passed user id: " + getArguments().getString("userId"));
         } else {
@@ -82,15 +84,15 @@ public class ProfileFragment extends Fragment {
         // Observe the state from the viewModel
         viewModel.getState().observe(getViewLifecycleOwner(), state -> {
 
-            if (state instanceof ProfileState.Loading){
+            if (state instanceof ProfileState.Loading) {
                 progressBar.setVisibility(View.VISIBLE);
-            }else if (state instanceof ProfileState.Loaded){
+            } else if (state instanceof ProfileState.Loaded loaded) {
 
-                setUpCurrentUserScreen((ProfileState.Loaded) state);
+                setUpCurrentUserScreen(loaded);
 
-            } else if (state instanceof ProfileState.OtherUserLoaded) {
+            } else if (state instanceof ProfileState.OtherUserLoaded otherUserLoaded) {
 
-                setUpNonCurrentUserScreen((ProfileState.OtherUserLoaded) state);
+                setUpNonCurrentUserScreen(otherUserLoaded);
 
             } else if (state instanceof ProfileState.Error) {
 
@@ -110,44 +112,40 @@ public class ProfileFragment extends Fragment {
 
         // The Events observer for the ProfileFragment
         viewModel.getEvents().observe(getViewLifecycleOwner(), profileEvents -> {
-            if (profileEvents != null){
+            if (profileEvents != null) {
                 switch (profileEvents) {
-                    case BOOK_DELETED ->
-                            Toast.makeText(
-                                            context,
-                                            "Book Deleted",
-                                            Toast.LENGTH_LONG)
-                                    .show();
+                    case BOOK_DELETED -> Toast.makeText(
+                                    context,
+                                    "Book Deleted",
+                                    Toast.LENGTH_LONG)
+                            .show();
                     case BOOK_NOT_DELETED -> Toast.makeText(
                                     context,
                                     "Book Not Deleted!",
                                     Toast.LENGTH_LONG)
                             .show();
-                    case BOOK_LIKED ->
-                            Toast.makeText(
-                                            requireContext(),
-                                            "Book Liked",
-                                            Toast.LENGTH_LONG)
-                                    .show();
-                    case BOOK_ALREADY_LIKED ->
-                            Toast.makeText(
-                                            requireContext(),
-                                            "Book Already Liked",
-                                            Toast.LENGTH_LONG)
-                                    .show();
+                    case BOOK_LIKED -> Toast.makeText(
+                                    requireContext(),
+                                    "Book Liked",
+                                    Toast.LENGTH_LONG)
+                            .show();
+                    case BOOK_ALREADY_LIKED -> Toast.makeText(
+                                    requireContext(),
+                                    "Book Already Liked",
+                                    Toast.LENGTH_LONG)
+                            .show();
 
-                    case LIKE_ERROR ->
-                            Toast.makeText(
-                                            requireContext(),
-                                            "Sorry, Could Not Like Book!",
-                                            Toast.LENGTH_LONG)
-                                    .show();
+                    case LIKE_ERROR -> Toast.makeText(
+                                    requireContext(),
+                                    "Sorry, Could Not Like Book!",
+                                    Toast.LENGTH_LONG)
+                            .show();
                 }
                 viewModel.eventSeen();
             }
         });
 
-        btnSignOut.setOnClickListener(view1 ->{
+        btnSignOut.setOnClickListener(view1 -> {
 
             viewModel.signOut();
 
@@ -162,7 +160,7 @@ public class ProfileFragment extends Fragment {
         bottomNav.setVisibility(View.VISIBLE);
     }
 
-    private void bindingUiElements(){
+    private void bindingUiElements() {
         textViewEmail = binding.email;
         textViewName = binding.name;
         textViewRegion = binding.region;
@@ -171,7 +169,8 @@ public class ProfileFragment extends Fragment {
         imageViewProfilePic = binding.profilePic;
     }
 
-    private void displayUserRecyclerView(){
+    @SuppressLint("NotifyDataSetChanged")
+    private void displayUserRecyclerView() {
         //RecyclerView Set Up
         RecyclerView recyclerView = binding.bookListRecyclerView;
         UserAdapter userAdapter = new UserAdapter(userBooks, viewModel, viewModel.getState().getValue());
@@ -183,19 +182,19 @@ public class ProfileFragment extends Fragment {
     }
 
     // Setup the ProfileScreen View for the current user
-    private void setUpCurrentUserScreen(ProfileState.Loaded state){
+    private void setUpCurrentUserScreen(ProfileState.Loaded state) {
         progressBar.setVisibility(View.GONE);
         textViewName.setText(state.name());
         textViewEmail.setText(state.email());
         textViewRegion.setText(state.region());
         userBooks = (ArrayList<Book>) state.books();
         displayUserRecyclerView(); // Initialise the RecyclerView when the userBooks has data
-        Log.i(TAG,"Books: "+ userBooks.toString());
+        Log.i(TAG, "Books: " + userBooks.toString());
         setUpProfilePicture(state.artworkUrl());
     }
 
     // Setup the ProfileScreen View for selected Non-current user Library
-    private void setUpNonCurrentUserScreen(ProfileState.OtherUserLoaded state){
+    private void setUpNonCurrentUserScreen(ProfileState.OtherUserLoaded state) {
         progressBar.setVisibility(View.GONE);
         textViewName.setText(state.name());
         textViewEmail.setVisibility(View.GONE);
@@ -204,10 +203,10 @@ public class ProfileFragment extends Fragment {
         userBooks = (ArrayList<Book>) state.books();
         displayUserRecyclerView(); // Initialise the RecyclerView when the userBooks has data
         setUpProfilePicture(state.artworkUrl());
-        Log.i(TAG,"Books: "+ userBooks.toString());
+        Log.i(TAG, "Books: " + userBooks.toString());
     }
 
-    private void setUpProfilePicture(String pictureURI){
+    private void setUpProfilePicture(String pictureURI) {
         Glide.with(imageViewProfilePic.getContext())
                 .load(pictureURI)
                 .placeholder(progressBar.getProgressDrawable())

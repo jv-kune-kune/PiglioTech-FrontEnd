@@ -15,13 +15,14 @@ import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 
 import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 public class ProfileViewModel extends ViewModel {
 
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
     private Boolean isCurrentUser;
-    private final String TAG = "ProfileViewModel";
+    private static final String TAG = "ProfileViewModel";
     private String nonUserId;
 
     private final MutableLiveData<ProfileState> state = new MutableLiveData<>(
@@ -29,9 +30,9 @@ public class ProfileViewModel extends ViewModel {
     );
     private final MutableLiveData<ProfileEvents> events = new MutableLiveData<>(null);
 
-    private final Consumer<User> getUserConsumer = user ->{
-        if (user != null){
-            if(isCurrentUser) {
+    private final Consumer<User> getUserConsumer = user -> {
+        if (user != null) {
+            if (Boolean.TRUE.equals(isCurrentUser)) {
                 Log.i(TAG, "User Callback Consumer: " + user);
                 state.setValue(new ProfileState.Loaded(
                         user.getName(),
@@ -56,27 +57,23 @@ public class ProfileViewModel extends ViewModel {
         }
     };
 
-    private final Consumer<Integer> deleteBookConsumer = responseCode ->{
-        if(responseCode != null){
-            if(responseCode == 204){
+    private final IntConsumer deleteBookConsumer = responseCode -> {
+            if (responseCode == 204) {
                 events.setValue(ProfileEvents.BOOK_DELETED);
-            }else {
+            } else {
                 events.setValue(ProfileEvents.BOOK_NOT_DELETED);
             }
             getCurrentUserLibrary();
-        }
     };
 
-    private final Consumer<Integer> likeBookConsumer = responseCode ->{
-        if(responseCode != null){
-            if(responseCode == 201){
+    private final IntConsumer likeBookConsumer = responseCode -> {
+            if (responseCode == 201) {
                 events.setValue(ProfileEvents.BOOK_LIKED);
-            }else if(responseCode == 409){
+            } else if (responseCode == 409) {
                 events.setValue(ProfileEvents.BOOK_ALREADY_LIKED);
             } else {
                 events.setValue(ProfileEvents.LIKE_ERROR);
             }
-        }
     };
 
     public ProfileViewModel() {
@@ -84,9 +81,9 @@ public class ProfileViewModel extends ViewModel {
         this.userRepository = new UserRepository();
     }
 
-    public void load(String nonUserId){
+    public void load(String nonUserId) {
         // If nonUserId is not null, will send their id in the User request instead current user's id
-        if(nonUserId != null){
+        if (nonUserId != null) {
             this.nonUserId = nonUserId;
             state.setValue(new ProfileState.Loading());
             this.isCurrentUser = false;
@@ -96,13 +93,13 @@ public class ProfileViewModel extends ViewModel {
         }
     }
 
-    private void getCurrentUserLibrary(){
+    private void getCurrentUserLibrary() {
         state.setValue(new ProfileState.Loading());
         this.isCurrentUser = true;
         userRepository.getUser(getUserId(), getUserConsumer);
     }
 
-    public void deleteBook(String isbnString){
+    public void deleteBook(String isbnString) {
         state.setValue(new ProfileState.Loading());
         String userID = getUserId();
         userRepository.deleteBook(userID, isbnString, deleteBookConsumer);
@@ -110,28 +107,28 @@ public class ProfileViewModel extends ViewModel {
         Log.i(TAG, "DELETE BOOK BUTTON CLICKED User: " + userID + ", ISBN: " + isbnString);
     }
 
-    public void likeBook(String isbnString){
+    public void likeBook(String isbnString) {
         SwapRequest swapRequest = new SwapRequest(getUserId(), nonUserId, isbnString);
         userRepository.createSwapRequest(swapRequest, likeBookConsumer);
         Log.i(TAG, "LIKE BOOK BUTTON CLICKED nonUser: " + nonUserId + ", ISBN: " + isbnString);
     }
 
-    private String getUserId(){
-        if(authRepository.getmAuth().getCurrentUser() != null){
+    private String getUserId() {
+        if (authRepository.getmAuth().getCurrentUser() != null) {
             this.isCurrentUser = true;
             return authRepository.getmAuth().getCurrentUser().getUid();
         }
         return null;
     }
 
-    public void signOut(){
+    public void signOut() {
         authRepository.getmAuth().signOut();
         FirebaseAuth.getInstance().signOut();
     }
 
-    private int regionEnumToString(String backendRegion){
-        for (Region region : Region.values()){
-            if (backendRegion.equals(region.toString())){
+    private int regionEnumToString(String backendRegion) {
+        for (Region region : Region.values()) {
+            if (backendRegion.equals(region.toString())) {
                 Log.i(TAG, "Mapped Region: " + region);
                 return region.region;
             }
@@ -147,7 +144,7 @@ public class ProfileViewModel extends ViewModel {
         return events;
     }
 
-    public void eventSeen(){
+    public void eventSeen() {
         events.setValue(null);
     }
 }

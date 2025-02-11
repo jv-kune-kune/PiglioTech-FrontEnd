@@ -13,10 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationBarView;
+import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.ui.fragments.addbook.AddBookFragment;
 import com.northcoders.pigliotech_frontend.ui.fragments.home.HomeFragment;
 import com.northcoders.pigliotech_frontend.ui.fragments.landingpage.LandingPageFragment;
-import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileFragment;
 import com.northcoders.pigliotech_frontend.ui.fragments.swapbook.SwapFragment;
 
@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
         // Observing the MainActivityEvents LiveData from the ViewModel.
         viewModel.getEvents().observe(this, event -> {
-            if (event != null){ // Code will only run if event is not null
-                switch (event){
+            if (event != null) { // Code will only run if event is not null
+                switch (event) {
                     case NAVIGATE_TO_LANDING_PAGE:
                         Fragment landingPage = new LandingPageFragment();
                         getSupportFragmentManager()
@@ -68,25 +68,25 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.home) {
+        if (item.getItemId() == R.id.home) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout_fragment, new HomeFragment())
                     .commit();
             return true;
         }
-        if(item.getItemId() == R.id.swap) {
+        if (item.getItemId() == R.id.swap) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout_fragment, new SwapFragment())
                     .commit();
             return true;
         }
-        if(item.getItemId() == R.id.profile) {
+        if (item.getItemId() == R.id.profile) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout_fragment, new ProfileFragment())
                     .commit();
             return true;
         }
-        if(item.getItemId() == R.id.addBook) {
+        if (item.getItemId() == R.id.addBook) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frame_layout_fragment, new AddBookFragment())
                     .commit();

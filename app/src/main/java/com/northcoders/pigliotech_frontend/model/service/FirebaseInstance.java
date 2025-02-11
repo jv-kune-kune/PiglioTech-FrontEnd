@@ -2,9 +2,9 @@ package com.northcoders.pigliotech_frontend.model.service;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class FirebaseInstance  {
+public class FirebaseInstance {
 
-    public static FirebaseAuth getFirebaseAuth(){
+    public static FirebaseAuth getFirebaseAuth() {
         return FirebaseAuth.getInstance();
     }
 }

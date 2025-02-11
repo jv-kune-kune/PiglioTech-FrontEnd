@@ -28,8 +28,8 @@ public class HomeViewModel extends ViewModel {
     );
 
     // Callback function that allows for the asynchronous method to be run in the main thread
-    private final Consumer<List<User>> userLibrariesConsumer = userLibraries ->{
-        if (userLibraries != null){
+    private final Consumer<List<User>> userLibrariesConsumer = userLibraries -> {
+        if (userLibraries != null) {
             Log.i("User Libraries Consumer Called", userLibraries.toString());
             state.setValue(
                     new HomeState.Loaded(userLibraries)
@@ -45,10 +45,10 @@ public class HomeViewModel extends ViewModel {
     }
 
     // Load the users by Region Excluding the the user.
-    public void load(){
+    public void load() {
 
         state.setValue(new HomeState.Loading());
-        if (authRepository.getmAuth().getCurrentUser() != null){
+        if (authRepository.getmAuth().getCurrentUser() != null) {
             String userRegion = authRepository.getmAuth().getCurrentUser().getDisplayName();
             String userId = authRepository.getmAuth().getCurrentUser().getUid();
 
@@ -60,7 +60,7 @@ public class HomeViewModel extends ViewModel {
         }
     }
 
-    public void signOut(){
+    public void signOut() {
         authRepository.getmAuth().signOut();
         FirebaseAuth.getInstance().signOut();
     }
@@ -80,7 +80,7 @@ public class HomeViewModel extends ViewModel {
     }
 
     // Sets the value of the clicked User back to null after the event has been "seen"
-    public void eventSeen(){
+    public void eventSeen() {
         events.setValue(new HomeEvents.ClickedUserLibrary(null));
     }
 }

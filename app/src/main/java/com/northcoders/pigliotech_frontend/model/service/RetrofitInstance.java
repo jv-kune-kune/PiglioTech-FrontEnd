@@ -10,13 +10,13 @@ public class RetrofitInstance {
     private static Retrofit retrofit = null;
     private static final String BASE_URL = "https://pigliotech-backend.onrender.com/api/v1/";
 
-    public static UserApiService getService(){
+    public static UserApiService getService() {
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
-        if (retrofit == null){
+        if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())

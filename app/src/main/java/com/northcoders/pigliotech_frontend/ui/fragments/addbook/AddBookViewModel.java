@@ -10,36 +10,29 @@ import com.northcoders.pigliotech_frontend.model.Isbn;
 import com.northcoders.pigliotech_frontend.model.service.AuthRepository;
 import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 public class AddBookViewModel extends ViewModel {
 
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
-    private final String TAG = "AddBookViewModel";
+    private static final String TAG = "AddBookViewModel";
 
     private final MutableLiveData<AddBookState> state = new MutableLiveData<>(new AddBookState(false));
     private final MutableLiveData<AddBookEvents> events = new MutableLiveData<>(null);
 
-    private final Consumer<Integer> addBookConsumer = responseCode ->{
-        if (responseCode !=null){
-            if (responseCode == 201){
+    private final IntConsumer addBookConsumer = responseCode -> {
+            if (responseCode == 201) {
                 events.setValue(AddBookEvents.BOOK_ADDED);
                 Log.i(TAG, "Book Added: " + responseCode);
-            }else if (responseCode == 409){
+            } else if (responseCode == 409) {
                 events.setValue(AddBookEvents.BOOK_ALREADY_OWNED);
                 Log.i(TAG, "Book Already Owned: " + responseCode);
-            }
-            else {
-               events.setValue(AddBookEvents.BOOK_NOT_ADDED);
+            } else {
+                events.setValue(AddBookEvents.BOOK_NOT_ADDED);
                 Log.e(TAG, "Book Not Added: " + responseCode);
             }
             state.setValue(new AddBookState(false));
-        }else {
-            state.setValue(new AddBookState(false));
-            events.setValue(AddBookEvents.NETWORK_ERROR);
-            Log.e(TAG, "NetworkError");
-        }
     };
 
     public AddBookViewModel() {
@@ -47,26 +40,26 @@ public class AddBookViewModel extends ViewModel {
         this.userRepository = new UserRepository();
     }
 
-    public void addBook(String userIsbnInput){
+    public void addBook(String userIsbnInput) {
 
         // Will remove any hyphens input by the User
-        String isbnRemovedHyphens = userIsbnInput.replaceAll("-","");
+        String isbnRemovedHyphens = userIsbnInput.replace("-", "");
         // Validates the length of the ISBN
-        if (isIsbnValid(isbnRemovedHyphens) && authRepository.getmAuth().getCurrentUser() != null){
+        if (isIsbnValid(isbnRemovedHyphens) && authRepository.getmAuth().getCurrentUser() != null) {
             state.setValue(new AddBookState(true));
             String userId = authRepository.getmAuth().getCurrentUser().getUid();
             Isbn isbnObject = new Isbn(isbnRemovedHyphens);
             userRepository.addBook(userId, isbnObject, addBookConsumer);
             Log.i(TAG, "Valid ISBN");
-        }else {
+        } else {
             events.setValue(AddBookEvents.INVALID_ISBN);
             Log.i(TAG, "Invalid ISBN");
         }
     }
 
-    private boolean isIsbnValid(String isbn){
+    private boolean isIsbnValid(String isbn) {
         String trimmedIsbn = isbn.trim(); // remove whitespace
-        return trimmedIsbn.length() == 10|| trimmedIsbn.length() == 13;
+        return trimmedIsbn.length() == 10 || trimmedIsbn.length() == 13;
     }
 
     public LiveData<AddBookState> getState() {
@@ -78,7 +71,7 @@ public class AddBookViewModel extends ViewModel {
     }
 
     // Called after each event is observed in the SignUp Fragment.
-    public void eventSeen(){
+    public void eventSeen() {
         events.setValue(null);
     }
 }

@@ -4,4 +4,5 @@ public record MatchUi(
         String requesterName,
         String requesterBookTitle,
         String userBookTitle
-){}
+) {
+}

@@ -1,6 +1,6 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.signup;
 
-public enum SignUpEvents{
+public enum SignUpEvents {
     REGISTRATION_SUCCESSFUL,
     REGISTRATION_FAILED,
     NETWORK_ERROR,
