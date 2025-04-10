@@ -30,6 +30,8 @@ import retrofit2.Response;
 
 public class BackendStatusManager {
     private static final String TAG = "BackendStatusManager";
+    private static final String LOG_PREFIX = "[BackendStatus] ";
+    private static final String LOG_FORMAT = "%s%s - %s";
     private static BackendStatusManager instance;
     private static final long CHECK_INTERVAL = 60000; // 1 minute between checks
     private static final long BACKEND_TIMEOUT = TimeUnit.MINUTES.toMillis(30); // 30 minutes timeout
@@ -39,6 +41,8 @@ public class BackendStatusManager {
     private static final long AUTO_CHECK_INTERVAL = 5000; // Check every 5 seconds when cold start screen is shown
     private static final long NETWORK_CHECK_DELAY = 5000; // 5 seconds between network checks
     private static final long QUICK_CHECK_TIMEOUT = 10000; // 10 seconds timeout for quick check
+    private static final long MIN_STATUS_CHANGE_INTERVAL = 2000; // Minimum 2 seconds between status changes
+    private static final long DEBOUNCE_INTERVAL = 1000; // 1 second debounce for status checks
     private static final String BACKEND_ONLINE_ACTION = "com.northcoders.pigliotech_frontend.BACKEND_ONLINE";
     private static final int MAX_RETRIES = 10;
     private static final long RETRY_DELAY_MS = 60000; // 60 seconds between retries
@@ -80,6 +84,9 @@ public class BackendStatusManager {
     private long quickCheckStartTime = 0;
     private boolean isQuickCheckInProgress = false;
     private long coldStartStartTime = 0;
+    private long lastStatusChangeTime = 0;
+    private long lastDebounceTime = 0;
+    private BackendStatus lastKnownStatus = BackendStatus.UNKNOWN;
 
     private BackendStatusManager() {
         // Private constructor for singleton
@@ -143,9 +150,17 @@ public class BackendStatusManager {
     }
 
     public void startBackendCheck(boolean fromInterceptor) {
+        // Implement debouncing
+        long now = System.currentTimeMillis();
+        if (now - lastDebounceTime < DEBOUNCE_INTERVAL) {
+            logDebug("Debouncing backend check request");
+            return;
+        }
+        lastDebounceTime = now;
+
         // If we're already checking, don't start another check
         if (!isChecking.compareAndSet(false, true)) {
-            Log.d(TAG, "Backend check already in progress, request will be queued");
+            logDebug("Backend check already in progress, request will be queued");
             return;
         }
 
@@ -159,11 +174,11 @@ public class BackendStatusManager {
         }, QUICK_CHECK_TIMEOUT * 2);
 
         synchronized (pingLock) {
-            Log.i(TAG, "Starting backend status check" + (fromInterceptor ? " (from interceptor)" : ""));
+            logInfo("Starting backend status check" + (fromInterceptor ? " (from interceptor)" : ""));
 
             // Check if we've already reached max retries
             if (hasReachedMaxRetries) {
-                Log.e(TAG, "Max retries already reached, not starting new check");
+                logWarning("Max retries already reached, not starting new check");
                 isChecking.set(false);
                 return;
             }
@@ -172,7 +187,7 @@ public class BackendStatusManager {
             long currentTime = System.currentTimeMillis();
             if (retryCount > 0 && currentTime < nextRetryTime && !fromInterceptor) {
                 long remainingDelay = nextRetryTime - currentTime;
-                Log.i(TAG, String.format("Waiting %d ms before next retry (attempt %d/%d) - Next retry at: %s",
+                logInfo(String.format("Waiting %d ms before next retry (attempt %d/%d) - Next retry at: %s",
                         remainingDelay, retryCount, MAX_RETRIES,
                         new java.text.SimpleDateFormat("HH:mm:ss.SSS").format(new java.util.Date(nextRetryTime))));
                 handler.postDelayed(() -> startBackendCheck(false), remainingDelay);
@@ -191,7 +206,7 @@ public class BackendStatusManager {
 
             // Check if we've already reached max retries
             if (retryCount >= MAX_RETRIES) {
-                Log.e(TAG, "Max retries already reached, not starting new check");
+                logWarning("Max retries already reached, not starting new check");
                 isChecking.set(false);
                 hasReachedMaxRetries = true;
                 return;
@@ -217,7 +232,7 @@ public class BackendStatusManager {
 
     private void quickBackendCheck() {
         if (isQuickCheckInProgress) {
-            Log.d(TAG, "Quick check already in progress, skipping");
+            logDebug("Quick check already in progress, skipping");
             return;
         }
 
@@ -235,7 +250,7 @@ public class BackendStatusManager {
         }, QUICK_CHECK_TIMEOUT);
 
         try {
-            Log.i(TAG, "Performing quick backend check");
+            logInfo("Performing quick backend check");
             Call<Void> quickPingCall = RetrofitInstance.getPingService().pingBackend();
             quickPingCall.enqueue(new Callback<Void>() {
                 @Override
@@ -243,11 +258,11 @@ public class BackendStatusManager {
                     long responseTimeMs = System.currentTimeMillis() - quickCheckStartTime;
                     isQuickCheckInProgress = false;
                     if (response.isSuccessful()) {
-                        Log.i(TAG, String.format("Quick ping successful with code: %d - Response time: %d ms",
+                        logInfo(String.format("Quick ping successful with code: %d - Response time: %d ms",
                                 response.code(), responseTimeMs));
                         handleSuccess();
                     } else {
-                        Log.w(TAG, String.format("Quick ping failed with code: %d - Response time: %d ms",
+                        logWarning(String.format("Quick ping failed with code: %d - Response time: %d ms",
                                 response.code(), responseTimeMs));
                         showColdStartScreen();
                         checkBackendStatus();
@@ -259,7 +274,7 @@ public class BackendStatusManager {
                 public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                     long responseTimeMs = System.currentTimeMillis() - quickCheckStartTime;
                     isQuickCheckInProgress = false;
-                    Log.e(TAG, String.format("Quick ping failed: %s - Response time: %d ms",
+                    logWarning(String.format("Quick ping failed: %s - Response time: %d ms",
                             t.getMessage(), responseTimeMs));
                     showColdStartScreen();
                     checkBackendStatus();
@@ -268,7 +283,7 @@ public class BackendStatusManager {
             });
         } catch (Exception e) {
             isQuickCheckInProgress = false;
-            Log.e(TAG, "Error executing quick ping: " + e.getMessage());
+            logWarning("Error executing quick ping: " + e.getMessage());
             showColdStartScreen();
             checkBackendStatus();
             handlePingComplete();
@@ -283,7 +298,7 @@ public class BackendStatusManager {
 
         // Only log if this is not from the interceptor
         if (!isInterceptorCheck) {
-            Log.i(TAG, String.format("Pinging backend (attempt %d/%d) - User wait time: %d min %d sec",
+            logInfo(String.format("Pinging backend (attempt %d/%d) - User wait time: %d min %d sec",
                     retryCount + 1, MAX_RETRIES, elapsedMinutes, elapsedSeconds));
         }
 
@@ -301,14 +316,14 @@ public class BackendStatusManager {
                 public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                     long responseTimeMs = System.currentTimeMillis() - lastPingTime;
                     if (response.isSuccessful()) {
-                        Log.i(TAG, String.format(
+                        logInfo(String.format(
                                 "Ping successful with code: %d - Response time: %d ms - User wait time: %d min %d sec",
                                 response.code(), responseTimeMs, elapsedMinutes, elapsedSeconds));
                         handleSuccess();
                     } else {
                         // Only log as warning if this is not from the interceptor
                         if (!isInterceptorCheck) {
-                            Log.w(TAG, String.format(
+                            logWarning(String.format(
                                     "Ping failed with code: %d - Response time: %d ms - User wait time: %d min %d sec",
                                     response.code(), responseTimeMs, elapsedMinutes, elapsedSeconds));
                         }
@@ -322,9 +337,9 @@ public class BackendStatusManager {
                     long responseTimeMs = System.currentTimeMillis() - lastPingTime;
                     // Only log cancellation errors at debug level
                     if (t instanceof IOException && t.getMessage() != null && t.getMessage().contains("Canceled")) {
-                        Log.d(TAG, "Ping canceled - Response time: " + responseTimeMs + " ms");
+                        logDebug("Ping canceled - Response time: " + responseTimeMs + " ms");
                     } else {
-                        Log.e(TAG,
+                        logWarning(
                                 String.format("Ping failed: %s - Response time: %d ms - User wait time: %d min %d sec",
                                         t.getMessage(), responseTimeMs, elapsedMinutes, elapsedSeconds));
                     }
@@ -333,7 +348,7 @@ public class BackendStatusManager {
                 }
             });
         } catch (Exception e) {
-            Log.e(TAG, "Error executing ping: " + e.getMessage());
+            logWarning("Error executing ping: " + e.getMessage());
             handleError();
             handlePingComplete();
         }
@@ -350,13 +365,13 @@ public class BackendStatusManager {
         synchronized (lock) {
             // Check if we're already checking
             if (isChecking.get()) {
-                Log.d(TAG, "Backend check already in progress, skipping");
+                logDebug("Backend check already in progress, skipping");
                 return;
             }
 
             // Check if we're in a network check
             if (isNetworkCheckInProgress) {
-                Log.d(TAG, "Network check in progress, skipping backend check");
+                logDebug("Network check in progress, skipping backend check");
                 return;
             }
 
@@ -364,7 +379,7 @@ public class BackendStatusManager {
             long currentTime = System.currentTimeMillis();
             if (retryCount > 0 && currentTime < nextRetryTime) {
                 long remainingDelay = nextRetryTime - currentTime;
-                Log.d(TAG, String.format("Waiting %d ms before next retry (attempt %d/%d)",
+                logDebug(String.format("Waiting %d ms before next retry (attempt %d/%d)",
                         remainingDelay, retryCount, MAX_RETRIES));
                 return;
             }
@@ -377,7 +392,7 @@ public class BackendStatusManager {
             long elapsedMinutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTimeMs);
             long elapsedSeconds = TimeUnit.MILLISECONDS.toSeconds(elapsedTimeMs) % 60;
 
-            Log.i(TAG, String.format("Pinging backend (attempt %d/%d) - User wait time: %d min %d sec",
+            logInfo(String.format("Pinging backend (attempt %d/%d) - User wait time: %d min %d sec",
                     retryCount + 1, MAX_RETRIES, elapsedMinutes, elapsedSeconds));
 
             // Perform the actual ping
@@ -394,12 +409,12 @@ public class BackendStatusManager {
                     public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                         long responseTimeMs = System.currentTimeMillis() - lastPingTime;
                         if (response.isSuccessful()) {
-                            Log.i(TAG, String.format(
+                            logInfo(String.format(
                                     "Ping successful with code: %d - Response time: %d ms - User wait time: %d min %d sec",
                                     response.code(), responseTimeMs, elapsedMinutes, elapsedSeconds));
                             handleSuccess();
                         } else {
-                            Log.w(TAG, String.format(
+                            logWarning(String.format(
                                     "Ping failed with code: %d - Response time: %d ms - User wait time: %d min %d sec",
                                     response.code(), responseTimeMs, elapsedMinutes, elapsedSeconds));
                             handleError();
@@ -410,7 +425,7 @@ public class BackendStatusManager {
                     @Override
                     public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                         long responseTimeMs = System.currentTimeMillis() - lastPingTime;
-                        Log.e(TAG,
+                        logWarning(
                                 String.format("Ping failed: %s - Response time: %d ms - User wait time: %d min %d sec",
                                         t.getMessage(), responseTimeMs, elapsedMinutes, elapsedSeconds));
                         handleError();
@@ -418,7 +433,7 @@ public class BackendStatusManager {
                     }
                 });
             } catch (Exception e) {
-                Log.e(TAG, "Error executing ping: " + e.getMessage());
+                logWarning("Error executing ping: " + e.getMessage());
                 handleError();
                 handlePingComplete();
             }
@@ -427,9 +442,23 @@ public class BackendStatusManager {
 
     private void handleSuccess() {
         synchronized (lock) {
-            lastSuccessfulCheck = System.currentTimeMillis();
-            currentStatus = BackendStatus.ONLINE;
-            Log.i(TAG, "Backend is now ONLINE");
+            long now = System.currentTimeMillis();
+
+            // Prevent rapid status changes
+            if (now - lastStatusChangeTime < MIN_STATUS_CHANGE_INTERVAL) {
+                logDebug("Ignoring rapid status change to ONLINE");
+                return;
+            }
+
+            lastStatusChangeTime = now;
+            lastSuccessfulCheck = now;
+
+            // Only update status if it's different from last known
+            if (currentStatus != BackendStatus.ONLINE) {
+                currentStatus = BackendStatus.ONLINE;
+                lastKnownStatus = BackendStatus.ONLINE;
+                logInfo("Backend is now ONLINE");
+            }
 
             // Only reset retry count if this was a new check (not a retry)
             if (retryCount == 0) {
@@ -457,7 +486,7 @@ public class BackendStatusManager {
         synchronized (errorLock) {
             // Prevent multiple simultaneous error handling
             if (isHandlingError) {
-                Log.d(TAG, "Already handling an error, skipping duplicate error handling");
+                logDebug("Already handling an error, skipping duplicate error handling");
                 return;
             }
 
@@ -466,7 +495,7 @@ public class BackendStatusManager {
             try {
                 // Check if we've already reached max retries
                 if (hasReachedMaxRetries) {
-                    Log.d(TAG, "Max retries already reached, skipping error handling");
+                    logWarning("Max retries already reached, skipping error handling");
                     return;
                 }
 
@@ -483,7 +512,7 @@ public class BackendStatusManager {
                 }
 
                 if (retryCount >= MAX_RETRIES) {
-                    Log.e(TAG, "Max retries reached, giving up");
+                    logWarning("Max retries reached, giving up");
                     currentStatus = BackendStatus.OFFLINE;
                     isChecking.set(false);
                     hasReachedMaxRetries = true;
@@ -496,7 +525,7 @@ public class BackendStatusManager {
 
                     // Only log if this is not from the interceptor
                     if (!isInterceptorCheck) {
-                        Log.w(TAG, String.format("Ping failed (attempt %d/%d) - Elapsed time: %d min %d sec",
+                        logWarning(String.format("Ping failed (attempt %d/%d) - Elapsed time: %d min %d sec",
                                 retryCount, MAX_RETRIES, elapsedMinutes, elapsedSeconds));
                     }
 
@@ -506,18 +535,10 @@ public class BackendStatusManager {
 
                     // Only log if this is not from the interceptor
                     if (!isInterceptorCheck) {
-                        Log.i(TAG, String.format("Scheduling retry in %d ms (attempt %d/%d) - Next retry at: %s",
-                                RETRY_DELAY_MS, retryCount, MAX_RETRIES,
-                                new java.text.SimpleDateFormat("HH:mm:ss.SSS")
-                                        .format(new java.util.Date(nextRetryTime))));
-                    }
-
-                    // Only schedule a retry if this wasn't from the interceptor
-                    if (!isInterceptorCheck) {
                         // Make sure we're not already checking before scheduling a retry
                         if (!isChecking.get()) {
                             handler.postDelayed(() -> {
-                                Log.d(TAG, "Executing scheduled retry");
+                                logInfo("Executing scheduled retry");
                                 startBackendCheck(false);
                             }, RETRY_DELAY_MS);
                         }
@@ -532,21 +553,21 @@ public class BackendStatusManager {
     private void checkInternetConnectivity() {
         // Prevent multiple network checks from running simultaneously
         if (isNetworkCheckInProgress) {
-            Log.d(TAG, "Network check already in progress, skipping");
+            logDebug("Network check already in progress, skipping");
             return;
         }
 
         // Prevent too frequent network checks
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastNetworkCheckTime < NETWORK_CHECK_DELAY) {
-            Log.d(TAG, "Network check too soon, skipping");
+            logDebug("Network check too soon, skipping");
             return;
         }
 
         isNetworkCheckInProgress = true;
         lastNetworkCheckTime = currentTime;
 
-        Log.i(TAG, "Checking internet connectivity");
+        logInfo("Checking internet connectivity");
 
         // First check using ConnectivityManager
         ConnectivityManager connectivityManager = (ConnectivityManager) PiglioTechApp.getContext()
@@ -555,7 +576,7 @@ public class BackendStatusManager {
         boolean isConnected = activeNetworkInfo != null && activeNetworkInfo.isConnected();
 
         if (!isConnected) {
-            Log.e(TAG, "No internet connection detected via ConnectivityManager");
+            logWarning("No internet connection detected via ConnectivityManager");
             showNoInternetMessage();
             isNetworkCheckInProgress = false;
             return;
@@ -564,7 +585,7 @@ public class BackendStatusManager {
         // If we have a connection according to ConnectivityManager, do a ping to Google
         // to verify we can actually reach the internet
         try {
-            Log.i(TAG, "Pinging Google to verify internet connectivity");
+            logInfo("Pinging Google to verify internet connectivity");
             Call<Void> googlePingCall = RetrofitInstance.getGooglePingService().pingGoogle();
             googlePingCall.enqueue(new Callback<Void>() {
                 @Override
@@ -572,11 +593,11 @@ public class BackendStatusManager {
                     long responseTimeMs = System.currentTimeMillis() - lastNetworkCheckTime;
                     isNetworkCheckInProgress = false;
                     if (response.isSuccessful()) {
-                        Log.i(TAG, String.format("Google ping successful - Response time: %d ms", responseTimeMs));
+                        logInfo(String.format("Google ping successful - Response time: %d ms", responseTimeMs));
                         // Internet is working, continue with backend check
                         handler.postDelayed(() -> startBackendCheck(false), 1000);
                     } else {
-                        Log.e(TAG, String.format("Google ping failed with code: %d - Response time: %d ms",
+                        logWarning(String.format("Google ping failed with code: %d - Response time: %d ms",
                                 response.code(), responseTimeMs));
                         showNoInternetMessage();
                     }
@@ -586,12 +607,12 @@ public class BackendStatusManager {
                 public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                     long responseTimeMs = System.currentTimeMillis() - lastNetworkCheckTime;
                     isNetworkCheckInProgress = false;
-                    Log.e(TAG, String.format("Google ping failed: %s - Response time: %d ms",
+                    logWarning(String.format("Google ping failed: %s - Response time: %d ms",
                             t.getMessage(), responseTimeMs));
 
                     // Check if it's a DNS resolution error
                     if (t instanceof UnknownHostException) {
-                        Log.e(TAG, "DNS resolution error, showing no internet message");
+                        logWarning("DNS resolution error, showing no internet message");
                         showNoInternetMessage();
                     } else {
                         // For other network errors, try again after a delay
@@ -601,7 +622,7 @@ public class BackendStatusManager {
             });
         } catch (Exception e) {
             isNetworkCheckInProgress = false;
-            Log.e(TAG, "Error executing Google ping: " + e.getMessage());
+            logWarning("Error executing Google ping: " + e.getMessage());
             showNoInternetMessage();
         }
     }
@@ -659,7 +680,7 @@ public class BackendStatusManager {
             coldStartStartTime = System.currentTimeMillis();
             handler.post(() -> {
                 try {
-                    Log.i(TAG, "Showing cold start screen");
+                    logInfo("Showing cold start screen");
                     Intent intent = new Intent(PiglioTechApp.getContext(), BackendColdStartActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     PiglioTechApp.getContext().startActivity(intent);
@@ -682,7 +703,7 @@ public class BackendStatusManager {
             // Send a broadcast to notify the activity to finish
             handler.post(() -> {
                 try {
-                    Log.i(TAG, "Sending broadcast to close cold start screen");
+                    logInfo("Sending broadcast to close cold start screen");
                     Intent intent = new Intent(BACKEND_ONLINE_ACTION);
                     intent.setPackage(PiglioTechApp.getContext().getPackageName());
                     PiglioTechApp.getContext().sendBroadcast(intent);
@@ -691,7 +712,7 @@ public class BackendStatusManager {
                     // and to give the app time to complete its loading process
                     handler.postDelayed(() -> {
                         try {
-                            Log.i(TAG, "Sending delayed broadcast to close cold start screen");
+                            logInfo("Sending delayed broadcast to close cold start screen");
                             Intent delayedIntent = new Intent(BACKEND_ONLINE_ACTION);
                             delayedIntent.setPackage(PiglioTechApp.getContext().getPackageName());
                             PiglioTechApp.getContext().sendBroadcast(delayedIntent);
@@ -711,5 +732,30 @@ public class BackendStatusManager {
             return System.currentTimeMillis() - coldStartStartTime;
         }
         return System.currentTimeMillis() - startTime;
+    }
+
+    private void logInfo(String message) {
+        Log.i(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getStatusInfo(), message));
+    }
+
+    private void logDebug(String message) {
+        Log.d(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getStatusInfo(), message));
+    }
+
+    private void logWarning(String message) {
+        Log.w(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getStatusInfo(), message));
+    }
+
+    private void logError(String message) {
+        Log.e(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getStatusInfo(), message));
+    }
+
+    private String getStatusInfo() {
+        long elapsedTimeMs = System.currentTimeMillis() - startTime;
+        return String.format("[Status: %s, Retry: %d/%d, Elapsed: %ds]",
+                currentStatus,
+                retryCount,
+                MAX_RETRIES,
+                TimeUnit.MILLISECONDS.toSeconds(elapsedTimeMs));
     }
 }

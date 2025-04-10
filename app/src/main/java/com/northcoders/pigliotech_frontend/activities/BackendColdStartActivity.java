@@ -20,6 +20,8 @@ import java.util.concurrent.TimeUnit;
 
 public class BackendColdStartActivity extends AppCompatActivity {
     private static final String TAG = "BackendColdStartActivity";
+    private static final String LOG_PREFIX = "[ColdStart] ";
+    private static final String LOG_FORMAT = "%s%s - %s";
     private static final String BACKEND_ONLINE_ACTION = "com.northcoders.pigliotech_frontend.BACKEND_ONLINE";
     private static final long UPDATE_INTERVAL = 1000; // Update every second
 
@@ -31,70 +33,92 @@ public class BackendColdStartActivity extends AppCompatActivity {
     private boolean isFinishing = false;
     private long startTime;
 
+    private void logInfo(String message) {
+        Log.i(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getActivityInfo(), message));
+    }
+
+    private void logDebug(String message) {
+        Log.d(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getActivityInfo(), message));
+    }
+
+    private void logWarning(String message) {
+        Log.w(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getActivityInfo(), message));
+    }
+
+    private void logError(String message) {
+        Log.e(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getActivityInfo(), message));
+    }
+
+    private String getActivityInfo() {
+        long elapsedTimeMs = System.currentTimeMillis() - startTime;
+        return String.format("[Elapsed: %ds, Receiver: %s]",
+                TimeUnit.MILLISECONDS.toSeconds(elapsedTimeMs),
+                isReceiverRegistered ? "Registered" : "Unregistered");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_backend_cold_start);
 
-        elapsedTimeTextView = findViewById(R.id.elapsedTimeTextView);
-        Button retryButton = findViewById(R.id.retryButton);
-        TextView messageTextView = findViewById(R.id.messageTextView);
+        try {
+            startTime = System.currentTimeMillis();
+            handler = new Handler(Looper.getMainLooper());
+            elapsedTimeTextView = findViewById(R.id.elapsedTimeTextView);
+            Button retryButton = findViewById(R.id.retryButton);
+            TextView messageTextView = findViewById(R.id.messageTextView);
 
-        // Set the message explaining the cold start process
-        messageTextView.setText(
-                "Our backend server is currently starting up. This is normal for development environments and may take up to 30 minutes if the server hasn't been used recently.\n\n"
-                        +
-                        "This happens because we're using a free tier on Render.com which puts our server to sleep after periods of inactivity to save resources.\n\n"
-                        +
-                        "You don't need to keep clicking 'Try Again' - the app will automatically detect when the server is back online and continue.");
+            // Set the message explaining the cold start process
+            messageTextView.setText(
+                    "Our backend server is currently starting up. This is normal for development environments and may take up to 30 minutes if the server hasn't been used recently.\n\n"
+                            +
+                            "This happens because we're using a free tier on Render.com which puts our server to sleep after periods of inactivity to save resources.\n\n"
+                            +
+                            "You don't need to keep clicking 'Try Again' - the app will automatically detect when the server is back online and continue.");
 
-        // Set up the retry button
-        retryButton.setOnClickListener(v -> {
-            try {
-                Log.d(TAG, "Retry button clicked, starting backend check");
-                BackendStatusManager.getInstance().startBackendCheck();
-            } catch (Exception e) {
-                Log.e(TAG, "Error starting backend check: " + e.getMessage());
-            }
-        });
-
-        // Set up the elapsed time update
-        handler = new Handler(Looper.getMainLooper());
-        startTime = System.currentTimeMillis();
-
-        updateElapsedTimeRunnable = new Runnable() {
-            @Override
-            public void run() {
+            // Set up the retry button
+            retryButton.setOnClickListener(v -> {
                 try {
-                    updateElapsedTime();
-                    handler.postDelayed(this, UPDATE_INTERVAL); // Update every second
+                    logInfo("Retry button clicked, starting backend check");
+                    BackendStatusManager.getInstance().startBackendCheck();
                 } catch (Exception e) {
-                    Log.e(TAG, "Error updating elapsed time: " + e.getMessage());
+                    logError("Error starting backend check: " + e.getMessage());
+                }
+            });
+
+            // Set up the elapsed time update
+            updateElapsedTimeRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    updateElapsedTime();
+                    handler.postDelayed(this, UPDATE_INTERVAL);
+                }
+            };
+
+            // Register the broadcast receiver to listen for backend online events
+            registerBackendOnlineReceiver();
+
+            // Check if backend is already online
+            if (BackendStatusManager.getInstance().isBackendAvailable()) {
+                logInfo("Backend is already online, finishing activity");
+                if (!isFinishing) {
+                    isFinishing = true;
+                    finish();
                 }
             }
-        };
-
-        // Register the broadcast receiver to listen for backend online events
-        registerBackendOnlineReceiver();
-
-        // Check if backend is already online
-        if (BackendStatusManager.getInstance().isBackendAvailable()) {
-            Log.d(TAG, "Backend is already online, finishing activity");
-            if (!isFinishing) {
-                isFinishing = true;
-                finish();
-            }
+        } catch (Exception e) {
+            logError("Error in onCreate: " + e.getMessage());
         }
     }
 
     private void registerBackendOnlineReceiver() {
         try {
-            Log.d(TAG, "Registering backend online receiver");
+            logDebug("Registering backend online receiver");
             backendOnlineReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     if (BACKEND_ONLINE_ACTION.equals(intent.getAction())) {
-                        Log.d(TAG, "Received backend online broadcast, finishing activity");
+                        logInfo("Received backend online broadcast, finishing activity");
                         if (!isFinishing) {
                             isFinishing = true;
                             finish();
@@ -106,9 +130,9 @@ public class BackendColdStartActivity extends AppCompatActivity {
             IntentFilter filter = new IntentFilter(BACKEND_ONLINE_ACTION);
             registerReceiver(backendOnlineReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
             isReceiverRegistered = true;
-            Log.d(TAG, "Backend online receiver registered successfully");
+            logInfo("Backend online receiver registered successfully");
         } catch (Exception e) {
-            Log.e(TAG, "Error registering broadcast receiver: " + e.getMessage());
+            logError("Error registering broadcast receiver: " + e.getMessage());
         }
     }
 
@@ -121,14 +145,14 @@ public class BackendColdStartActivity extends AppCompatActivity {
 
             // Check if backend is already online
             if (BackendStatusManager.getInstance().isBackendAvailable()) {
-                Log.d(TAG, "Backend is already online, finishing activity");
+                logInfo("Backend is already online, finishing activity");
                 if (!isFinishing) {
                     isFinishing = true;
                     finish();
                 }
             }
         } catch (Exception e) {
-            Log.e(TAG, "Error in onResume: " + e.getMessage());
+            logError("Error in onResume: " + e.getMessage());
         }
     }
 
@@ -138,8 +162,9 @@ public class BackendColdStartActivity extends AppCompatActivity {
         try {
             // Stop updating the elapsed time
             handler.removeCallbacks(updateElapsedTimeRunnable);
+            logDebug("Stopped elapsed time updates");
         } catch (Exception e) {
-            Log.e(TAG, "Error in onPause: " + e.getMessage());
+            logError("Error in onPause: " + e.getMessage());
         }
     }
 
@@ -151,10 +176,10 @@ public class BackendColdStartActivity extends AppCompatActivity {
             if (backendOnlineReceiver != null && isReceiverRegistered) {
                 unregisterReceiver(backendOnlineReceiver);
                 isReceiverRegistered = false;
-                Log.d(TAG, "Backend online receiver unregistered");
+                logInfo("Backend online receiver unregistered");
             }
         } catch (Exception e) {
-            Log.e(TAG, "Error in onDestroy: " + e.getMessage());
+            logError("Error in onDestroy: " + e.getMessage());
         }
     }
 
@@ -167,7 +192,7 @@ public class BackendColdStartActivity extends AppCompatActivity {
             elapsedTimeTextView.setText(String.format("Time elapsed: %d min %d sec",
                     minutes, seconds));
         } catch (Exception e) {
-            Log.e(TAG, "Error updating elapsed time: " + e.getMessage());
+            logError("Error updating elapsed time: " + e.getMessage());
         }
     }
 }
