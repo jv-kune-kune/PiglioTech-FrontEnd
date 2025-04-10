@@ -18,6 +18,9 @@ import retrofit2.http.Query;
 
 public interface UserApiService {
 
+    @GET("ping")
+    Call<Void> pingBackend();
+
     @POST("users")
     Call<User> addUser(@Body User user);
 
