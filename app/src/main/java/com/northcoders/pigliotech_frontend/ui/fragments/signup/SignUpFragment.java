@@ -161,6 +161,7 @@ public class SignUpFragment extends Fragment {
         region = regionSpinner.getSelectedItem().toString();
         Log.i("REGION", region);
 
+
         viewModel.signUp(name, email, password, avatarUrl, region);
     }
 
