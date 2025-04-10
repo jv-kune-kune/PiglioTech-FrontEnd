@@ -17,10 +17,20 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file("pigliotech.keystore")
+            storePassword System.getenv("KEYSTORE_PASSWORD") ?: "pizDy0-kynwek-cytqix"
+            keyAlias "pigliotech"
+            keyPassword System.getenv("KEY_PASSWORD") ?: "pizDy0-kynwek-cytqix"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
         }
