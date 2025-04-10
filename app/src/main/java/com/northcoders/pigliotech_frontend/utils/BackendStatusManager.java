@@ -518,31 +518,28 @@ public class BackendStatusManager {
                     hasReachedMaxRetries = true;
                     showColdStartScreen();
                     return;
-                } else {
-                    long elapsedTimeMs = System.currentTimeMillis() - startTime;
-                    long elapsedMinutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTimeMs);
-                    long elapsedSeconds = TimeUnit.MILLISECONDS.toSeconds(elapsedTimeMs) % 60;
+                }
 
-                    // Only log if this is not from the interceptor
-                    if (!isInterceptorCheck) {
-                        logWarning(String.format("Ping failed (attempt %d/%d) - Elapsed time: %d min %d sec",
-                                retryCount, MAX_RETRIES, elapsedMinutes, elapsedSeconds));
-                    }
+                long elapsedTimeMs = System.currentTimeMillis() - startTime;
+                long elapsedMinutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTimeMs);
+                long elapsedSeconds = TimeUnit.MILLISECONDS.toSeconds(elapsedTimeMs) % 60;
 
-                    // Set the next retry time to be exactly RETRY_DELAY_MS from now
-                    nextRetryTime = System.currentTimeMillis() + RETRY_DELAY_MS;
-                    lastRetryTime = System.currentTimeMillis();
+                // Only log if this is not from the interceptor
+                if (!isInterceptorCheck) {
+                    logWarning(String.format("Ping failed (attempt %d/%d) - Elapsed time: %d min %d sec",
+                            retryCount, MAX_RETRIES, elapsedMinutes, elapsedSeconds));
+                }
 
-                    // Only log if this is not from the interceptor
-                    if (!isInterceptorCheck) {
-                        // Make sure we're not already checking before scheduling a retry
-                        if (!isChecking.get()) {
-                            handler.postDelayed(() -> {
-                                logInfo("Executing scheduled retry");
-                                startBackendCheck(false);
-                            }, RETRY_DELAY_MS);
-                        }
-                    }
+                // Set the next retry time to be exactly RETRY_DELAY_MS from now
+                nextRetryTime = System.currentTimeMillis() + RETRY_DELAY_MS;
+                lastRetryTime = System.currentTimeMillis();
+
+                // Only schedule a retry if this wasn't from the interceptor
+                if (!isInterceptorCheck && !isChecking.get()) {
+                    handler.postDelayed(() -> {
+                        logInfo("Executing scheduled retry");
+                        startBackendCheck(false);
+                    }, RETRY_DELAY_MS);
                 }
             } finally {
                 isHandlingError = false;

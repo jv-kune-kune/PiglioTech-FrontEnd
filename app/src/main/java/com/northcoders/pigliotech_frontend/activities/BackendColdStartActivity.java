@@ -41,10 +41,6 @@ public class BackendColdStartActivity extends AppCompatActivity {
         Log.d(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getActivityInfo(), message));
     }
 
-    private void logWarning(String message) {
-        Log.w(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getActivityInfo(), message));
-    }
-
     private void logError(String message) {
         Log.e(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getActivityInfo(), message));
     }
