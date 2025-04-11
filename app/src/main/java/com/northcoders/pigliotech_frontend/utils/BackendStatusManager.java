@@ -225,7 +225,7 @@ public class BackendStatusManager {
                 showColdStartScreen();
                 // Instead of calling checkBackendStatus() which would create a loop,
                 // we'll directly perform the ping here
-                performBackendPing();
+                performBackendPing(fromInterceptor);
             }
         }
     }
@@ -290,68 +290,68 @@ public class BackendStatusManager {
         }
     }
 
-    private void performBackendPing() {
-        // Log the ping attempt
+    private void performBackendPing(boolean isInterceptorCheck) {
         long elapsedTimeMs = System.currentTimeMillis() - startTime;
         long elapsedMinutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTimeMs);
         long elapsedSeconds = TimeUnit.MILLISECONDS.toSeconds(elapsedTimeMs) % 60;
 
-        // Only log if this is not from the interceptor
         if (!isInterceptorCheck) {
             logInfo(String.format("Pinging backend (attempt %d/%d) - User wait time: %d min %d sec",
                     retryCount + 1, MAX_RETRIES, elapsedMinutes, elapsedSeconds));
         }
 
-        // Perform the actual ping
         try {
-            // Cancel any existing ping call
             if (currentPingCall != null && !currentPingCall.isCanceled()) {
                 currentPingCall.cancel();
             }
 
             lastPingTime = System.currentTimeMillis();
             currentPingCall = RetrofitInstance.getPingService().pingBackend();
-            currentPingCall.enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                    long responseTimeMs = System.currentTimeMillis() - lastPingTime;
-                    if (response.isSuccessful()) {
-                        logInfo(String.format(
-                                "Ping successful with code: %d - Response time: %d ms - User wait time: %d min %d sec",
-                                response.code(), responseTimeMs, elapsedMinutes, elapsedSeconds));
-                        handleSuccess();
-                    } else {
-                        // Only log as warning if this is not from the interceptor
-                        if (!isInterceptorCheck) {
-                            logWarning(String.format(
-                                    "Ping failed with code: %d - Response time: %d ms - User wait time: %d min %d sec",
-                                    response.code(), responseTimeMs, elapsedMinutes, elapsedSeconds));
-                        }
-                        handleError();
-                    }
-                    handlePingComplete();
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                    long responseTimeMs = System.currentTimeMillis() - lastPingTime;
-                    // Only log cancellation errors at debug level
-                    if (t instanceof IOException && t.getMessage() != null && t.getMessage().contains("Canceled")) {
-                        logDebug("Ping canceled - Response time: " + responseTimeMs + " ms");
-                    } else {
-                        logWarning(
-                                String.format("Ping failed: %s - Response time: %d ms - User wait time: %d min %d sec",
-                                        t.getMessage(), responseTimeMs, elapsedMinutes, elapsedSeconds));
-                    }
-                    handleError();
-                    handlePingComplete();
-                }
-            });
+            currentPingCall.enqueue(createPingCallback(elapsedMinutes, elapsedSeconds, isInterceptorCheck));
         } catch (Exception e) {
             logWarning("Error executing ping: " + e.getMessage());
             handleError();
             handlePingComplete();
         }
+    }
+
+    private Callback<Void> createPingCallback(long elapsedMinutes, long elapsedSeconds, boolean isInterceptorCheck) {
+        return new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                long responseTimeMs = System.currentTimeMillis() - lastPingTime;
+                if (response.isSuccessful()) {
+                    if (!isInterceptorCheck) {
+                        logInfo(String.format(
+                                "Ping successful with code: %d - Response time: %d ms - User wait time: %d min %d sec",
+                                response.code(), responseTimeMs, elapsedMinutes, elapsedSeconds));
+                    }
+                    handleSuccess();
+                } else {
+                    if (!isInterceptorCheck) {
+                        logWarning(String.format(
+                                "Ping failed with code: %d - Response time: %d ms - User wait time: %d min %d sec",
+                                response.code(), responseTimeMs, elapsedMinutes, elapsedSeconds));
+                    }
+                    handleError();
+                }
+                handlePingComplete();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                long responseTimeMs = System.currentTimeMillis() - lastPingTime;
+                if (t instanceof IOException && t.getMessage() != null && t.getMessage().contains("Canceled")) {
+                    logDebug("Ping canceled - Response time: " + responseTimeMs + " ms");
+                } else {
+                    logWarning(
+                            String.format("Ping failed: %s - Response time: %d ms - User wait time: %d min %d sec",
+                                    t.getMessage(), responseTimeMs, elapsedMinutes, elapsedSeconds));
+                }
+                handleError();
+                handlePingComplete();
+            }
+        };
     }
 
     private void handlePingComplete() {
@@ -363,19 +363,12 @@ public class BackendStatusManager {
 
     public void checkBackendStatus() {
         synchronized (lock) {
-            // Check if we're already checking
-            if (isChecking.get()) {
-                logDebug("Backend check already in progress, skipping");
+            if (isChecking.get() || isNetworkCheckInProgress) {
+                logDebug(isChecking.get() ? "Backend check already in progress, skipping" 
+                        : "Network check in progress, skipping backend check");
                 return;
             }
 
-            // Check if we're in a network check
-            if (isNetworkCheckInProgress) {
-                logDebug("Network check in progress, skipping backend check");
-                return;
-            }
-
-            // Check if we need to wait before the next retry
             long currentTime = System.currentTimeMillis();
             if (retryCount > 0 && currentTime < nextRetryTime) {
                 long remainingDelay = nextRetryTime - currentTime;
@@ -384,59 +377,8 @@ public class BackendStatusManager {
                 return;
             }
 
-            // Set the checking flag
             isChecking.set(true);
-
-            // Log the ping attempt
-            long elapsedTimeMs = System.currentTimeMillis() - startTime;
-            long elapsedMinutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTimeMs);
-            long elapsedSeconds = TimeUnit.MILLISECONDS.toSeconds(elapsedTimeMs) % 60;
-
-            logInfo(String.format("Pinging backend (attempt %d/%d) - User wait time: %d min %d sec",
-                    retryCount + 1, MAX_RETRIES, elapsedMinutes, elapsedSeconds));
-
-            // Perform the actual ping
-            try {
-                // Cancel any existing ping call
-                if (currentPingCall != null && !currentPingCall.isCanceled()) {
-                    currentPingCall.cancel();
-                }
-
-                lastPingTime = System.currentTimeMillis();
-                currentPingCall = RetrofitInstance.getPingService().pingBackend();
-                currentPingCall.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                        long responseTimeMs = System.currentTimeMillis() - lastPingTime;
-                        if (response.isSuccessful()) {
-                            logInfo(String.format(
-                                    "Ping successful with code: %d - Response time: %d ms - User wait time: %d min %d sec",
-                                    response.code(), responseTimeMs, elapsedMinutes, elapsedSeconds));
-                            handleSuccess();
-                        } else {
-                            logWarning(String.format(
-                                    "Ping failed with code: %d - Response time: %d ms - User wait time: %d min %d sec",
-                                    response.code(), responseTimeMs, elapsedMinutes, elapsedSeconds));
-                            handleError();
-                        }
-                        handlePingComplete();
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                        long responseTimeMs = System.currentTimeMillis() - lastPingTime;
-                        logWarning(
-                                String.format("Ping failed: %s - Response time: %d ms - User wait time: %d min %d sec",
-                                        t.getMessage(), responseTimeMs, elapsedMinutes, elapsedSeconds));
-                        handleError();
-                        handlePingComplete();
-                    }
-                });
-            } catch (Exception e) {
-                logWarning("Error executing ping: " + e.getMessage());
-                handleError();
-                handlePingComplete();
-            }
+            performBackendPing(false);
         }
     }
 
