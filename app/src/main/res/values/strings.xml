@@ -25,6 +25,10 @@
     <string name="try_again">Try again</string>
     <string name="sign_out_btn_text">Sign Out</string>
     <string name="profile_picture_content_description">Your profile picture</string>
+    <string name="app_logo">App Logo</string>
+    <string name="backend_starting_up">Backend is Starting Up</string>
+    <string name="time_elapsed_default">Time elapsed: 0 min 0 sec</string>
+    <string name="backend_startup_message">Our backend server is currently starting up. This is normal and usually takes less than 5 minutes if the server hasn\'t been used recently (max 10).\n\nThis happens because we\'re using a free tier on Render.com which puts our server to sleep after periods of inactivity to save resources.\n\nYou don\'t need to keep clicking \'Try Again\' - the app will automatically detect when the server is back online and continue.</string>
 
 
     <string-array name="regions">

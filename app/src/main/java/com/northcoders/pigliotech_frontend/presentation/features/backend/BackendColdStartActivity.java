@@ -12,9 +12,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.utils.BackendStatusManager;
 import java.util.concurrent.TimeUnit;
+import java.util.Locale;
 
 public class BackendColdStartActivity extends AppCompatActivity {
     private static final String TAG = "BackendColdStartActivity";
@@ -32,20 +34,20 @@ public class BackendColdStartActivity extends AppCompatActivity {
     private long startTime;
 
     private void logInfo(String message) {
-        Log.i(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getActivityInfo(), message));
+        Log.i(TAG, String.format(Locale.US, LOG_FORMAT, LOG_PREFIX, getActivityInfo(), message));
     }
 
     private void logDebug(String message) {
-        Log.d(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getActivityInfo(), message));
+        Log.d(TAG, String.format(Locale.US, LOG_FORMAT, LOG_PREFIX, getActivityInfo(), message));
     }
 
     private void logError(String message) {
-        Log.e(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getActivityInfo(), message));
+        Log.e(TAG, String.format(Locale.US, LOG_FORMAT, LOG_PREFIX, getActivityInfo(), message));
     }
 
     private String getActivityInfo() {
         long elapsedTimeMs = System.currentTimeMillis() - startTime;
-        return String.format("[Elapsed: %ds, Receiver: %s]",
+        return String.format(Locale.US, "[Elapsed: %ds, Receiver: %s]",
                 TimeUnit.MILLISECONDS.toSeconds(elapsedTimeMs),
                 isReceiverRegistered ? "Registered" : "Unregistered");
     }
@@ -124,7 +126,13 @@ public class BackendColdStartActivity extends AppCompatActivity {
             };
 
             IntentFilter filter = new IntentFilter(BACKEND_ONLINE_ACTION);
-            registerReceiver(backendOnlineReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(backendOnlineReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+            } else {
+                // For older versions, use ContextCompat with RECEIVER_NOT_EXPORTED flag
+                ContextCompat.registerReceiver(this, backendOnlineReceiver, filter,
+                        ContextCompat.RECEIVER_NOT_EXPORTED);
+            }
             isReceiverRegistered = true;
             logInfo("Backend online receiver registered successfully");
         } catch (Exception e) {
@@ -185,7 +193,7 @@ public class BackendColdStartActivity extends AppCompatActivity {
             long minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTimeMs);
             long seconds = TimeUnit.MILLISECONDS.toSeconds(elapsedTimeMs) % 60;
 
-            elapsedTimeTextView.setText(String.format("Time elapsed: %d min %d sec",
+            elapsedTimeTextView.setText(String.format(Locale.US, "Time elapsed: %d min %d sec",
                     minutes, seconds));
         } catch (Exception e) {
             logError("Error updating elapsed time: " + e.getMessage());

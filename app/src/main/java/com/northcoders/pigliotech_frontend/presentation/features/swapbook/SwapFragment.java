@@ -47,7 +47,7 @@ public class SwapFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentSwapBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -62,9 +62,9 @@ public class SwapFragment extends Fragment {
         Context context = requireContext();
 
         viewModel.getState().observe(getViewLifecycleOwner(), swapState -> {
-            if (swapState instanceof  SwapState.Loading){
+            if (swapState instanceof SwapState.Loading) {
                 progressBar.setVisibility(VISIBLE);
-            } else if (swapState instanceof SwapState.Loaded){
+            } else if (swapState instanceof SwapState.Loaded) {
                 progressBar.setVisibility(GONE);
                 matches = ((SwapState.Loaded) swapState).matches();
                 displayInRecyclerView();
@@ -83,27 +83,27 @@ public class SwapFragment extends Fragment {
 
         // Events observer
         viewModel.getEvents().observe(getViewLifecycleOwner(), swapEvents -> {
-            if (swapEvents != null){
-                switch (swapEvents){
+            if (swapEvents != null) {
+                switch (swapEvents) {
                     case DISMISS_MATCH ->
                         Toast.makeText(
-                                        context,
-                                        "Swap Request Dismissed",
-                                        Toast.LENGTH_LONG)
+                                context,
+                                "Swap Request Dismissed",
+                                Toast.LENGTH_LONG)
                                 .show();
 
                     case DISMISS_MATCH_FAILED ->
                         Toast.makeText(
-                                        context,
-                                        "Swap Request Dismissal Failed!",
-                                        Toast.LENGTH_LONG)
+                                context,
+                                "Swap Request Dismissal Failed!",
+                                Toast.LENGTH_LONG)
                                 .show();
 
                     case NETWORK_ERROR ->
                         Toast.makeText(
-                                        context,
-                                        "Sorry Something Went Wrong!",
-                                        Toast.LENGTH_LONG)
+                                context,
+                                "Sorry Something Went Wrong!",
+                                Toast.LENGTH_LONG)
                                 .show();
                 }
                 viewModel.eventSeen();
@@ -111,13 +111,11 @@ public class SwapFragment extends Fragment {
         });
     }
 
-    public void displayInRecyclerView(){
-
+    public void displayInRecyclerView() {
         SwapAdapter swapAdapter = new SwapAdapter(matches, viewModel);
         recyclerView.setAdapter(swapAdapter);
-        recyclerView.setLayoutManager( new LinearLayoutManager(this.getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setHasFixedSize(true);
-        swapAdapter.notifyDataSetChanged();
     }
 
     @Override
