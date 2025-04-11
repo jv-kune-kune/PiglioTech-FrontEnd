@@ -1,7 +1,5 @@
 package com.northcoders.pigliotech_frontend.utils;
 
-import static com.northcoders.pigliotech_frontend.utils.BackendAvailabilityInterceptor.PING_RETRY_DELAY_MS;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -15,8 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.northcoders.pigliotech_frontend.PiglioTechApp;
-import com.northcoders.pigliotech_frontend.ui.activities.BackendColdStartActivity;
-import com.northcoders.pigliotech_frontend.network.RetrofitInstance;
+import com.northcoders.pigliotech_frontend.presentation.features.backend.BackendColdStartActivity;
+import com.northcoders.pigliotech_frontend.data.network.RetrofitInstance;
 
 import java.io.IOException;
 import java.net.UnknownHostException;

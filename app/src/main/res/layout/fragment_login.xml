@@ -7,7 +7,7 @@
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.login.LoginFragment"
+    tools:context=".presentation.features.login.LoginFragment"
     android:background="@drawable/landing_background"
     >
 

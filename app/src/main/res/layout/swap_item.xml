@@ -7,7 +7,7 @@
     <data>
         <variable
             name="matchUi"
-            type="com.northcoders.pigliotech_frontend.model.MatchUi" />
+            type="com.northcoders.pigliotech_frontend.data.models.MatchUi" />
     </data>
 
     <androidx.cardview.widget.CardView
