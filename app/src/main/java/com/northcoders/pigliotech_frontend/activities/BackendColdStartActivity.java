@@ -70,11 +70,13 @@ public class BackendColdStartActivity extends AppCompatActivity {
 
             // Set the message explaining the cold start process
             messageTextView.setText(
-                    "Our backend server is currently starting up. This is normal for development environments and may take up to 30 minutes if the server hasn't been used recently.\n\n"
-                            +
-                            "This happens because we're using a free tier on Render.com which puts our server to sleep after periods of inactivity to save resources.\n\n"
-                            +
-                            "You don't need to keep clicking 'Try Again' - the app will automatically detect when the server is back online and continue.");
+                    """
+                            Our backend server is currently starting up. This is normal and usually takes less than 5 minutes if the server hasn't been used recently (max 10).
+
+                            This happens because we're using a free tier on Render.com which puts our server to sleep after periods of inactivity to save resources.
+
+                            You don't need to keep clicking 'Try Again' - the app will automatically detect when the server is back online and continue.
+                            """);
 
             // Set up the retry button
             retryButton.setOnClickListener(v -> {
