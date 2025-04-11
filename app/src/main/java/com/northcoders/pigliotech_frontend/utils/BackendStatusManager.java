@@ -33,11 +33,8 @@ public class BackendStatusManager {
     private static final String LOG_PREFIX = "[BackendStatus] ";
     private static final String LOG_FORMAT = "%s%s - %s";
     private static BackendStatusManager instance;
-    private static final long CHECK_INTERVAL = 60000; // 1 minute between checks
     private static final long BACKEND_TIMEOUT = TimeUnit.MINUTES.toMillis(30); // 30 minutes timeout
     private static final long STATUS_CACHE_DURATION = TimeUnit.MINUTES.toMillis(5); // 5 minutes cache
-    private static final long PROGRESS_UPDATE_INTERVAL = TimeUnit.MINUTES.toMillis(2); // Update progress every 2
-                                                                                       // minutes
     private static final long AUTO_CHECK_INTERVAL = 5000; // Check every 5 seconds when cold start screen is shown
     private static final long NETWORK_CHECK_DELAY = 5000; // 5 seconds between network checks
     private static final long QUICK_CHECK_TIMEOUT = 10000; // 10 seconds timeout for quick check
@@ -46,8 +43,6 @@ public class BackendStatusManager {
     public static final String ACTION_BACKEND_ONLINE = "com.northcoders.pigliotech_frontend.BACKEND_ONLINE";
     private static final int MAX_RETRIES = 10;
     private static final long RETRY_DELAY_MS = 60000; // 60 seconds between retries
-    private static final long MAX_RETRY_DELAY_MS = 120000; // 2 minutes maximum delay
-    private long lastRetryTime = 0;
     private long nextRetryTime = 0;
     private boolean isHandlingError = false;
     private boolean hasReachedMaxRetries = false;
@@ -70,7 +65,6 @@ public class BackendStatusManager {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private long lastSuccessfulCheck = 0;
     private long startTime = 0;
-    private long lastProgressUpdate = 0;
     private String pendingAction = null;
     private Call<Void> currentPingCall = null;
     private int retryCount = 0;
@@ -86,10 +80,8 @@ public class BackendStatusManager {
     private long coldStartStartTime = 0;
     private long lastStatusChangeTime = 0;
     private long lastDebounceTime = 0;
-    private BackendStatus lastKnownStatus = BackendStatus.UNKNOWN;
 
     private BackendStatusManager() {
-        // Private constructor for singleton
         autoCheckRunnable = () -> {
             if (isColdStartScreenShown) {
                 long currentTime = System.currentTimeMillis();
@@ -110,10 +102,7 @@ public class BackendStatusManager {
     }
 
     public static synchronized BackendStatusManager getInstance(Context context) {
-        if (instance == null) {
-            instance = new BackendStatusManager();
-        }
-        return instance;
+        return getInstance();
     }
 
     public void executeRequest(Runnable request, String actionDescription) {
@@ -194,8 +183,6 @@ public class BackendStatusManager {
             // Only reset startTime if this is a new check (not a retry)
             if (retryCount == 0) {
                 startTime = System.currentTimeMillis();
-                lastProgressUpdate = startTime;
-                lastRetryTime = startTime;
                 nextRetryTime = startTime;
                 hasReachedMaxRetries = false;
             }
@@ -220,7 +207,6 @@ public class BackendStatusManager {
             } else {
                 showColdStartScreen();
                 // Instead of calling checkBackendStatus() which would create a loop,
-                // we'll directly perform the ping here
                 performBackendPing(fromInterceptor);
             }
         }
@@ -391,10 +377,9 @@ public class BackendStatusManager {
             lastStatusChangeTime = now;
             lastSuccessfulCheck = now;
 
-            // Only update status if it's different from last known
+            // Update status to ONLINE if it's different
             if (currentStatus != BackendStatus.ONLINE) {
                 currentStatus = BackendStatus.ONLINE;
-                lastKnownStatus = BackendStatus.ONLINE;
                 logInfo("Backend is now ONLINE");
             }
 
@@ -469,7 +454,6 @@ public class BackendStatusManager {
 
                     // Set the next retry time to be exactly RETRY_DELAY_MS from now
                     nextRetryTime = System.currentTimeMillis() + RETRY_DELAY_MS;
-                    lastRetryTime = System.currentTimeMillis();
 
                     // Only log if this is not from the interceptor
                     if (!isInterceptorCheck) {
@@ -520,8 +504,11 @@ public class BackendStatusManager {
             return;
         }
 
-        // If we have a connection according to ConnectivityManager, do a ping to Google
-        // to verify we can actually reach the internet
+        // If we have a connection according to ConnectivityManager, continue with the ping
+        doPingToGoogleForConnectivityCheck();
+    }
+
+    private void doPingToGoogleForConnectivityCheck() {
         try {
             logInfo("Pinging Google to verify internet connectivity");
             Call<Void> googlePingCall = RetrofitInstance.getGooglePingService().pingGoogle();
