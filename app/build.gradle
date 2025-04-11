@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     id 'com.google.gms.google-services'
+    id 'maven-publish'
 }
 
 android {
@@ -79,4 +80,54 @@ dependencies {
 
     // Barcode Scanner
     implementation(libs.play.services.code.scanner)
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId = 'com.northcoders'
+                artifactId = 'pigliotech-frontend'
+                version = android.defaultConfig.versionName
+                
+                // For Android, specify the artifacts directly instead of using components.release
+                artifact("$buildDir/outputs/aar/app-release.aar")
+                
+                // Additional artifact for debug build
+                artifact("$buildDir/outputs/apk/debug/app-debug.apk") {
+                    classifier = 'debug-apk'
+                }
+                
+                pom {
+                    name = 'PiglioTech Frontend'
+                    description = 'Android frontend for the PiglioTech book sharing application'
+                    url = 'https://github.com/jv-kune-kune/PiglioTech-FrontEnd'
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'https://opensource.org/licenses/MIT'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'jv-kune-kune'
+                            name = 'JV Kune Kune Team'
+                            email = 'jvkunekune@gmail.com'
+                        }
+                    }
+                }
+            }
+        }
+        
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/jv-kune-kune/PiglioTech-FrontEnd")
+                credentials {
+                    username = System.getenv("GITHUB_USERNAME") ?: "jv-kune-kune"
+                    password = System.getenv("GITHUB_TOKEN") ?: project.findProperty('github.token')
+                }
+            }
+        }
+    }
 }
