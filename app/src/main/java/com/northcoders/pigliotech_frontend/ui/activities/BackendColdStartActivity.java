@@ -1,4 +1,4 @@
-package com.northcoders.pigliotech_frontend.activities;
+package com.northcoders.pigliotech_frontend.ui.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -39,10 +39,6 @@ public class BackendColdStartActivity extends AppCompatActivity {
 
     private void logDebug(String message) {
         Log.d(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getActivityInfo(), message));
-    }
-
-    private void logWarning(String message) {
-        Log.w(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getActivityInfo(), message));
     }
 
     private void logError(String message) {
@@ -196,10 +192,5 @@ public class BackendColdStartActivity extends AppCompatActivity {
         } catch (Exception e) {
             logError("Error updating elapsed time: " + e.getMessage());
         }
-    }
-
-    private void registerBackendStatusReceiver() {
-        IntentFilter filter = new IntentFilter(BackendStatusManager.ACTION_BACKEND_ONLINE);
-        registerReceiver(backendOnlineReceiver, filter);
     }
 }

@@ -18,10 +18,9 @@ import com.northcoders.pigliotech_frontend.ui.fragments.home.HomeFragment;
 import com.northcoders.pigliotech_frontend.ui.fragments.landingpage.LandingPageFragment;
 import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileFragment;
 import com.northcoders.pigliotech_frontend.ui.fragments.swapbook.SwapFragment;
+import com.northcoders.pigliotech_frontend.ui.mainactivity.MainActivityEvents;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
-
-    private MainActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +33,17 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             return insets;
         });
 
-        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        MainActivityViewModel viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
         NavigationBarView bottomNav = findViewById(R.id.bottom_nav_bar);
         bottomNav.setOnItemSelectedListener(this);
 
         viewModel.getEvents().observe(this, event -> {
             if (event != null) {
-                switch (event) {
-                    case NAVIGATE_TO_LANDING_PAGE:
-                        replaceFragment(new LandingPageFragment());
-                        break;
-                    case NAVIGATE_TO_HOME_PAGE:
-                        replaceFragment(new HomeFragment());
-                        break;
+                if (event == MainActivityEvents.NAVIGATE_TO_LANDING_PAGE) {
+                    replaceFragment(new LandingPageFragment());
+                } else if (event == MainActivityEvents.NAVIGATE_TO_HOME_PAGE) {
+                    replaceFragment(new HomeFragment());
                 }
                 viewModel.eventSeen();
             }

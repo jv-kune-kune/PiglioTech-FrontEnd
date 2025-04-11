@@ -15,7 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.northcoders.pigliotech_frontend.PiglioTechApp;
-import com.northcoders.pigliotech_frontend.activities.BackendColdStartActivity;
+import com.northcoders.pigliotech_frontend.ui.activities.BackendColdStartActivity;
 import com.northcoders.pigliotech_frontend.network.RetrofitInstance;
 
 import java.io.IOException;
