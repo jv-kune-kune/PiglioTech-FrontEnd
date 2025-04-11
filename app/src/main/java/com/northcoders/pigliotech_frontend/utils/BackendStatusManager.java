@@ -90,18 +90,14 @@ public class BackendStatusManager {
 
     private BackendStatusManager() {
         // Private constructor for singleton
-        autoCheckRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (isColdStartScreenShown) {
-                    // Only check if we're not already checking and not in a retry delay
-                    long currentTime = System.currentTimeMillis();
-                    if (!isChecking.get() && (currentTime >= nextRetryTime || retryCount == 0)) {
-                        Log.d(TAG, "Auto-check triggered");
-                        startBackendCheck(false);
-                    }
-                    handler.postDelayed(this, AUTO_CHECK_INTERVAL);
+        autoCheckRunnable = () -> {
+            if (isColdStartScreenShown) {
+                long currentTime = System.currentTimeMillis();
+                if (!isChecking.get() && (currentTime >= nextRetryTime || retryCount == 0)) {
+                    Log.d(TAG, "Auto-check triggered");
+                    startBackendCheck(false);
                 }
+                handler.postDelayed(autoCheckRunnable, AUTO_CHECK_INTERVAL);
             }
         };
     }
@@ -598,24 +594,6 @@ public class BackendStatusManager {
         }
     }
 
-    private void showProgressUpdate() {
-        long elapsedMinutes = (System.currentTimeMillis() - startTime) / TimeUnit.MINUTES.toMillis(1);
-        long remainingMinutes = (BACKEND_TIMEOUT - (System.currentTimeMillis() - startTime))
-                / TimeUnit.MINUTES.toMillis(1);
-
-        handler.post(() -> {
-            try {
-                String actionText = pendingAction != null ? " for " + pendingAction : "";
-                String message = String.format(
-                        "Still waiting for backend%s... (%d minutes elapsed, %d minutes remaining)",
-                        actionText, elapsedMinutes, remainingMinutes);
-                Toast.makeText(PiglioTechApp.getContext(), message, Toast.LENGTH_LONG).show();
-            } catch (Exception e) {
-                Log.e(TAG, "Error showing progress update: " + e.getMessage());
-            }
-        });
-    }
-
     private void showColdStartScreen() {
         if (!isColdStartScreenShown) {
             isColdStartScreenShown = true;
@@ -686,10 +664,6 @@ public class BackendStatusManager {
 
     private void logWarning(String message) {
         Log.w(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getStatusInfo(), message));
-    }
-
-    private void logError(String message) {
-        Log.e(TAG, String.format(LOG_FORMAT, LOG_PREFIX, getStatusInfo(), message));
     }
 
     private String getStatusInfo() {

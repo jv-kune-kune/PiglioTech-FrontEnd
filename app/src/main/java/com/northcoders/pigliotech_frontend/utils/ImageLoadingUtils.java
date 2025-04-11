@@ -14,6 +14,10 @@ import com.northcoders.pigliotech_frontend.R;
 public class ImageLoadingUtils {
     private static final String TAG = "ImageLoadingUtils";
 
+    private ImageLoadingUtils() {
+        // Private constructor to hide implicit public one
+    }
+
     private static void loadImageWithFallback(Context context, ImageView imageView, String imageUrl,
             int fallbackResource, String errorPrefix, String fallbackIdentifier) {
         if (imageUrl == null || imageUrl.isEmpty()) {
