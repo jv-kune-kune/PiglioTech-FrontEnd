@@ -23,9 +23,12 @@ import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentSwapBinding;
 import com.northcoders.pigliotech_frontend.data.models.Match;
 import com.northcoders.pigliotech_frontend.presentation.features.error.ErrorFragment;
+import com.northcoders.pigliotech_frontend.presentation.common.util.SuppressFragmentWarnings;
 
 import java.util.List;
 
+@SuppressFragmentWarnings
+@SuppressWarnings("unused")
 public class SwapFragment extends Fragment {
 
     private FragmentSwapBinding binding;

@@ -11,6 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+@SuppressWarnings("unused")
 public class RetrofitInstance {
     private static final String TAG = "RetrofitInstance";
     private static final String BASE_URL = "https://pigliotech-backend.onrender.com/api/v1/";

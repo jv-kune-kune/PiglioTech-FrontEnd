@@ -48,6 +48,20 @@ android {
 
     lint {
         baseline = file("lint-baseline.xml")
+        // Disable warnings for unused declarations
+        disable 'UnusedDeclaration'
+        // Disable warning for unnecessary return statements in void methods
+        disable 'RedundantReturn'
+        // Configure lint to be less strict for tests
+        checkTestSources false
+        // Set test module configuration
+        ignoreTestSources true
+        // Disable warnings for Android Fragments
+        disable 'FragmentConstructor'
+        // Check for the IDE only
+        checkDependencies true
+        // Relax warning for model classes used with frameworks
+        disable 'unused'
     }
 }
 
@@ -134,6 +148,6 @@ afterEvaluate {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(23)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }

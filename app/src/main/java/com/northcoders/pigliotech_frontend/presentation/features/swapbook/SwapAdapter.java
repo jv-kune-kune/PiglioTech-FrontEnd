@@ -4,7 +4,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -82,10 +81,6 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
             super(swapItemBinding.getRoot());
             this.swapItemBinding = swapItemBinding;
             this.declineButton = swapItemBinding.declineBtn;
-            // These fields are not used outside the constructor, so making them local
-            TextView requesterNameTextView = swapItemBinding.requesterNameTextView;
-            TextView requestBookTitleTextView = swapItemBinding.otherUserTitle;
-            TextView userBookTitleTextView = swapItemBinding.userTitle;
         }
     }
 }

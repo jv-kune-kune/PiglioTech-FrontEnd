@@ -32,11 +32,9 @@ public class UserRepository {
 
     private abstract class RetryingCallback<T> implements Callback<T> {
         private int retryCount = 0;
-        private final Call<T> call;
         private final Consumer<?> consumer;
 
-        RetryingCallback(Call<T> call, Consumer<?> consumer) {
-            this.call = call;
+        RetryingCallback(@SuppressWarnings("unused") Call<T> call, Consumer<?> consumer) {
             this.consumer = consumer;
         }
 
@@ -49,9 +47,7 @@ public class UserRepository {
                 retryCount++;
                 Log.i(TAG, "Backend starting up, retry attempt " + retryCount);
 
-                handler.postDelayed(() -> {
-                    call.clone().enqueue(this);
-                }, RETRY_DELAY_MS);
+                handler.postDelayed(() -> call.clone().enqueue(this), RETRY_DELAY_MS);
             } else {
                 consumer.accept(null);
                 Log.e(TAG, "Network failure after " + retryCount + " retries", t);
@@ -61,7 +57,7 @@ public class UserRepository {
 
     public void addUser(User user, Consumer<Integer> addUserConsumer) {
         Call<User> call = userApiService.addUser(user);
-        call.enqueue(new RetryingCallback<User>(call, addUserConsumer) {
+        call.enqueue(new RetryingCallback<>(call, addUserConsumer) {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if (response.code() == 201 && response.body() != null) {
@@ -79,7 +75,7 @@ public class UserRepository {
         Call<User> call = userApiService.getCurrentUser(id);
         Log.i(TAG, "Requested User Id: " + id);
 
-        call.enqueue(new RetryingCallback<User>(call, getUserConsumer) {
+        call.enqueue(new RetryingCallback<>(call, getUserConsumer) {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if (response.code() == 200 && response.body() != null) {
@@ -98,7 +94,7 @@ public class UserRepository {
         Call<List<User>> call = userApiService.getUsersByRegion(regionEnum, currentUserId);
         Log.i(TAG, "getUsersByRegion Called, Region: " + regionEnum + ", UserID: " + currentUserId);
 
-        call.enqueue(new RetryingCallback<List<User>>(call, usersByRegionConsumer) {
+        call.enqueue(new RetryingCallback<>(call, usersByRegionConsumer) {
             @Override
             public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
                 if (response.code() == 200 && response.body() != null) {
@@ -117,7 +113,7 @@ public class UserRepository {
         Call<User> call = userApiService.addBook(userId, isbn);
         Log.i(TAG, "addBook Called, userId: " + userId + ", ISBN: " + isbn);
 
-        call.enqueue(new RetryingCallback<User>(call, addBookConsumer) {
+        call.enqueue(new RetryingCallback<>(call, addBookConsumer) {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if (response.code() == 201 && response.body() != null) {
@@ -135,7 +131,7 @@ public class UserRepository {
         Call<Void> call = userApiService.deleteBook(userId, isbnString);
         Log.i(TAG, "deleteBook Called, userId: " + userId + ", ISBN: " + isbnString);
 
-        call.enqueue(new RetryingCallback<Void>(call, deleteBookConsumer) {
+        call.enqueue(new RetryingCallback<>(call, deleteBookConsumer) {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.code() == 204) {
@@ -152,7 +148,7 @@ public class UserRepository {
     public void createSwapRequest(SwapRequest swapRequest, Consumer<Integer> likeBookConsumer) {
         Call<SwapRequest> call = userApiService.createSwapRequest(swapRequest);
 
-        call.enqueue(new RetryingCallback<SwapRequest>(call, likeBookConsumer) {
+        call.enqueue(new RetryingCallback<>(call, likeBookConsumer) {
             @Override
             public void onResponse(@NonNull Call<SwapRequest> call, @NonNull Response<SwapRequest> response) {
                 if (response.code() == 201 && response.body() != null) {
@@ -173,7 +169,7 @@ public class UserRepository {
         Call<List<Match>> call = userApiService.getMatches(currentUserId);
         Log.i(TAG, "getMatches UserID: " + currentUserId);
 
-        call.enqueue(new RetryingCallback<List<Match>>(call, usersMatchesConsumer) {
+        call.enqueue(new RetryingCallback<>(call, usersMatchesConsumer) {
             @Override
             public void onResponse(@NonNull Call<List<Match>> call, @NonNull Response<List<Match>> response) {
                 if (response.code() == 200 && response.body() != null) {
@@ -192,7 +188,7 @@ public class UserRepository {
         Call<Void> call = userApiService.dismissMatch(swapDismissal);
         Log.i(TAG, "dismissMatch Called : " + swapDismissal);
 
-        call.enqueue(new RetryingCallback<Void>(call, dismissMatchConsumer) {
+        call.enqueue(new RetryingCallback<>(call, dismissMatchConsumer) {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.code() == 204) {

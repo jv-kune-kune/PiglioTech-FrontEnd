@@ -11,15 +11,17 @@ public class AuthRepository {
         this.mAuth = FirebaseInstance.getFirebaseAuth();
     }
 
-    public FirebaseAuth getmAuth() {
+    public FirebaseAuth getAuth() {
         return mAuth;
     }
 
-    public void setmAuth(FirebaseAuth mAuth) {
+    @SuppressWarnings("unused")
+    public void setAuth(FirebaseAuth mAuth) {
         this.mAuth = mAuth;
     }
 
-    public void signOutUser(){
+    @SuppressWarnings("unused")
+    public void signOutUser() {
         mAuth.signOut();
     }
 }

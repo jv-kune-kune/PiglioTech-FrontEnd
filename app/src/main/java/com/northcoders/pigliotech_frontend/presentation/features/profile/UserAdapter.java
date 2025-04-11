@@ -36,8 +36,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         BookItemBinding binding = BookItemBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
                 parent,
-                false
-        );
+                false);
 
         return new UserViewHolder(binding);
     }
@@ -56,15 +55,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 .error(R.drawable.blank_book)
                 .into(holder.bookCoverImageView);
 
-        holder.deleteBookButton.setOnClickListener(view -> {
-            viewModel.deleteBook(book.getIsbn());
-        });
+        holder.deleteBookButton.setOnClickListener(view -> viewModel.deleteBook(book.getIsbn()));
 
-        holder.likeBookButton.setOnClickListener(view -> {
-            viewModel.likeBook(book.getIsbn());
-        });
+        holder.likeBookButton.setOnClickListener(view -> viewModel.likeBook(book.getIsbn()));
 
-        if(profileState instanceof ProfileState.OtherUserLoaded){
+        if (profileState instanceof ProfileState.OtherUserLoaded) {
             holder.deleteBookButton.setVisibility(View.GONE);
             holder.likeBookButton.setVisibility(View.VISIBLE);
         }
@@ -75,7 +70,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         return books.size();
     }
 
-    public static class UserViewHolder extends RecyclerView.ViewHolder{
+    public static class UserViewHolder extends RecyclerView.ViewHolder {
 
         private final BookItemBinding bookItemBinding;
         private final ImageView bookCoverImageView;

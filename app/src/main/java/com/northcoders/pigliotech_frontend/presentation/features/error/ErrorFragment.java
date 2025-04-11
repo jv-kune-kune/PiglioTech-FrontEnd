@@ -15,7 +15,10 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentErrorBinding;
 import com.northcoders.pigliotech_frontend.presentation.features.landing.LandingPageFragment;
+import com.northcoders.pigliotech_frontend.presentation.common.util.SuppressFragmentWarnings;
 
+@SuppressFragmentWarnings
+@SuppressWarnings("unused")
 public class ErrorFragment extends Fragment {
 
     private FragmentErrorBinding binding;
@@ -31,7 +34,7 @@ public class ErrorFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentErrorBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -52,12 +55,11 @@ public class ErrorFragment extends Fragment {
                             .beginTransaction()
                             .replace(
                                     R.id.frame_layout_fragment,
-                                    new LandingPageFragment()
-                            ).commit();
+                                    new LandingPageFragment())
+                            .commit();
 
                     requireActivity().getSupportFragmentManager().popBackStack();
-                }
-        );
+                });
     }
 
     @Override

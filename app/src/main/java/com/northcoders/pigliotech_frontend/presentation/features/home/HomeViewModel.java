@@ -20,20 +20,18 @@ public class HomeViewModel extends ViewModel {
     private final UserRepository userRepository;
 
     private final MutableLiveData<HomeEvents> events = new MutableLiveData<>(
-            new HomeEvents.ClickedUserLibrary(null)
-    );
+            new HomeEvents.ClickedUserLibrary(null));
 
     private final MutableLiveData<HomeState> state = new MutableLiveData<>(
-            new HomeState.Loading()
-    );
+            new HomeState.Loading());
 
-    // Callback function that allows for the asynchronous method to be run in the main thread
-    private final Consumer<List<User>> userLibrariesConsumer = userLibraries ->{
-        if (userLibraries != null){
+    // Callback function that allows for the asynchronous method to be run in the
+    // main thread
+    private final Consumer<List<User>> userLibrariesConsumer = userLibraries -> {
+        if (userLibraries != null) {
             Log.i("User Libraries Consumer Called", userLibraries.toString());
             state.setValue(
-                    new HomeState.Loaded(userLibraries)
-            );
+                    new HomeState.Loaded(userLibraries));
         } else {
             state.setValue(new HomeState.Error());
         }
@@ -45,23 +43,22 @@ public class HomeViewModel extends ViewModel {
     }
 
     // Load the users by Region Excluding the the user.
-    public void load(){
+    public void load() {
 
         state.setValue(new HomeState.Loading());
-        if (authRepository.getmAuth().getCurrentUser() != null){
-            String userRegion = authRepository.getmAuth().getCurrentUser().getDisplayName();
-            String userId = authRepository.getmAuth().getCurrentUser().getUid();
+        if (authRepository.getAuth().getCurrentUser() != null) {
+            String userRegion = authRepository.getAuth().getCurrentUser().getDisplayName();
+            String userId = authRepository.getAuth().getCurrentUser().getUid();
 
             userRepository.getUsersByRegion(
                     userRegion,
                     userId,
-                    userLibrariesConsumer
-            );
+                    userLibrariesConsumer);
         }
     }
 
-    public void signOut(){
-        authRepository.getmAuth().signOut();
+    public void signOut() {
+        authRepository.getAuth().signOut();
         FirebaseAuth.getInstance().signOut();
     }
 
@@ -73,14 +70,16 @@ public class HomeViewModel extends ViewModel {
         return state;
     }
 
-    // Called by the Adapter when an item in the RecyclerView is clicked and the id is passed to
+    // Called by the Adapter when an item in the RecyclerView is clicked and the id
+    // is passed to
     // this method and assigned to the Event
     public void onUserClicked(String id) {
         events.setValue(new HomeEvents.ClickedUserLibrary(id));
     }
 
-    // Sets the value of the clicked User back to null after the event has been "seen"
-    public void eventSeen(){
+    // Sets the value of the clicked User back to null after the event has been
+    // "seen"
+    public void eventSeen() {
         events.setValue(new HomeEvents.ClickedUserLibrary(null));
     }
 }

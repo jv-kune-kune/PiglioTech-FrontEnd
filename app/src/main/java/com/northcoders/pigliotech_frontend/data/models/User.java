@@ -13,7 +13,8 @@ public class User extends BaseObservable {
     private List<Book> books;
 
     // No args constructor
-    public User() {}
+    public User() {
+    }
 
     // All args
     public User(String uid, String name, String email, String region, String thumbnail, List<Book> books) {
@@ -38,6 +39,7 @@ public class User extends BaseObservable {
         return uid;
     }
 
+    @SuppressWarnings("unused")
     public void setUid(String uid) {
         this.uid = uid;
     }
@@ -46,6 +48,7 @@ public class User extends BaseObservable {
         return name;
     }
 
+    @SuppressWarnings("unused")
     public void setName(String name) {
         this.name = name;
     }
@@ -54,6 +57,7 @@ public class User extends BaseObservable {
         return email;
     }
 
+    @SuppressWarnings("unused")
     public void setEmail(String email) {
         this.email = email;
     }
@@ -62,6 +66,7 @@ public class User extends BaseObservable {
         return region;
     }
 
+    @SuppressWarnings("unused")
     public void setRegion(String region) {
         this.region = region;
     }
@@ -70,6 +75,7 @@ public class User extends BaseObservable {
         return thumbnail;
     }
 
+    @SuppressWarnings("unused")
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
@@ -78,13 +84,15 @@ public class User extends BaseObservable {
         return books;
     }
 
+    @SuppressWarnings("unused")
     public String createLabel(List<Book> books) {
-        if(books.size() == 1) {
+        if (books.size() == 1) {
             return "Book";
         }
         return "Books";
     }
 
+    @androidx.annotation.NonNull
     @Override
     public String toString() {
         return "User{" +
@@ -95,6 +103,5 @@ public class User extends BaseObservable {
                 ", thumbnail='" + thumbnail + '\'' +
                 '}';
     }
-
 
 }

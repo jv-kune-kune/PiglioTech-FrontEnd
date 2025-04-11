@@ -25,7 +25,10 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentSignUpBinding;
 import com.northcoders.pigliotech_frontend.presentation.features.profile.ProfileFragment;
+import com.northcoders.pigliotech_frontend.presentation.common.util.SuppressFragmentWarnings;
 
+@SuppressFragmentWarnings
+@SuppressWarnings("unused")
 public class SignUpFragment extends Fragment {
 
     private EditText emailTextView, passwordTextView, nameTextView, avatarUrlTextView;
@@ -35,7 +38,6 @@ public class SignUpFragment extends Fragment {
     private SignUpViewModel viewModel;
     private Spinner regionSpinner;
     private NavigationBarView bottomNavBar;
-
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -49,7 +51,7 @@ public class SignUpFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
@@ -70,33 +72,33 @@ public class SignUpFragment extends Fragment {
         bottomNavBar.setVisibility(View.GONE);
 
         viewModel.getState().observe(activity, state -> {
-            if (state.getLoading()){
+            if (state.getLoading()) {
                 progressbar.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 progressbar.setVisibility(View.GONE);
             }
         });
 
         /*
-        events observer that uses the state of MutableLiveData<SignUpEvents> events in the
-        SignUpFragment ViewModel
+         * events observer that uses the state of MutableLiveData<SignUpEvents> events
+         * in the
+         * SignUpFragment ViewModel
          */
         viewModel.getEvents().observe(activity, event -> {
-            if(event != null){
-                switch (event){
+            if (event != null) {
+                switch (event) {
                     case REGISTRATION_SUCCESSFUL:
                         Toast.makeText(
                                 context,
                                 "Registration successful!",
-                                Toast.LENGTH_LONG
-                        ).show();
+                                Toast.LENGTH_LONG).show();
 
                         activity.getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(
                                         R.id.frame_layout_fragment,
-                                        new ProfileFragment()
-                                ).commit();
+                                        new ProfileFragment())
+                                .commit();
 
                         activity.getSupportFragmentManager().popBackStack();
 
@@ -106,36 +108,31 @@ public class SignUpFragment extends Fragment {
                         Toast.makeText(
                                 context,
                                 "Registration failed!! Please try again later",
-                                Toast.LENGTH_LONG
-                        ).show();
+                                Toast.LENGTH_LONG).show();
                         break;
                     case SELECT_REGION:
                         Toast.makeText(
                                 context,
                                 "Please select a Region!",
-                                Toast.LENGTH_LONG
-                        ).show();
+                                Toast.LENGTH_LONG).show();
                         break;
                     case NAME_IS_BLANK:
                         Toast.makeText(
                                 context,
                                 "Please enter your name!",
-                                Toast.LENGTH_LONG
-                        ).show();
+                                Toast.LENGTH_LONG).show();
                         break;
                     case EMAIL_IS_BLANK:
                         Toast.makeText(
                                 context,
                                 "Please enter email!",
-                                Toast.LENGTH_LONG
-                        ).show();
+                                Toast.LENGTH_LONG).show();
                         break;
                     case PASSWORD_IS_BLANK:
                         Toast.makeText(
                                 context,
                                 "Please enter password!",
-                                Toast.LENGTH_LONG
-                        ).show();
+                                Toast.LENGTH_LONG).show();
                         break;
                     default:
                         break;
@@ -145,7 +142,7 @@ public class SignUpFragment extends Fragment {
         });
     }
 
-    private void registerNewUser(){
+    private void registerNewUser() {
 
         // Take the value of two edit texts in Strings
         String email, password, name, avatarUrl, region;
@@ -157,15 +154,14 @@ public class SignUpFragment extends Fragment {
         password = passwordTextView.getText().toString();
         Log.i("PASSWORD", password);
         avatarUrl = avatarUrlTextView.getText().toString();
-        Log.i("AVATARURL", avatarUrl);
+        Log.i("AVATAR_URL", avatarUrl);
         region = regionSpinner.getSelectedItem().toString();
         Log.i("REGION", region);
-
 
         viewModel.signUp(name, email, password, avatarUrl, region);
     }
 
-    private void bindingUiElements(){
+    private void bindingUiElements() {
         emailTextView = binding.email;
         passwordTextView = binding.password;
         nameTextView = binding.name;
@@ -179,8 +175,7 @@ public class SignUpFragment extends Fragment {
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(
                 requireContext(),
                 R.array.regions,
-                R.layout.spinner_item
-        );
+                R.layout.spinner_item);
         arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         regionSpinner.setAdapter(arrayAdapter);
     }

@@ -16,7 +16,6 @@ captures/
 *.apk
 output.json
 *.aab
-*.jks
 
 # IntelliJ
 *.iml

@@ -20,9 +20,19 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class retrofit.** { *; }
+# Keep entry points and Fragment constructors
+-keep public class * extends androidx.fragment.app.Fragment
+-keep public class com.northcoders.pigliotech_frontend.PiglioTechApp
+-keep public class * extends android.app.Activity
+-keep public class com.northcoders.pigliotech_frontend.data.models.*
+-keep public class * { public <init>(); }
+
+# Keep test classes
+#-keep class com.northcoders.pigliotech_frontend.ExampleInstrumentedTest
+#-keep class com.northcoders.pigliotech_frontend.ExampleUnitTest
+
+# Retrofit and other library rules
 -keep class retrofit2.** { *; }
 -keep class okhttp3.** { *; }
 -keep class com.google.gson.** { *; }
--keepclassmembers class com.northcoders.pigliotech_frontend.model.** { *; }
 -keepclassmembers class * { @retrofit2.http.* <methods>; }

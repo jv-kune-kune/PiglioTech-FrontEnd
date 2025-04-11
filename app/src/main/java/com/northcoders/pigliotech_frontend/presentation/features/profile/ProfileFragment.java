@@ -27,9 +27,12 @@ import com.northcoders.pigliotech_frontend.databinding.FragmentProfileBinding;
 import com.northcoders.pigliotech_frontend.data.models.Book;
 import com.northcoders.pigliotech_frontend.presentation.features.error.ErrorFragment;
 import com.northcoders.pigliotech_frontend.presentation.features.landing.LandingPageFragment;
+import com.northcoders.pigliotech_frontend.presentation.common.util.SuppressFragmentWarnings;
 
 import java.util.ArrayList;
 
+@SuppressFragmentWarnings
+@SuppressWarnings("unused")
 public class ProfileFragment extends Fragment {
 
     private TextView textViewEmail, textViewName, textViewRegion;

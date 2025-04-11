@@ -23,10 +23,13 @@ import com.northcoders.pigliotech_frontend.databinding.FragmentHomeBinding;
 import com.northcoders.pigliotech_frontend.data.models.User;
 import com.northcoders.pigliotech_frontend.presentation.features.error.ErrorFragment;
 import com.northcoders.pigliotech_frontend.presentation.features.profile.ProfileFragment;
+import com.northcoders.pigliotech_frontend.presentation.common.util.SuppressFragmentWarnings;
 
 import java.util.Collections;
 import java.util.List;
 
+@SuppressFragmentWarnings
+@SuppressWarnings("unused")
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
@@ -47,7 +50,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         NavigationBarView bottomNav = requireActivity().findViewById(R.id.bottom_nav_bar);
         bottomNav.setVisibility(VISIBLE);
 

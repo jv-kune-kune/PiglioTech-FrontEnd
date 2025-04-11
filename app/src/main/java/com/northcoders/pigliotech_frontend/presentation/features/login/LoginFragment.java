@@ -20,7 +20,10 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentLoginBinding;
 import com.northcoders.pigliotech_frontend.presentation.features.home.HomeFragment;
+import com.northcoders.pigliotech_frontend.presentation.common.util.SuppressFragmentWarnings;
 
+@SuppressFragmentWarnings
+@SuppressWarnings("unused")
 public class LoginFragment extends Fragment {
 
     private EditText editTextEmail, editTextPassword;
@@ -42,7 +45,7 @@ public class LoginFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -53,7 +56,7 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         FragmentActivity activity = requireActivity();
-        Context context  = requireContext();
+        Context context = requireContext();
 
         bindUiElements();
 
@@ -63,16 +66,16 @@ public class LoginFragment extends Fragment {
         bottomNav.setVisibility(View.GONE);
 
         viewModel.getState().observe(activity, loginState -> {
-            if(loginState.getLoading()){
+            if (loginState.getLoading()) {
                 progressBar.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 progressBar.setVisibility(View.GONE);
             }
         });
 
         viewModel.getEvents().observe(activity, loginEvent -> {
-            if(loginEvent != null){
-                switch(loginEvent){
+            if (loginEvent != null) {
+                switch (loginEvent) {
                     case LOGIN_SUCCESSFUL:
                         activity.getSupportFragmentManager()
                                 .beginTransaction()
@@ -81,18 +84,18 @@ public class LoginFragment extends Fragment {
 
                         activity.getSupportFragmentManager().popBackStack();
                         bottomNav.setSelectedItemId(R.id.home);
-                        
+
                         Toast.makeText(context, "Login successful!", Toast.LENGTH_LONG).show();
                         break;
-                        
+
                     case LOGIN_FAILED:
                         Toast.makeText(context, "Login failed!", Toast.LENGTH_LONG).show();
                         break;
-                        
+
                     case EMAIL_IS_BLANK:
                         Toast.makeText(context, "Please enter email!", Toast.LENGTH_LONG).show();
                         break;
-                        
+
                     case PASSWORD_IS_BLANK:
                         Toast.makeText(context, "Please enter password!", Toast.LENGTH_LONG).show();
                         break;
@@ -102,7 +105,7 @@ public class LoginFragment extends Fragment {
         });
     }
 
-    private void loginUserAccount(){
+    private void loginUserAccount() {
         // Take the value of two edit texts in Strings
         String email, password;
         email = editTextEmail.getText().toString();
@@ -111,7 +114,7 @@ public class LoginFragment extends Fragment {
         viewModel.login(email, password);
     }
 
-    private void bindUiElements(){
+    private void bindUiElements() {
         editTextEmail = binding.email;
         editTextPassword = binding.password;
         progressBar = binding.progressBar;

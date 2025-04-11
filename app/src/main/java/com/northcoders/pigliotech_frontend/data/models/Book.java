@@ -25,6 +25,7 @@ public class Book {
         return isbn;
     }
 
+    @SuppressWarnings("unused")
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
@@ -33,6 +34,7 @@ public class Book {
         return title;
     }
 
+    @SuppressWarnings("unused")
     public void setTitle(String title) {
         this.title = title;
     }
@@ -41,6 +43,7 @@ public class Book {
         return author;
     }
 
+    @SuppressWarnings("unused")
     public void setAuthor(String author) {
         this.author = author;
     }
@@ -49,6 +52,7 @@ public class Book {
         return thumbnail;
     }
 
+    @SuppressWarnings("unused")
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }

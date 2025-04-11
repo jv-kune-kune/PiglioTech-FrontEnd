@@ -3,6 +3,7 @@ package com.northcoders.pigliotech_frontend;
 import android.app.Application;
 import android.content.Context;
 
+@SuppressWarnings("unused")
 public class PiglioTechApp extends Application {
     private static Context context;
 

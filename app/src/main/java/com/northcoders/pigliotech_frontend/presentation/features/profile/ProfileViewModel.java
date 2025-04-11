@@ -25,21 +25,19 @@ public class ProfileViewModel extends ViewModel {
     private String nonUserId;
 
     private final MutableLiveData<ProfileState> state = new MutableLiveData<>(
-            new ProfileState.Loading()
-    );
+            new ProfileState.Loading());
     private final MutableLiveData<ProfileEvents> events = new MutableLiveData<>(null);
 
-    private final Consumer<User> getUserConsumer = user ->{
-        if (user != null){
-            if(isCurrentUser) {
+    private final Consumer<User> getUserConsumer = user -> {
+        if (user != null) {
+            if (isCurrentUser) {
                 Log.i(TAG, "User Callback Consumer: " + user);
                 state.setValue(new ProfileState.Loaded(
                         user.getName(),
                         user.getEmail(),
                         regionEnumToString(user.getRegion()),
                         user.getThumbnail(),
-                        user.getBooks()
-                ));
+                        user.getBooks()));
             } else {
                 Log.i(TAG, "NonUser Callback Consumer: " + user);
                 state.setValue(new ProfileState.OtherUserLoaded(
@@ -47,8 +45,7 @@ public class ProfileViewModel extends ViewModel {
                         user.getEmail(),
                         regionEnumToString(user.getRegion()),
                         user.getThumbnail(),
-                        user.getBooks()
-                ));
+                        user.getBooks()));
             }
         } else {
             state.setValue(new ProfileState.Error());
@@ -56,22 +53,22 @@ public class ProfileViewModel extends ViewModel {
         }
     };
 
-    private final Consumer<Integer> deleteBookConsumer = responseCode ->{
-        if(responseCode != null){
-            if(responseCode == 204){
+    private final Consumer<Integer> deleteBookConsumer = responseCode -> {
+        if (responseCode != null) {
+            if (responseCode == 204) {
                 events.setValue(ProfileEvents.BOOK_DELETED);
-            }else {
+            } else {
                 events.setValue(ProfileEvents.BOOK_NOT_DELETED);
             }
             getCurrentUserLibrary();
         }
     };
 
-    private final Consumer<Integer> likeBookConsumer = responseCode ->{
-        if(responseCode != null){
-            if(responseCode == 201){
+    private final Consumer<Integer> likeBookConsumer = responseCode -> {
+        if (responseCode != null) {
+            if (responseCode == 201) {
                 events.setValue(ProfileEvents.BOOK_LIKED);
-            }else if(responseCode == 409){
+            } else if (responseCode == 409) {
                 events.setValue(ProfileEvents.BOOK_ALREADY_LIKED);
             } else {
                 events.setValue(ProfileEvents.LIKE_ERROR);
@@ -84,9 +81,10 @@ public class ProfileViewModel extends ViewModel {
         this.userRepository = new UserRepository();
     }
 
-    public void load(String nonUserId){
-        // If nonUserId is not null, will send their id in the User request instead current user's id
-        if(nonUserId != null){
+    public void load(String nonUserId) {
+        // If nonUserId is not null, will send their id in the User request instead
+        // current user's id
+        if (nonUserId != null) {
             this.nonUserId = nonUserId;
             state.setValue(new ProfileState.Loading());
             this.isCurrentUser = false;
@@ -96,13 +94,13 @@ public class ProfileViewModel extends ViewModel {
         }
     }
 
-    private void getCurrentUserLibrary(){
+    private void getCurrentUserLibrary() {
         state.setValue(new ProfileState.Loading());
         this.isCurrentUser = true;
         userRepository.getUser(getUserId(), getUserConsumer);
     }
 
-    public void deleteBook(String isbnString){
+    public void deleteBook(String isbnString) {
         state.setValue(new ProfileState.Loading());
         String userID = getUserId();
         userRepository.deleteBook(userID, isbnString, deleteBookConsumer);
@@ -110,28 +108,28 @@ public class ProfileViewModel extends ViewModel {
         Log.i(TAG, "DELETE BOOK BUTTON CLICKED User: " + userID + ", ISBN: " + isbnString);
     }
 
-    public void likeBook(String isbnString){
+    public void likeBook(String isbnString) {
         SwapRequest swapRequest = new SwapRequest(getUserId(), nonUserId, isbnString);
         userRepository.createSwapRequest(swapRequest, likeBookConsumer);
         Log.i(TAG, "LIKE BOOK BUTTON CLICKED nonUser: " + nonUserId + ", ISBN: " + isbnString);
     }
 
-    private String getUserId(){
-        if(authRepository.getmAuth().getCurrentUser() != null){
+    private String getUserId() {
+        if (authRepository.getAuth().getCurrentUser() != null) {
             this.isCurrentUser = true;
-            return authRepository.getmAuth().getCurrentUser().getUid();
+            return authRepository.getAuth().getCurrentUser().getUid();
         }
         return null;
     }
 
-    public void signOut(){
-        authRepository.getmAuth().signOut();
+    public void signOut() {
+        authRepository.getAuth().signOut();
         FirebaseAuth.getInstance().signOut();
     }
 
-    private int regionEnumToString(String backendRegion){
-        for (Region region : Region.values()){
-            if (backendRegion.equals(region.toString())){
+    private int regionEnumToString(String backendRegion) {
+        for (Region region : Region.values()) {
+            if (backendRegion.equals(region.toString())) {
                 Log.i(TAG, "Mapped Region: " + region);
                 return region.region;
             }
@@ -147,7 +145,7 @@ public class ProfileViewModel extends ViewModel {
         return events;
     }
 
-    public void eventSeen(){
+    public void eventSeen() {
         events.setValue(null);
     }
 }

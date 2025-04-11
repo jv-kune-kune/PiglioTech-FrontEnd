@@ -16,8 +16,10 @@ import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentLandingPageBinding;
 import com.northcoders.pigliotech_frontend.presentation.features.login.LoginFragment;
 import com.northcoders.pigliotech_frontend.presentation.features.signup.SignUpFragment;
+import com.northcoders.pigliotech_frontend.presentation.common.util.SuppressFragmentWarnings;
 
-
+@SuppressFragmentWarnings
+@SuppressWarnings("unused")
 public class LandingPageFragment extends Fragment {
 
     private FragmentLandingPageBinding binding;
@@ -34,7 +36,7 @@ public class LandingPageFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentLandingPageBinding.inflate(inflater, container, false);
 
@@ -51,21 +53,17 @@ public class LandingPageFragment extends Fragment {
         LoginFragment loginFragment = new LoginFragment();
         SignUpFragment signUpFragment = new SignUpFragment();
 
-        btnLogin.setOnClickListener(view1 ->
-                requireActivity().getSupportFragmentManager()
+        btnLogin.setOnClickListener(view1 -> requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_layout_fragment, loginFragment)
                 .addToBackStack(null)
-                .commit()
-        );
+                .commit());
 
-        btnSignUp.setOnClickListener(view1 ->
-                requireActivity().getSupportFragmentManager()
+        btnSignUp.setOnClickListener(view1 -> requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_layout_fragment, signUpFragment)
                 .addToBackStack(null)
-                .commit()
-        );
+                .commit());
 
         NavigationBarView bottomNav = requireActivity().findViewById(R.id.bottom_nav_bar);
         bottomNav.setVisibility(View.GONE);

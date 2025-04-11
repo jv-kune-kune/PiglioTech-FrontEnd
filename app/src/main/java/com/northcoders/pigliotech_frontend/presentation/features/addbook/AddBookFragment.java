@@ -24,8 +24,10 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentAddBookBinding;
+import com.northcoders.pigliotech_frontend.presentation.common.util.SuppressFragmentWarnings;
 import com.northcoders.pigliotech_frontend.presentation.features.profile.ProfileFragment;
 
+@SuppressFragmentWarnings
 public class AddBookFragment extends Fragment {
 
     private AddBookViewModel viewModel;
@@ -35,6 +37,7 @@ public class AddBookFragment extends Fragment {
     private Button buttonScan;
     private FragmentAddBookBinding binding;
 
+    @SuppressWarnings("unused")
     public AddBookFragment() {
         // Required empty public constructor
     }
@@ -48,7 +51,7 @@ public class AddBookFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentAddBookBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -61,30 +64,28 @@ public class AddBookFragment extends Fragment {
         uiElementBinding(); // Bind UI Elements
 
         buttonSubmit.setOnClickListener(
-                view1 -> viewModel.addBook(editTextIsbn.getText().toString())
-        );
+                view1 -> viewModel.addBook(editTextIsbn.getText().toString()));
 
         buttonScan.setOnClickListener(
                 view1 -> {
-                    if (getContext() != null){
+                    if (getContext() != null) {
                         GmsBarcodeScanner scanner = GmsBarcodeScanning.getClient(getContext());
                         scanner.startScan()
                                 .addOnSuccessListener(barcode -> {
-                                    if(barcode.getRawValue()!= null){
+                                    if (barcode.getRawValue() != null) {
                                         editTextIsbn.setText(barcode.getRawValue());
                                         Log.i("AddBookFragment", barcode.getRawValue());
                                     }
 
                                 });
                     }
-                }
-        );
+                });
 
         // State observer
         viewModel.getState().observe(getViewLifecycleOwner(), addBookState -> {
-            if (addBookState.getLoading()){
+            if (addBookState.getLoading()) {
                 progressBar.setVisibility(VISIBLE);
-            }else {
+            } else {
                 progressBar.setVisibility(GONE);
             }
         });
@@ -94,13 +95,13 @@ public class AddBookFragment extends Fragment {
         FragmentActivity activity = getActivity();
 
         // Events observer
-        viewModel.getEvents().observe(getViewLifecycleOwner(), event ->{
-            if (event != null && activity != null){
-                switch (event){
+        viewModel.getEvents().observe(getViewLifecycleOwner(), event -> {
+            if (event != null && activity != null) {
+                switch (event) {
                     case BOOK_ADDED:
                         Toast.makeText(context,
-                                        "Book Added!",
-                                        Toast.LENGTH_LONG)
+                                "Book Added!",
+                                Toast.LENGTH_LONG)
                                 .show();
 
                         activity.getSupportFragmentManager()
@@ -112,26 +113,26 @@ public class AddBookFragment extends Fragment {
                         break;
                     case BOOK_NOT_ADDED:
                         Toast.makeText(context,
-                                        "Book Was Not Added!",
-                                        Toast.LENGTH_LONG)
+                                "Book Was Not Added!",
+                                Toast.LENGTH_LONG)
                                 .show();
                         break;
                     case BOOK_ALREADY_OWNED:
                         Toast.makeText(context,
-                                        "This Book Is Already In Your Library!",
-                                        Toast.LENGTH_LONG)
+                                "This Book Is Already In Your Library!",
+                                Toast.LENGTH_LONG)
                                 .show();
                         break;
                     case INVALID_ISBN:
                         Toast.makeText(context,
-                                        "Please Enter a valid ISBN!",
-                                        Toast.LENGTH_LONG)
+                                "Please Enter a valid ISBN!",
+                                Toast.LENGTH_LONG)
                                 .show();
                         break;
                     case NETWORK_ERROR:
                         Toast.makeText(context,
-                                        "Network Error Please Try Again Later!",
-                                        Toast.LENGTH_LONG)
+                                "Network Error Please Try Again Later!",
+                                Toast.LENGTH_LONG)
                                 .show();
                         break;
                     default:
@@ -142,7 +143,7 @@ public class AddBookFragment extends Fragment {
         });
     }
 
-    private void uiElementBinding(){
+    private void uiElementBinding() {
         editTextIsbn = binding.isbn;
         progressBar = binding.progressBar;
         buttonSubmit = binding.buttonSubmit;

@@ -24,20 +24,21 @@ public class SignUpViewModel extends ViewModel {
     private final MutableLiveData<SignUpState> state = new MutableLiveData<>(new SignUpState(false));
     private final MutableLiveData<SignUpEvents> events = new MutableLiveData<>(null);
 
-    private final Consumer<Integer> addUserConsumer = responseCode ->{
-        if (responseCode != null){
-            if (responseCode == 201){
-                // Set events value to registration successful for the observer in SignUpFragment
+    private final Consumer<Integer> addUserConsumer = responseCode -> {
+        if (responseCode != null) {
+            if (responseCode == 201) {
+                // Set events value to registration successful for the observer in
+                // SignUpFragment
                 events.setValue(SignUpEvents.REGISTRATION_SUCCESSFUL);
                 Log.i(TAG, "User Added: " + responseCode);
-            }else {
+            } else {
                 events.setValue(SignUpEvents.REGISTRATION_FAILED);
                 deleteFirebaseUser();
                 Log.e(TAG, "User Not Added: " + responseCode);
             }
             // Update the state for the progress loading bar
             state.setValue(new SignUpState(false));
-        }else {
+        } else {
             // For A Network Error
             deleteFirebaseUser();
             events.setValue(SignUpEvents.NETWORK_ERROR);
@@ -55,36 +56,37 @@ public class SignUpViewModel extends ViewModel {
             String email,
             String password,
             String imageUrl,
-            String region
-    ){
-        if(name.isBlank()){
+            String region) {
+        if (name.isBlank()) {
             events.setValue(SignUpEvents.NAME_IS_BLANK);
-        }else if(email.isBlank()){
+        } else if (email.isBlank()) {
             events.setValue(SignUpEvents.EMAIL_IS_BLANK);
         } else if (password.isBlank()) {
             events.setValue(SignUpEvents.PASSWORD_IS_BLANK);
-        }else if(region.equals("Select Region")){
+        } else if (region.equals("Select Region")) {
             events.setValue(SignUpEvents.SELECT_REGION);
         } else {
             // Update the state for the progress loading bar
             state.setValue(new SignUpState(true));
             // create new user or register new user
-            authRepository.getmAuth()
+            authRepository.getAuth()
                     .createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            if(authRepository.getmAuth().getCurrentUser() != null){
-
-                                // On sign in success, update the Firebase DisplayName property to the Region Enum
-                                updateFirebaseDisplayName(regionStringToEnum(region));
-
+                    .addOnCompleteListener(taskCreateUser -> {
+                        if (taskCreateUser.isSuccessful()) {
+                            if (authRepository.getAuth().getCurrentUser() != null) {
+                                // Set the UID of the authenticated user to display name
+                                // Then later when a request is made to the backend for users by region
+                                // a query parameter is added in the request which contains user id that is to
+                                // be excluded
+                                // from the returned users.
+                                updateUserProfile();
+                                // Add User to database
                                 User newUser = new User(
-                                        authRepository.getmAuth().getCurrentUser().getUid(),
+                                        authRepository.getAuth().getCurrentUser().getUid(),
                                         name,
                                         email,
                                         regionStringToEnum(region),
-                                        imageUrl
-                                );
+                                        imageUrl);
                                 userRepository.addUser(newUser, addUserConsumer);
                             } else {
                                 // Update the state for the progress loading bar
@@ -92,8 +94,7 @@ public class SignUpViewModel extends ViewModel {
 
                                 events.setValue(SignUpEvents.REGISTRATION_FAILED);
                             }
-                        }
-                        else {
+                        } else {
                             // Update the state for the progress loading bar
                             state.setValue(new SignUpState(false));
 
@@ -103,10 +104,10 @@ public class SignUpViewModel extends ViewModel {
         }
     }
 
-    private String regionStringToEnum(String regionString){
+    private String regionStringToEnum(String regionString) {
         Log.i(TAG, "Region Name: " + regionString);
         String regionEnum;
-        switch (regionString){
+        switch (regionString) {
             case "North West" -> regionEnum = Region.NORTH_WEST.name();
             case "North East" -> regionEnum = Region.NORTH_EAST.name();
             case "Yorkshire Humber" -> regionEnum = Region.YORKSHIRE_HUMBER.name();
@@ -125,34 +126,35 @@ public class SignUpViewModel extends ViewModel {
     }
 
     // Updates the DisplayName for the current Firebase user to the Region ENUM
-    private void updateFirebaseDisplayName(String region){
-        FirebaseUser user = authRepository.getmAuth().getCurrentUser();
-        if (user != null){
+    private void updateUserProfile() {
+        FirebaseUser user = authRepository.getAuth().getCurrentUser();
+        if (user != null) {
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(region)
+                    .setDisplayName(user.getUid())
                     .build();
 
             user.updateProfile(profileUpdates)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "Display Name updated REGION : " + region);
+                            Log.d(TAG, "Display Name updated REGION : " + user.getUid());
                         }
                     });
         }
     }
 
-    // Deletes the FirebaseUser Account if the user account it not created in the backend
-    private void deleteFirebaseUser(){
-        FirebaseUser user = authRepository.getmAuth().getCurrentUser();
-        if(user != null){
+    // Deletes the FirebaseUser Account if the user account it not created in the
+    // backend
+    private void deleteFirebaseUser() {
+        FirebaseUser user = authRepository.getAuth().getCurrentUser();
+        if (user != null) {
             user.delete().addOnCompleteListener(task -> {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Log.i(TAG, "Firebase User Account Deleted");
-                }else {
+                } else {
                     Log.e(TAG, "Firebase User NOT Deleted");
                 }
             });
-        }else {
+        } else {
             Log.i(TAG, "No Firebase User Account to delete");
         }
     }
@@ -166,7 +168,7 @@ public class SignUpViewModel extends ViewModel {
     }
 
     // Called after each event is observed in the SignUp Fragment.
-    public void eventSeen(){
+    public void eventSeen() {
         events.setValue(null);
     }
 }

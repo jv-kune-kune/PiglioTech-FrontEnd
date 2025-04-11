@@ -10,8 +10,7 @@ public class LoginViewModel extends ViewModel {
     private final AuthRepository authRepository;
 
     private final MutableLiveData<LoginState> state = new MutableLiveData<>(
-            new LoginState(false)
-    );
+            new LoginState(false));
     private final MutableLiveData<LoginEvents> events = new MutableLiveData<>(null);
 
     public LoginViewModel() {
@@ -26,24 +25,24 @@ public class LoginViewModel extends ViewModel {
         return events;
     }
 
-    public void eventSeen(){
+    public void eventSeen() {
         events.setValue(null);
     }
 
-    public void login(String email, String password){
+    public void login(String email, String password) {
 
-        if(email.isBlank()){
+        if (email.isBlank()) {
             // Set the event for a blank email
             events.setValue(LoginEvents.EMAIL_IS_BLANK);
-        } else if (password.isBlank()){
+        } else if (password.isBlank()) {
             // Set the event for a blank password
             events.setValue(LoginEvents.PASSWORD_IS_BLANK);
-        }else {
+        } else {
             // Update the state of the progressbar
             state.setValue(new LoginState(true));
 
             // SignIn existing user
-            authRepository.getmAuth()
+            authRepository.getAuth()
                     .signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -54,7 +53,7 @@ public class LoginViewModel extends ViewModel {
                             // hide the progress bar
                             state.setValue(new LoginState(false));
 
-                        }else {
+                        } else {
 
                             // Set the event for a failed login
                             events.setValue(LoginEvents.LOGIN_FAILED);
