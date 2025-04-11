@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'com.northcoders.pigliotech_frontend'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.northcoders.pigliotech_frontend"
         minSdk 26
-        targetSdk 34
+        targetSdk 35
         versionCode 1
         versionName "1.0.0"
 
@@ -129,5 +129,11 @@ afterEvaluate {
                 }
             }
         }
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(23)
     }
 }
