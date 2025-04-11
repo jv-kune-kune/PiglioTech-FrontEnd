@@ -1,14 +1,14 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.profile;
 
 import com.northcoders.pigliotech_frontend.model.Book;
+import com.northcoders.pigliotech_frontend.ui.fragments.home.HomeState;
 
 import java.util.List;
 
 // The states that the ProfileFragment can be in
 public interface ProfileState {
 
-    record Loading() implements ProfileState {
-    }
+    record Loading() implements ProfileState {}
 
     record Loaded(
             String name,
@@ -16,8 +16,7 @@ public interface ProfileState {
             int region,
             String artworkUrl,
             List<Book> books
-    ) implements ProfileState {
-    }
+    ) implements ProfileState {}
 
     record OtherUserLoaded(
             String name,
@@ -25,9 +24,7 @@ public interface ProfileState {
             int region,
             String artworkUrl,
             List<Book> books
-    ) implements ProfileState {
-    }
+    ) implements ProfileState {}
 
-    record Error() implements ProfileState {
-    }
+    record Error() implements ProfileState {}
 }

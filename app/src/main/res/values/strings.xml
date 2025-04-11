@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">PiglioTech</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="book_image">Book Image</string>
     <string name="sign_up">Sign Up</string>
     <string name="name">Name:</string>
@@ -24,22 +25,6 @@
     <string name="try_again">Try again</string>
     <string name="sign_out_btn_text">Sign Out</string>
     <string name="profile_picture_content_description">Your profile picture</string>
-    <string name="pfp_image">pfp_image</string>
-    <string name="home">Home</string>
-    <string name="profile">Profile</string>
-    <string name="add">Add</string>
-    <string name="isbn">ISBN:</string>
-    <string name="submit">Submit</string>
-    <string name="add_a_book_to_your_library">Add a Book \nto Your Library</string>
-    <string name="libraries_near_you">Libraries \n Near You</string>
-    <string name="welcome">Welcome</string>
-    <string name="login">Login</string>
-    <string name="email">Email:</string>
-    <string name="password">Password:</string>
-    <string name="confirm">Confirm</string>
-    <string name="not_already_a_user">Not already a user?</string>
-    <string name="sign_up_button">Sign up</string>
-    <string name="log_in_button">Log in</string>
 
 
     <string-array name="regions">

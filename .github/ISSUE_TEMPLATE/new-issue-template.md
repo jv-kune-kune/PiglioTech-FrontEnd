@@ -8,24 +8,18 @@ assignees: ''
 ---
 
 <!-- Briefly summarise the issue in a concise title next to '#'-->
-
 #
 
 ## Description
-
 <!-- Add a short bullet point description of the problem, requirement, or goal. -->
 - 
 
 ## Deliverables & Tasks
-
 <!-- List actionable tasks. Break down into smaller steps if needed. -->
-
 - [ ] 
 
-## Checklist
-
+## Checklist 
 <!-- General development workflow steps. Remove if unsuitable. -->
-
 - [ ] Create a feature branch
 - [ ] Implement the feature or fix
 - [ ] Write or update tests
@@ -37,12 +31,11 @@ assignees: ''
 <details>
 <summary>References</summary>
 
--
+- 
 
 </details>
 
 ---
 <!-- For tips, examples, and advanced Markdown usage, see the [Project Workflow README](.github/Project_Workflow.md). -->
 > [!NOTE]
->
-See: [Project Workflow README](https://github.com/jv-kune-kune/PiglioTech-General/blob/79bc9e731b48fda27fe75c5c85933d7736e25153/.github/Project_Workflow.md#workflow-overview)
+> See: [Project Workflow README](https://github.com/jv-kune-kune/PiglioTech-General/blob/79bc9e731b48fda27fe75c5c85933d7736e25153/.github/Project_Workflow.md#workflow-overview)

@@ -1,10 +1,16 @@
 package com.northcoders.pigliotech_frontend.ui.fragments.addbook;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
+import static android.view.View.*;
 
 import android.content.Context;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
@@ -66,11 +66,11 @@ public class AddBookFragment extends Fragment {
 
         buttonScan.setOnClickListener(
                 view1 -> {
-                    if (getContext() != null) {
+                    if (getContext() != null){
                         GmsBarcodeScanner scanner = GmsBarcodeScanning.getClient(getContext());
                         scanner.startScan()
                                 .addOnSuccessListener(barcode -> {
-                                    if (barcode.getRawValue() != null) {
+                                    if(barcode.getRawValue()!= null){
                                         editTextIsbn.setText(barcode.getRawValue());
                                         Log.i("AddBookFragment", barcode.getRawValue());
                                     }
@@ -82,9 +82,9 @@ public class AddBookFragment extends Fragment {
 
         // State observer
         viewModel.getState().observe(getViewLifecycleOwner(), addBookState -> {
-            if (addBookState.getLoading()) {
+            if (addBookState.getLoading()){
                 progressBar.setVisibility(VISIBLE);
-            } else {
+            }else {
                 progressBar.setVisibility(GONE);
             }
         });
@@ -94,9 +94,9 @@ public class AddBookFragment extends Fragment {
         FragmentActivity activity = getActivity();
 
         // Events observer
-        viewModel.getEvents().observe(getViewLifecycleOwner(), event -> {
-            if (event != null && activity != null) {
-                switch (event) {
+        viewModel.getEvents().observe(getViewLifecycleOwner(), event ->{
+            if (event != null && activity != null){
+                switch (event){
                     case BOOK_ADDED:
                         Toast.makeText(context,
                                         "Book Added!",
@@ -142,7 +142,7 @@ public class AddBookFragment extends Fragment {
         });
     }
 
-    private void uiElementBinding() {
+    private void uiElementBinding(){
         editTextIsbn = binding.isbn;
         progressBar = binding.progressBar;
         buttonSubmit = binding.buttonSubmit;

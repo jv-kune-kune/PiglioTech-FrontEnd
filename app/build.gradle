@@ -5,22 +5,32 @@ plugins {
 
 android {
     namespace 'com.northcoders.pigliotech_frontend'
-    compileSdk 35
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.northcoders.pigliotech_frontend"
-        minSdk 26
-        targetSdk 35
+        minSdk 24
+        targetSdk 34
         versionCode 1
         versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file("pigliotech.keystore")
+            storePassword System.getenv("KEYSTORE_PASSWORD") ?: "pizDy0-kynwek-cytqix"
+            keyAlias "pigliotech"
+            keyPassword System.getenv("KEY_PASSWORD") ?: "pizDy0-kynwek-cytqix"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
         }
@@ -31,15 +41,19 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
-    buildFeatures {
+    buildFeatures{
         dataBinding true
+    }
+
+    lint {
+        baseline = file("lint-baseline.xml")
     }
 }
 
 dependencies {
 
-//    implementation libs.appcompat
-//    implementation libs.material
+    implementation libs.appcompat
+    implementation libs.material
     implementation libs.activity
     implementation libs.constraintlayout
     testImplementation libs.junit
@@ -47,8 +61,8 @@ dependencies {
     androidTestImplementation libs.espresso.core
 
     // UI Design
-    implementation libs.appcompat
-    implementation libs.material
+    implementation libs.appcompat.v110
+    implementation libs.material.v100
 
     // Retrofit
     implementation libs.retrofit

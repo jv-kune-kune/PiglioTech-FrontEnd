@@ -1,7 +1,7 @@
 name: Auto Add Start Date to Issues
 on:
   issues:
-    types: [ opened, labeled, edited, reopened ]
+    types: [opened, labeled, edited, reopened]
   schedule:
     - cron: "0 23 * * *" # Run daily at 11 PM
 

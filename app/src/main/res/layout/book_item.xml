@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="book"
             type="com.northcoders.pigliotech_frontend.model.Book" />
@@ -34,7 +34,7 @@
                 android:padding="5dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/blank_book" />
+                tools:src="@drawable/blank_book"/>
 
             <TextView
                 android:id="@+id/title"
@@ -51,7 +51,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/pfp_image"
                 app:layout_constraintVertical_bias="0.122"
-                tools:text="Harry Potter and the Order of the Phoenix" />
+                tools:text="Harry Potter and the Order of the Phoenix"
+                />
 
             <TextView
                 android:id="@+id/author"
@@ -63,7 +64,7 @@
                 android:textStyle="italic"
                 app:layout_constraintTop_toBottomOf="@id/title"
                 app:layout_constraintStart_toStartOf="@id/title"
-                tools:text="Author" />
+                tools:text="Author"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_delete_book"
@@ -83,7 +84,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:strokeColor="@color/white"
-                app:strokeWidth="0.8dp" />
+                app:strokeWidth="0.8dp"
+                />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_like_book"
@@ -104,7 +106,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:strokeColor="@color/white"
-                app:strokeWidth="0.8dp" />
+                app:strokeWidth="0.8dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

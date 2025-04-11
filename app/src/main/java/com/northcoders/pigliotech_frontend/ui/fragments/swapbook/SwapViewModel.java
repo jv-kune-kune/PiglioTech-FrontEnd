@@ -13,19 +13,18 @@ import com.northcoders.pigliotech_frontend.model.service.UserRepository;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.IntConsumer;
 
 public class SwapViewModel extends ViewModel {
 
-    private static final String TAG = "SwapViewModel";
+    private final String TAG = "SwapViewModel";
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
 
     private final MutableLiveData<SwapState> state = new MutableLiveData<>(new SwapState.Loading());
     private final MutableLiveData<SwapEvents> events = new MutableLiveData<>(null);
 
-    private final Consumer<List<Match>> userMatchesConsumer = userMatches -> {
-        if (userMatches != null) {
+    private final Consumer<List<Match>> userMatchesConsumer = userMatches ->{
+        if (userMatches != null){
             Log.i(TAG, "User Matches Consumer Called: " + userMatches);
             state.setValue(new SwapState.Loaded(userMatches));
         } else {
@@ -34,13 +33,15 @@ public class SwapViewModel extends ViewModel {
         }
     };
 
-    private final IntConsumer dimissMatchConsumer = responseCode -> {
-            if (responseCode == 204) {
+    private final Consumer<Integer> dimissMatchConsumer = responseCode ->{
+        if(responseCode != null){
+            if(responseCode == 204){
                 events.setValue(SwapEvents.DISMISS_MATCH);
-            } else {
+            }else {
                 events.setValue(SwapEvents.DISMISS_MATCH_FAILED);
             }
             load();
+        }
     };
 
     public SwapViewModel() {
@@ -48,20 +49,20 @@ public class SwapViewModel extends ViewModel {
         this.userRepository = new UserRepository();
     }
 
-    public void load() {
+    public void load(){
         state.setValue(new SwapState.Loading());
 
-        if (getUserId() != null) {
+        if (getUserId() != null){
             userRepository.getMatchesForCurrentUser(
                     getUserId(),
                     userMatchesConsumer
             );
-        } else {
-            state.setValue(new SwapState.Error());
+        }else {
+            state.setValue( new SwapState.Error());
         }
     }
 
-    public void declineButtonClicked(Long matchId) {
+    public void declineButtonClicked(Long matchId){
         state.setValue(new SwapState.Loading());
         SwapDismissal swapDismissal = new SwapDismissal(
                 getUserId(),
@@ -72,8 +73,8 @@ public class SwapViewModel extends ViewModel {
         Log.i(TAG, "Decline Button Clicked: " + swapDismissal);
     }
 
-    public String getUserId() {
-        if (authRepository.getmAuth().getCurrentUser() != null) {
+    public String getUserId(){
+        if(authRepository.getmAuth().getCurrentUser() != null){
             return authRepository.getmAuth().getCurrentUser().getUid();
         }
         return null;
@@ -88,7 +89,7 @@ public class SwapViewModel extends ViewModel {
     }
 
     // Called after each event is observed in the SignUp Fragment.
-    public void eventSeen() {
+    public void eventSeen(){
         events.setValue(null);
     }
 }

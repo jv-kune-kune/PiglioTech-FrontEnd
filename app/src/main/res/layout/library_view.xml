@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="user"
             type="com.northcoders.pigliotech_frontend.model.User" />
@@ -19,57 +18,59 @@
         android:layout_marginVertical="5dp"
         android:focusable="true"
         app:cardBackgroundColor="#3E6144"
-        app:cardCornerRadius="8dp">
+        app:cardCornerRadius="8dp"
+        >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp">
+        <ImageView
+            android:id="@+id/pfp_image"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/border_image"
+            android:padding="5dp"
+            tools:src="@drawable/blank_pfp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
-            <ImageView
-                android:id="@+id/pfp_image"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/border_image"
-                android:contentDescription="@string/pfp_image"
-                android:padding="5dp"
-                tools:src="@drawable/blank_pfp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="@{user.name}"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.231"
+            app:layout_constraintStart_toEndOf="@id/pfp_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/pfp_image"
+            app:layout_constraintVertical_bias="0.122"
+            tools:text="Username"
+            />
 
-            <TextView
-                android:id="@+id/username"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:text="@{user.name}"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.231"
-                app:layout_constraintStart_toEndOf="@id/pfp_image"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/pfp_image"
-                app:layout_constraintVertical_bias="0.122"
-                tools:text="Username" />
+        <TextView
+            android:id="@+id/bookCount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:text="@{String.valueOf(user.books.size()) + ` ` + user.createLabel(user.books)}"
+            app:layout_constraintTop_toBottomOf="@id/username"
+            app:layout_constraintBottom_toBottomOf="@id/pfp_image"
+            app:layout_constraintStart_toStartOf="@id/username"
+            tools:text="x Books"
+            />
 
-            <TextView
-                android:id="@+id/bookCount"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:textStyle="italic"
-                android:text="@{String.valueOf(user.books.size()) + ` ` + user.createLabel(user.books)}"
-                app:layout_constraintTop_toBottomOf="@id/username"
-                app:layout_constraintBottom_toBottomOf="@id/pfp_image"
-                app:layout_constraintStart_toStartOf="@id/username"
-                tools:text="x Books" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
 

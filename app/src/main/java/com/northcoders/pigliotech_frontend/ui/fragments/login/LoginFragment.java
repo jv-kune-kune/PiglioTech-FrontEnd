@@ -20,6 +20,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.databinding.FragmentLoginBinding;
 import com.northcoders.pigliotech_frontend.ui.fragments.home.HomeFragment;
+import com.northcoders.pigliotech_frontend.utils.BackendStatusManager;
 
 public class LoginFragment extends Fragment {
 
@@ -53,7 +54,7 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         FragmentActivity activity = requireActivity();
-        Context context = requireContext();
+        Context context  = requireContext();
 
         bindUiElements();
 
@@ -63,68 +64,46 @@ public class LoginFragment extends Fragment {
         bottomNav.setVisibility(View.GONE);
 
         viewModel.getState().observe(activity, loginState -> {
-            if (loginState.getLoading()) {
+            if(loginState.getLoading()){
                 progressBar.setVisibility(View.VISIBLE);
-            } else {
+            }else {
                 progressBar.setVisibility(View.GONE);
             }
         });
 
-        /*
-        events observer that uses the state of MutableLiveData<Login> events in the
-        SignUpFragment ViewModel
-         */
         viewModel.getEvents().observe(activity, loginEvent -> {
-            if (loginEvent != null) {
-                switch (loginEvent) {
+            if(loginEvent != null){
+                switch(loginEvent){
                     case LOGIN_SUCCESSFUL:
-                        // On successful login, create a toast and navigate to home fragment
-                        Toast.makeText(
-                                context,
-                                "Login successful!!",
-                                Toast.LENGTH_LONG
-                        ).show();
-
                         activity.getSupportFragmentManager()
                                 .beginTransaction()
-                                .replace(
-                                        R.id.frame_layout_fragment,
-                                        new HomeFragment()
-                                ).commit();
+                                .replace(R.id.frame_layout_fragment, new HomeFragment())
+                                .commit();
 
                         activity.getSupportFragmentManager().popBackStack();
-
-                        // Sets the selected item in the BottomNavBar to the Home Icon.
                         bottomNav.setSelectedItemId(R.id.home);
+                        
+                        Toast.makeText(context, "Login successful!", Toast.LENGTH_LONG).show();
                         break;
+                        
                     case LOGIN_FAILED:
-                        Toast.makeText(
-                                context,
-                                "Login failed!!",
-                                Toast.LENGTH_LONG
-                        ).show();
+                        Toast.makeText(context, "Login failed!", Toast.LENGTH_LONG).show();
                         break;
+                        
                     case EMAIL_IS_BLANK:
-                        Toast.makeText(
-                                context,
-                                "Please enter email!",
-                                Toast.LENGTH_LONG
-                        ).show();
+                        Toast.makeText(context, "Please enter email!", Toast.LENGTH_LONG).show();
                         break;
+                        
                     case PASSWORD_IS_BLANK:
-                        Toast.makeText(
-                                context,
-                                "Please enter password!",
-                                Toast.LENGTH_LONG
-                        ).show();
+                        Toast.makeText(context, "Please enter password!", Toast.LENGTH_LONG).show();
                         break;
                 }
-                viewModel.eventSeen(); // Set the loginEvent back to null
+                viewModel.eventSeen();
             }
         });
     }
 
-    private void loginUserAccount() {
+    private void loginUserAccount(){
         // Take the value of two edit texts in Strings
         String email, password;
         email = editTextEmail.getText().toString();
@@ -133,7 +112,7 @@ public class LoginFragment extends Fragment {
         viewModel.login(email, password);
     }
 
-    private void bindUiElements() {
+    private void bindUiElements(){
         editTextEmail = binding.email;
         editTextPassword = binding.password;
         progressBar = binding.progressBar;

@@ -21,16 +21,16 @@ public class MainActivityViewModel extends AndroidViewModel {
         isUserLoggedIn(); // Is invoked when the ViewModel is instantiated
     }
 
-    private void isUserLoggedIn() {
-        if (authRepository.getmAuth().getCurrentUser() != null) {
+    private void isUserLoggedIn(){
+        if (authRepository.getmAuth().getCurrentUser() != null){
             events.setValue(MainActivityEvents.NAVIGATE_TO_HOME_PAGE);
-        } else {
+        }else {
             events.setValue(MainActivityEvents.NAVIGATE_TO_LANDING_PAGE);
         }
     }
 
     // Sets the event to null after an event is sent to the UI
-    public void eventSeen() {
+    public void eventSeen(){
         events.setValue(null);
     }
 

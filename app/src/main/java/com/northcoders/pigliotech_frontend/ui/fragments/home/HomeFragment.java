@@ -24,6 +24,7 @@ import com.northcoders.pigliotech_frontend.model.User;
 import com.northcoders.pigliotech_frontend.ui.fragments.errorpage.ErrorFragment;
 import com.northcoders.pigliotech_frontend.ui.fragments.profile.ProfileFragment;
 
+import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -47,7 +48,6 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         NavigationBarView bottomNav = requireActivity().findViewById(R.id.bottom_nav_bar);
         bottomNav.setVisibility(VISIBLE);
 
@@ -60,10 +60,13 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ProgressBar progressBar;
-
-
         recyclerView = binding.libRecyclerView;
         progressBar = binding.progressBar;
+
+        // Attach an empty adapter initially to prevent warning
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(new LibraryAdapter(Collections.emptyList(), viewModel));
+        recyclerView.setHasFixedSize(true);
 
         viewModel.getState().observe(getViewLifecycleOwner(), homeState -> {
             if (homeState instanceof HomeState.Loading) {
@@ -75,35 +78,24 @@ public class HomeFragment extends Fragment {
             } else if (homeState instanceof HomeState.Error) {
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(
-                                R.id.frame_layout_fragment,
-                                new ErrorFragment()
-                        ).commit();
-
+                        .replace(R.id.frame_layout_fragment, new ErrorFragment())
+                        .commit();
                 requireActivity().getSupportFragmentManager().popBackStack();
-
                 viewModel.signOut();
             }
         });
 
-        // Observers the ViewModel for when a User Library is clicked
         viewModel.getEvent().observe(getViewLifecycleOwner(), homeEvents -> {
-
             if (((HomeEvents.ClickedUserLibrary) homeEvents).clickedUserId() != null) {
-
-                // Passes the clicked User's ID to the ProfileFragment
                 Bundle bundle = new Bundle();
-                bundle.putString(
-                        "userId",
-                        ((HomeEvents.ClickedUserLibrary) homeEvents).clickedUserId()
-                );
+                bundle.putString("userId", ((HomeEvents.ClickedUserLibrary) homeEvents).clickedUserId());
 
                 ProfileFragment profileFragment = new ProfileFragment();
                 profileFragment.setArguments(bundle);
 
                 requireActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_layout_fragment, profileFragment)
-                        .addToBackStack(null) // Add fragment to backstack
+                        .addToBackStack(null)
                         .commit();
 
                 viewModel.eventSeen();

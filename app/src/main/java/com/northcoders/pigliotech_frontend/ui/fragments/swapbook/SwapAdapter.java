@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,14 +52,14 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
         Log.i("SwapAdapter", "Current Match: " + match);
 
         // To Determine which information from the Match object is bound to the View
-        if (viewModel.getUserId().equals(userOne.getUid())) {
+        if (viewModel.getUserId().equals(userOne.getUid())){
             MatchUi matchUi = new MatchUi(
                     userTwo.getName(),
                     userTwoBook.getTitle(),
                     userOneBook.getTitle()
             );
             holder.swapItemBinding.setMatchUi(matchUi);
-        } else {
+        }else {
             MatchUi matchUi = new MatchUi(
                     userOne.getName(),
                     userOneBook.getTitle(),
@@ -77,15 +78,21 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
         return matches.size();
     }
 
-    public static class SwapViewHolder extends RecyclerView.ViewHolder {
+    public static class SwapViewHolder extends RecyclerView.ViewHolder{
         private final SwapItemBinding swapItemBinding;
         private final Button declineButton;
+        private final TextView requesterNameTextView;
+        private final TextView requestBookTitleTextView;
+        private final TextView userBookTitleTextView;
 
 
         public SwapViewHolder(SwapItemBinding swapItemBinding) {
             super(swapItemBinding.getRoot());
             this.swapItemBinding = swapItemBinding;
             this.declineButton = swapItemBinding.declineBtn;
+            this.requesterNameTextView = swapItemBinding.requesterNameTextView;
+            this.requestBookTitleTextView = swapItemBinding.otherUserTitle;
+            this.userBookTitleTextView = swapItemBinding.userTitle;
         }
     }
 }
