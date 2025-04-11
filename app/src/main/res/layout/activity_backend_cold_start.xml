@@ -54,7 +54,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:gravity="center"
-        android:text="Our backend server is currently starting up. This is normal for development environments and may take up to 10 minutes if the server hasn't been used recently.\n\nThis happens because we're using a free tier on Render.com which puts our server to sleep after periods of inactivity to save resources.\n\nYou don't need to keep clicking 'Try Again' - the app will automatically detect when the server is back online and continue."
+        android:text="Our backend server is currently starting up. This usually takes about 5 minutes, but can take up to 10 minutes if the server hasn't been used recently.\n\nThis happens because we're using a free tier on Render.com which puts our server to sleep after periods of inactivity to save resources.\n\nYou don't need to keep clicking 'Try Again' - the app will automatically detect when the server is back online and continue."
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/retryButton"
