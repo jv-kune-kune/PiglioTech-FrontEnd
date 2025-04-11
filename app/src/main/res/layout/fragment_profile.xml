@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp"
-    tools:context=".ui.fragments.profile.ProfileFragment"
+    tools:context=".presentation.features.profile.ProfileFragment"
     android:background="@drawable/home_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout

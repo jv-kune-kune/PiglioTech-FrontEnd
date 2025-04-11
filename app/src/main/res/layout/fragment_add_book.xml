@@ -8,7 +8,7 @@
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.addbook.AddBookFragment"
+    tools:context=".presentation.features.addbook.AddBookFragment"
     android:background="@drawable/home_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout

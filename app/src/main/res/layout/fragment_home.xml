@@ -7,7 +7,7 @@
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.home.HomeFragment"
+    tools:context=".presentation.features.home.HomeFragment"
     android:background="@drawable/home_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout

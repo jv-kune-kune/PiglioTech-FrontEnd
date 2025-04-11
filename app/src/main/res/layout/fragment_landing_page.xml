@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/landing_background"
         android:padding="16dp"
-        tools:context=".ui.fragments.landingpage.LandingPageFragment">
+        tools:context=".presentation.features.landing.LandingPageFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

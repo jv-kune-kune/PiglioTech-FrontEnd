@@ -9,7 +9,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/home_background"
 
-            tools:context=".ui.fragments.errorpage.ErrorFragment">
+            tools:context=".presentation.features.error.ErrorFragment">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout

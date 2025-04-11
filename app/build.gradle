@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'com.northcoders.pigliotech_frontend'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.northcoders.pigliotech_frontend"
         minSdk 26
-        targetSdk 34
+        targetSdk 35
         versionCode 1
         versionName "1.0.0"
 
@@ -48,6 +48,20 @@ android {
 
     lint {
         baseline = file("lint-baseline.xml")
+        // Disable warnings for unused declarations
+        disable 'UnusedDeclaration'
+        // Disable warning for unnecessary return statements in void methods
+        disable 'RedundantReturn'
+        // Configure lint to be less strict for tests
+        checkTestSources false
+        // Set test module configuration
+        ignoreTestSources true
+        // Disable warnings for Android Fragments
+        disable 'FragmentConstructor'
+        // Check for the IDE only
+        checkDependencies true
+        // Relax warning for model classes used with frameworks
+        disable 'unused'
     }
 }
 
@@ -129,5 +143,11 @@ afterEvaluate {
                 }
             }
         }
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }

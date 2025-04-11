@@ -1,7 +1,5 @@
 package com.northcoders.pigliotech_frontend.utils;
 
-import static com.northcoders.pigliotech_frontend.utils.BackendAvailabilityInterceptor.PING_RETRY_DELAY_MS;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -15,8 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.northcoders.pigliotech_frontend.PiglioTechApp;
-import com.northcoders.pigliotech_frontend.activities.BackendColdStartActivity;
-import com.northcoders.pigliotech_frontend.network.RetrofitInstance;
+import com.northcoders.pigliotech_frontend.presentation.features.backend.BackendColdStartActivity;
+import com.northcoders.pigliotech_frontend.data.network.RetrofitInstance;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -34,6 +32,7 @@ public class BackendStatusManager {
     private static final String LOG_PREFIX = "[BackendStatus] ";
     private static final String LOG_FORMAT = "%s%s - %s";
     private static BackendStatusManager instance;
+    @SuppressWarnings("unused")
     private static final long BACKEND_TIMEOUT = TimeUnit.MINUTES.toMillis(30); // 30 minutes timeout
     private static final long STATUS_CACHE_DURATION = TimeUnit.MINUTES.toMillis(5); // 5 minutes cache
     private static final long AUTO_CHECK_INTERVAL = 5000; // Check every 5 seconds when cold start screen is shown
@@ -66,6 +65,7 @@ public class BackendStatusManager {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private long lastSuccessfulCheck = 0;
     private long startTime = 0;
+    @SuppressWarnings("unused")
     private String pendingAction = null;
     private Call<Void> currentPingCall = null;
     private int retryCount = 0;
@@ -102,10 +102,7 @@ public class BackendStatusManager {
         return instance;
     }
 
-    public static synchronized BackendStatusManager getInstance(Context context) {
-        return getInstance();
-    }
-
+    @SuppressWarnings("unused")
     public void executeRequest(Runnable request, String actionDescription) {
         if (currentStatus == BackendStatus.ONLINE) {
             request.run();
@@ -235,7 +232,7 @@ public class BackendStatusManager {
         try {
             logInfo("Performing quick backend check");
             Call<Void> quickPingCall = RetrofitInstance.getPingService().pingBackend();
-            quickPingCall.enqueue(new Callback<Void>() {
+            quickPingCall.enqueue(new Callback<>() {
                 @Override
                 public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                     long responseTimeMs = System.currentTimeMillis() - quickCheckStartTime;
@@ -299,7 +296,7 @@ public class BackendStatusManager {
     }
 
     private Callback<Void> createPingCallback(long elapsedMinutes, long elapsedSeconds, boolean isInterceptorCheck) {
-        return new Callback<Void>() {
+        return new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 long responseTimeMs = System.currentTimeMillis() - lastPingTime;
@@ -347,7 +344,7 @@ public class BackendStatusManager {
     public void checkBackendStatus() {
         synchronized (lock) {
             if (isChecking.get() || isNetworkCheckInProgress) {
-                logDebug(isChecking.get() ? "Backend check already in progress, skipping" 
+                logDebug(isChecking.get() ? "Backend check already in progress, skipping"
                         : "Network check in progress, skipping backend check");
                 return;
             }
@@ -406,6 +403,7 @@ public class BackendStatusManager {
         pendingAction = null;
     }
 
+    @SuppressWarnings("RedundantReturn")
     public void handleError() {
         synchronized (errorLock) {
             // Prevent multiple simultaneous error handling
@@ -441,7 +439,6 @@ public class BackendStatusManager {
                     isChecking.set(false);
                     hasReachedMaxRetries = true;
                     showColdStartScreen();
-                    return;
                 } else {
                     long elapsedTimeMs = System.currentTimeMillis() - startTime;
                     long elapsedMinutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTimeMs);
@@ -504,10 +501,10 @@ public class BackendStatusManager {
         }
 
         NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
-        boolean hasInternetCapability = capabilities != null && 
-                (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || 
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET));
+        boolean hasInternetCapability = capabilities != null &&
+                (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET));
 
         if (!hasInternetCapability) {
             logWarning("No internet capability detected");
@@ -516,7 +513,8 @@ public class BackendStatusManager {
             return;
         }
 
-        // If we have a connection according to ConnectivityManager, continue with the ping
+        // If we have a connection according to ConnectivityManager, continue with the
+        // ping
         doPingToGoogleForConnectivityCheck();
     }
 
@@ -524,7 +522,7 @@ public class BackendStatusManager {
         try {
             logInfo("Pinging Google to verify internet connectivity");
             Call<Void> googlePingCall = RetrofitInstance.getGooglePingService().pingGoogle();
-            googlePingCall.enqueue(new Callback<Void>() {
+            googlePingCall.enqueue(new Callback<>() {
                 @Override
                 public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                     long responseTimeMs = System.currentTimeMillis() - lastNetworkCheckTime;
@@ -581,6 +579,7 @@ public class BackendStatusManager {
         });
     }
 
+    @SuppressWarnings("unused")
     public void handleTimeout() {
         synchronized (lock) {
             currentStatus = BackendStatus.OFFLINE;
@@ -646,6 +645,7 @@ public class BackendStatusManager {
         }
     }
 
+    @SuppressWarnings("unused")
     public long getElapsedTime() {
         if (isColdStartScreenShown) {
             return System.currentTimeMillis() - coldStartStartTime;

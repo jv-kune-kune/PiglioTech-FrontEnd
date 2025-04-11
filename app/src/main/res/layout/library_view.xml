@@ -6,7 +6,7 @@
     <data>
         <variable
             name="user"
-            type="com.northcoders.pigliotech_frontend.model.User" />
+            type="com.northcoders.pigliotech_frontend.data.models.User" />
     </data>
 
     <androidx.cardview.widget.CardView

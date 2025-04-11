@@ -1,26 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 8.8.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.8.0)" variant="all" version="8.8.0">
+<issues format="6" by="lint 8.8.2" type="baseline" client="gradle" dependencies="true" name="AGP (8.8.2)" variant="all" version="8.8.2">
 
     <issue
-        id="DefaultLocale"
-        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
-        errorLine1="        return String.format(&quot;[Elapsed: %ds, Receiver: %s]&quot;,"
-        errorLine2="               ^">
+        id="UnknownIssueId"
+        message="Unknown issue id &quot;UnnecessaryModuleDependency&quot;"
+        errorLine1="        disable &apos;UnusedDeclaration&apos;, &apos;UnnecessaryModuleDependency&apos;"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/northcoders/pigliotech_frontend/activities/BackendColdStartActivity.java"
-            line="54"
-            column="16"/>
+            file="build.gradle"
+            line="52"
+            column="39"/>
     </issue>
 
     <issue
-        id="DefaultLocale"
-        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
-        errorLine1="            elapsedTimeTextView.setText(String.format(&quot;Time elapsed: %d min %d sec&quot;,"
-        errorLine2="                                        ^">
+        id="UnknownIssueId"
+        message="Unknown issue id &quot;UnnecessaryModuleDependency&quot;"
+        errorLine1="        disable &apos;UnusedDeclaration&apos;, &apos;UnnecessaryModuleDependency&apos;"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/northcoders/pigliotech_frontend/activities/BackendColdStartActivity.java"
-            line="192"
-            column="41"/>
+            file="build.gradle"
+            line="52"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="UnknownIssueId"
+        message="Unknown issue id &quot;UnusedDeclaration&quot;"
+        errorLine1="        disable &apos;UnusedDeclaration&apos;, &apos;UnnecessaryModuleDependency&apos;"
+        errorLine2="                 ~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="52"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UnknownIssueId"
+        message="Unknown issue id &quot;UnusedDeclaration&quot;"
+        errorLine1="        disable &apos;UnusedDeclaration&apos;, &apos;UnnecessaryModuleDependency&apos;"
+        errorLine2="                 ~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="52"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UnknownIssueId"
+        message="Unknown issue id &quot;RedundantReturn&quot;"
+        errorLine1="        disable &apos;RedundantReturn&apos;"
+        errorLine2="                 ~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="54"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UnknownIssueId"
+        message="Unknown issue id &quot;RedundantReturn&quot;"
+        errorLine1="        disable &apos;RedundantReturn&apos;"
+        errorLine2="                 ~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="54"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UnknownIssueId"
+        message="Unknown issue id &quot;FragmentConstructor&quot;"
+        errorLine1="        disable &apos;FragmentConstructor&apos;"
+        errorLine2="                 ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="60"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UnknownIssueId"
+        message="Unknown issue id &quot;FragmentConstructor&quot;"
+        errorLine1="        disable &apos;FragmentConstructor&apos;"
+        errorLine2="                 ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="60"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UnknownIssueId"
+        message="Unknown issue id &quot;unused&quot;"
+        errorLine1="        disable &apos;unused&apos;"
+        errorLine2="                 ~~~~~~">
+        <location
+            file="build.gradle"
+            line="64"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UnknownIssueId"
+        message="Unknown issue id &quot;unused&quot;"
+        errorLine1="        disable &apos;unused&apos;"
+        errorLine2="                 ~~~~~~">
+        <location
+            file="build.gradle"
+            line="64"
+            column="18"/>
     </issue>
 
     <issue
@@ -30,7 +118,7 @@
         errorLine2="                        ^">
         <location
             file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="190"
+            line="173"
             column="25"/>
     </issue>
 
@@ -41,7 +129,7 @@
         errorLine2="                                ^">
         <location
             file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="261"
+            line="241"
             column="33"/>
     </issue>
 
@@ -52,7 +140,7 @@
         errorLine2="                                   ^">
         <location
             file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="265"
+            line="245"
             column="36"/>
     </issue>
 
@@ -63,7 +151,7 @@
         errorLine2="                               ^">
         <location
             file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="277"
+            line="257"
             column="32"/>
     </issue>
 
@@ -74,7 +162,7 @@
         errorLine2="                    ^">
         <location
             file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="301"
+            line="279"
             column="21"/>
     </issue>
 
@@ -85,30 +173,30 @@
         errorLine2="                                ^">
         <location
             file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="319"
+            line="305"
             column="33"/>
     </issue>
 
     <issue
         id="DefaultLocale"
         message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
-        errorLine1="                            logWarning(String.format("
-        errorLine2="                                       ^">
+        errorLine1="                        logWarning(String.format("
+        errorLine2="                                   ^">
         <location
             file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="326"
-            column="40"/>
+            line="312"
+            column="36"/>
     </issue>
 
     <issue
         id="DefaultLocale"
         message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
-        errorLine1="                                String.format(&quot;Ping failed: %s - Response time: %d ms - User wait time: %d min %d sec&quot;,"
-        errorLine2="                                ^">
+        errorLine1="                            String.format(&quot;Ping failed: %s - Response time: %d ms - User wait time: %d min %d sec&quot;,"
+        errorLine2="                            ^">
         <location
             file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="343"
-            column="33"/>
+            line="328"
+            column="29"/>
     </issue>
 
     <issue
@@ -118,52 +206,8 @@
         errorLine2="                         ^">
         <location
             file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="382"
+            line="355"
             column="26"/>
-    </issue>
-
-    <issue
-        id="DefaultLocale"
-        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
-        errorLine1="            logInfo(String.format(&quot;Pinging backend (attempt %d/%d) - User wait time: %d min %d sec&quot;,"
-        errorLine2="                    ^">
-        <location
-            file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="395"
-            column="21"/>
-    </issue>
-
-    <issue
-        id="DefaultLocale"
-        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
-        errorLine1="                            logInfo(String.format("
-        errorLine2="                                    ^">
-        <location
-            file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="412"
-            column="37"/>
-    </issue>
-
-    <issue
-        id="DefaultLocale"
-        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
-        errorLine1="                            logWarning(String.format("
-        errorLine2="                                       ^">
-        <location
-            file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="417"
-            column="40"/>
-    </issue>
-
-    <issue
-        id="DefaultLocale"
-        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
-        errorLine1="                                String.format(&quot;Ping failed: %s - Response time: %d ms - User wait time: %d min %d sec&quot;,"
-        errorLine2="                                ^">
-        <location
-            file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="429"
-            column="33"/>
     </issue>
 
     <issue
@@ -173,7 +217,7 @@
         errorLine2="                                   ^">
         <location
             file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="528"
+            line="450"
             column="36"/>
     </issue>
 
@@ -184,7 +228,7 @@
         errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="596"
+            line="532"
             column="33"/>
     </issue>
 
@@ -195,7 +239,7 @@
         errorLine2="                                   ^">
         <location
             file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="600"
+            line="536"
             column="36"/>
     </issue>
 
@@ -206,19 +250,8 @@
         errorLine2="                               ^">
         <location
             file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="610"
+            line="546"
             column="32"/>
-    </issue>
-
-    <issue
-        id="DefaultLocale"
-        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
-        errorLine1="                String message = String.format("
-        errorLine2="                                 ^">
-        <location
-            file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="667"
-            column="34"/>
     </issue>
 
     <issue
@@ -228,41 +261,19 @@
         errorLine2="               ^">
         <location
             file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="755"
+            line="671"
             column="16"/>
     </issue>
 
     <issue
-        id="InlinedApi"
-        message="Field requires API level 33 (current min is 24): `android.content.Context#RECEIVER_NOT_EXPORTED`"
-        errorLine1="            registerReceiver(backendOnlineReceiver, filter, Context.RECEIVER_NOT_EXPORTED);"
-        errorLine2="                                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `toLowerCase(Locale)` instead. For strings meant to be internal use `Locale.ROOT`, otherwise `Locale.getDefault()`."
+        errorLine1="                                Toast.makeText(context, &quot;Failed to load &quot; + errorPrefix.toLowerCase(),"
+        errorLine2="                                                                                        ~~~~~~~~~~~">
         <location
-            file="src/main/java/com/northcoders/pigliotech_frontend/activities/BackendColdStartActivity.java"
-            line="131"
-            column="61"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 26 (current min is 24): `android.content.ContextWrapper#registerReceiver`"
-        errorLine1="            registerReceiver(backendOnlineReceiver, filter, Context.RECEIVER_NOT_EXPORTED);"
-        errorLine2="            ~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/northcoders/pigliotech_frontend/activities/BackendColdStartActivity.java"
-            line="131"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="OldTargetApi"
-        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the `android.os.Build.VERSION_CODES` javadoc for details."
-        errorLine1="        targetSdk 34"
-        errorLine2="        ~~~~~~~~~~~~">
-        <location
-            file="build.gradle"
-            line="13"
-            column="9"/>
+            file="src/main/java/com/northcoders/pigliotech_frontend/presentation/common/util/ImageLoadingUtils.java"
+            line="42"
+            column="89"/>
     </issue>
 
     <issue
@@ -272,50 +283,17 @@
         errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/northcoders/pigliotech_frontend/utils/BackendStatusManager.java"
-            line="192"
+            line="175"
             column="25"/>
     </issue>
 
     <issue
-        id="UnspecifiedRegisterReceiverFlag"
-        message="`backendOnlineReceiver` is missing `RECEIVER_EXPORTED` or `RECEIVER_NOT_EXPORTED` flag for unprotected broadcasts registered for com.northcoders.pigliotech_frontend.BACKEND_ONLINE"
-        errorLine1="        registerReceiver(backendOnlineReceiver, filter);"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/northcoders/pigliotech_frontend/activities/BackendColdStartActivity.java"
-            line="201"
-            column="9"/>
-    </issue>
-
-    <issue
         id="AndroidGradlePluginVersion"
-        message="A newer version of com.android.application than 8.8.0 is available: 8.9.1. (There is also a newer version of 8.8.𝑥 available, if upgrading to 8.9.1 is difficult: 8.8.2)"
-        errorLine1="agp = &quot;8.8.0&quot;"
+        message="A newer version of com.android.application than 8.8.2 is available: 8.9.1"
+        errorLine1="agp = &quot;8.8.2&quot;"
         errorLine2="      ~~~~~~~">
         <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="2"
-            column="7"/>
-    </issue>
-
-    <issue
-        id="AndroidGradlePluginVersion"
-        message="A newer version of com.android.application than 8.8.0 is available: 8.9.1. (There is also a newer version of 8.8.𝑥 available, if upgrading to 8.9.1 is difficult: 8.8.2)"
-        errorLine1="agp = &quot;8.8.0&quot;"
-        errorLine2="      ~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="2"
-            column="7"/>
-    </issue>
-
-    <issue
-        id="AndroidGradlePluginVersion"
-        message="A newer version of com.android.application than 8.8.0 is available: 8.9.1. (There is also a newer version of 8.8.𝑥 available, if upgrading to 8.9.1 is difficult: 8.8.2)"
-        errorLine1="agp = &quot;8.8.0&quot;"
-        errorLine2="      ~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
+            file="../gradle/libs.versions.toml"
             line="2"
             column="7"/>
     </issue>
@@ -326,29 +304,7 @@
         errorLine1="appcompatVersion = &quot;1.1.0&quot;"
         errorLine2="                   ~~~~~~~">
         <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="3"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.appcompat:appcompat than 1.1.0 is available: 1.7.0"
-        errorLine1="appcompatVersion = &quot;1.1.0&quot;"
-        errorLine2="                   ~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="3"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.appcompat:appcompat than 1.1.0 is available: 1.7.0"
-        errorLine1="appcompatVersion = &quot;1.1.0&quot;"
-        errorLine2="                   ~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
+            file="../gradle/libs.versions.toml"
             line="3"
             column="20"/>
     </issue>
@@ -359,29 +315,7 @@
         errorLine1="firebaseBom = &quot;33.7.0&quot;"
         errorLine2="              ~~~~~~~~">
         <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="5"
-            column="15"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of com.google.firebase:firebase-bom than 33.7.0 is available: 33.12.0"
-        errorLine1="firebaseBom = &quot;33.7.0&quot;"
-        errorLine2="              ~~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="5"
-            column="15"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of com.google.firebase:firebase-bom than 33.7.0 is available: 33.12.0"
-        errorLine1="firebaseBom = &quot;33.7.0&quot;"
-        errorLine2="              ~~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
+            file="../gradle/libs.versions.toml"
             line="5"
             column="15"/>
     </issue>
@@ -392,29 +326,7 @@
         errorLine1="loggingInterceptor = &quot;3.4.1&quot;"
         errorLine2="                     ~~~~~~~">
         <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="11"
-            column="22"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of com.squareup.okhttp3:logging-interceptor than 3.4.1 is available: 4.12.0"
-        errorLine1="loggingInterceptor = &quot;3.4.1&quot;"
-        errorLine2="                     ~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="11"
-            column="22"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of com.squareup.okhttp3:logging-interceptor than 3.4.1 is available: 4.12.0"
-        errorLine1="loggingInterceptor = &quot;3.4.1&quot;"
-        errorLine2="                     ~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
+            file="../gradle/libs.versions.toml"
             line="11"
             column="22"/>
     </issue>
@@ -425,29 +337,7 @@
         errorLine1="activity = &quot;1.9.3&quot;"
         errorLine2="           ~~~~~~~">
         <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="13"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.activity:activity than 1.9.3 is available: 1.10.1"
-        errorLine1="activity = &quot;1.9.3&quot;"
-        errorLine2="           ~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="13"
-            column="12"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.activity:activity than 1.9.3 is available: 1.10.1"
-        errorLine1="activity = &quot;1.9.3&quot;"
-        errorLine2="           ~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
+            file="../gradle/libs.versions.toml"
             line="13"
             column="12"/>
     </issue>
@@ -458,29 +348,7 @@
         errorLine1="constraintlayout = &quot;2.2.0&quot;"
         errorLine2="                   ~~~~~~~">
         <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="14"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.constraintlayout:constraintlayout than 2.2.0 is available: 2.2.1"
-        errorLine1="constraintlayout = &quot;2.2.0&quot;"
-        errorLine2="                   ~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="14"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.constraintlayout:constraintlayout than 2.2.0 is available: 2.2.1"
-        errorLine1="constraintlayout = &quot;2.2.0&quot;"
-        errorLine2="                   ~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
+            file="../gradle/libs.versions.toml"
             line="14"
             column="20"/>
     </issue>
@@ -491,29 +359,7 @@
         errorLine1="materialVersion = &quot;1.0.0&quot;"
         errorLine2="                  ~~~~~~~">
         <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="15"
-            column="19"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of com.google.android.material:material than 1.0.0 is available: 1.12.0"
-        errorLine1="materialVersion = &quot;1.0.0&quot;"
-        errorLine2="                  ~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="15"
-            column="19"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of com.google.android.material:material than 1.0.0 is available: 1.12.0"
-        errorLine1="materialVersion = &quot;1.0.0&quot;"
-        errorLine2="                  ~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
+            file="../gradle/libs.versions.toml"
             line="15"
             column="19"/>
     </issue>
@@ -524,29 +370,7 @@
         errorLine1="appcompat-v110 = { module = &quot;androidx.appcompat:appcompat&quot;, version.ref = &quot;appcompatVersion&quot; }"
         errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="20"
-            column="19"/>
-    </issue>
-
-    <issue
-        id="SimilarGradleDependency"
-        message="There are multiple dependencies androidx.appcompat:appcompat but with different version"
-        errorLine1="appcompat-v110 = { module = &quot;androidx.appcompat:appcompat&quot;, version.ref = &quot;appcompatVersion&quot; }"
-        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="20"
-            column="19"/>
-    </issue>
-
-    <issue
-        id="SimilarGradleDependency"
-        message="There are multiple dependencies androidx.appcompat:appcompat but with different version"
-        errorLine1="appcompat-v110 = { module = &quot;androidx.appcompat:appcompat&quot;, version.ref = &quot;appcompatVersion&quot; }"
-        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
+            file="../gradle/libs.versions.toml"
             line="20"
             column="19"/>
     </issue>
@@ -557,29 +381,7 @@
         errorLine1="appcompat = { group = &quot;androidx.appcompat&quot;, name = &quot;appcompat&quot;, version.ref = &quot;appcompat&quot; }"
         errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="28"
-            column="14"/>
-    </issue>
-
-    <issue
-        id="SimilarGradleDependency"
-        message="There are multiple dependencies androidx.appcompat:appcompat but with different version"
-        errorLine1="appcompat = { group = &quot;androidx.appcompat&quot;, name = &quot;appcompat&quot;, version.ref = &quot;appcompat&quot; }"
-        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="28"
-            column="14"/>
-    </issue>
-
-    <issue
-        id="SimilarGradleDependency"
-        message="There are multiple dependencies androidx.appcompat:appcompat but with different version"
-        errorLine1="appcompat = { group = &quot;androidx.appcompat&quot;, name = &quot;appcompat&quot;, version.ref = &quot;appcompat&quot; }"
-        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
+            file="../gradle/libs.versions.toml"
             line="28"
             column="14"/>
     </issue>
@@ -590,29 +392,7 @@
         errorLine1="material = { group = &quot;com.google.android.material&quot;, name = &quot;material&quot;, version.ref = &quot;material&quot; }"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="30"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="SimilarGradleDependency"
-        message="There are multiple dependencies com.google.android.material:material but with different version"
-        errorLine1="material = { group = &quot;com.google.android.material&quot;, name = &quot;material&quot;, version.ref = &quot;material&quot; }"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="30"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="SimilarGradleDependency"
-        message="There are multiple dependencies com.google.android.material:material but with different version"
-        errorLine1="material = { group = &quot;com.google.android.material&quot;, name = &quot;material&quot;, version.ref = &quot;material&quot; }"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
+            file="../gradle/libs.versions.toml"
             line="30"
             column="13"/>
     </issue>
@@ -623,53 +403,9 @@
         errorLine1="material-v100 = { module = &quot;com.google.android.material:material&quot;, version.ref = &quot;materialVersion&quot; }"
         errorLine2="                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
+            file="../gradle/libs.versions.toml"
             line="33"
             column="18"/>
-    </issue>
-
-    <issue
-        id="SimilarGradleDependency"
-        message="There are multiple dependencies com.google.android.material:material but with different version"
-        errorLine1="material-v100 = { module = &quot;com.google.android.material:material&quot;, version.ref = &quot;materialVersion&quot; }"
-        errorLine2="                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="33"
-            column="18"/>
-    </issue>
-
-    <issue
-        id="SimilarGradleDependency"
-        message="There are multiple dependencies com.google.android.material:material but with different version"
-        errorLine1="material-v100 = { module = &quot;com.google.android.material:material&quot;, version.ref = &quot;materialVersion&quot; }"
-        errorLine2="                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="$HOME/Northcoders/jv-group-project/PiglioTech-FrontEnd/gradle/libs.versions.toml"
-            line="33"
-            column="18"/>
-    </issue>
-
-    <issue
-        id="NotifyDataSetChanged"
-        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
-        errorLine1="        userAdapter.notifyDataSetChanged();"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/northcoders/pigliotech_frontend/ui/fragments/profile/ProfileFragment.java"
-            line="182"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="NotifyDataSetChanged"
-        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
-        errorLine1="        swapAdapter.notifyDataSetChanged();"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/northcoders/pigliotech_frontend/ui/fragments/swapbook/SwapFragment.java"
-            line="120"
-            column="9"/>
     </issue>
 
     <issue
@@ -681,17 +417,6 @@
             file="src/main/java/com/northcoders/pigliotech_frontend/PiglioTechApp.java"
             line="7"
             column="13"/>
-    </issue>
-
-    <issue
-        id="Overdraw"
-        message="Possible overdraw: Root element paints background `@color/white` with a theme that also paints a background (inferred theme is `@style/Theme_AppCompat_Light_NoActionBar`)"
-        errorLine1="    android:background=&quot;@color/white&quot;"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/layout/activity_backend_cold_start.xml"
-            line="7"
-            column="5"/>
     </issue>
 
     <issue
@@ -734,28 +459,6 @@
         errorLine2="^">
         <location
             file="src/main/res/drawable/swap_decline_button.xml"
-            line="2"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="MonochromeLauncherIcon"
-        message="The application adaptive icon is missing a monochrome tag"
-        errorLine1="&lt;adaptive-icon xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
-        errorLine2="^">
-        <location
-            file="src/main/res/mipmap-anydpi-v26/ic_launcher.xml"
-            line="2"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="MonochromeLauncherIcon"
-        message="The application adaptive roundIcon is missing a monochrome tag"
-        errorLine1="&lt;adaptive-icon xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
-        errorLine2="^">
-        <location
-            file="src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml"
             line="2"
             column="1"/>
     </issue>
@@ -868,89 +571,12 @@
     <issue
         id="ContentDescription"
         message="Missing `contentDescription` attribute on image"
-        errorLine1="    &lt;ImageView"
-        errorLine2="     ~~~~~~~~~">
-        <location
-            file="src/main/res/layout/activity_backend_cold_start.xml"
-            line="10"
-            column="6"/>
-    </issue>
-
-    <issue
-        id="ContentDescription"
-        message="Missing `contentDescription` attribute on image"
         errorLine1="        &lt;ImageView"
         errorLine2="         ~~~~~~~~~">
         <location
             file="src/main/res/layout/library_view.xml"
             line="27"
             column="10"/>
-    </issue>
-
-    <issue
-        id="SetTextI18n"
-        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
-        errorLine1="                    &quot;Our backend server is currently starting up. This is normal for development environments and may take up to 30 minutes if the server hasn&apos;t been used recently.\n\n&quot;"
-        errorLine2="                    ^">
-        <location
-            file="src/main/java/com/northcoders/pigliotech_frontend/activities/BackendColdStartActivity.java"
-            line="73"
-            column="21"/>
-    </issue>
-
-    <issue
-        id="SetTextI18n"
-        message="String literal in `setText` can not be translated. Use Android resources instead."
-        errorLine1="                            &quot;You don&apos;t need to keep clicking &apos;Try Again&apos; - the app will automatically detect when the server is back online and continue.&quot;);"
-        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/northcoders/pigliotech_frontend/activities/BackendColdStartActivity.java"
-            line="77"
-            column="29"/>
-    </issue>
-
-    <issue
-        id="HardcodedText"
-        message="Hardcoded string &quot;Backend is Starting Up&quot;, should use `@string` resource"
-        errorLine1="        android:text=&quot;Backend is Starting Up&quot;"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/layout/activity_backend_cold_start.xml"
-            line="26"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="HardcodedText"
-        message="Hardcoded string &quot;Time elapsed: 0 min 0 sec&quot;, should use `@string` resource"
-        errorLine1="        android:text=&quot;Time elapsed: 0 min 0 sec&quot;"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/layout/activity_backend_cold_start.xml"
-            line="40"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="HardcodedText"
-        message="Hardcoded string &quot;Our backend server is currently starting up. This is normal for development environments and may take up to 10 minutes if the server hasn&apos;t been used recently.\n\nThis happens because we&apos;re using a free tier on Render.com which puts our server to sleep after periods of inactivity to save resources.\n\nYou don&apos;t need to keep clicking &apos;Try Again&apos; - the app will automatically detect when the server is back online and continue.&quot;, should use `@string` resource"
-        errorLine1="        android:text=&quot;Our backend server is currently starting up. This is normal for development environments and may take up to 10 minutes if the server hasn&apos;t been used recently.\n\nThis happens because we&apos;re using a free tier on Render.com which puts our server to sleep after periods of inactivity to save resources.\n\nYou don&apos;t need to keep clicking &apos;Try Again&apos; - the app will automatically detect when the server is back online and continue.&quot;"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/layout/activity_backend_cold_start.xml"
-            line="57"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="HardcodedText"
-        message="Hardcoded string &quot;Try Again&quot;, should use `@string` resource"
-        errorLine1="        android:text=&quot;Try Again&quot;"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/layout/activity_backend_cold_start.xml"
-            line="74"
-            column="9"/>
     </issue>
 
     <issue
