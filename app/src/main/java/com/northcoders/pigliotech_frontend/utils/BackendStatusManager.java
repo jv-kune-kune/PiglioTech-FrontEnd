@@ -43,7 +43,7 @@ public class BackendStatusManager {
     private static final long QUICK_CHECK_TIMEOUT = 10000; // 10 seconds timeout for quick check
     private static final long MIN_STATUS_CHANGE_INTERVAL = 2000; // Minimum 2 seconds between status changes
     private static final long DEBOUNCE_INTERVAL = 1000; // 1 second debounce for status checks
-    private static final String BACKEND_ONLINE_ACTION = "com.northcoders.pigliotech_frontend.BACKEND_ONLINE";
+    public static final String ACTION_BACKEND_ONLINE = "com.northcoders.pigliotech_frontend.BACKEND_ONLINE";
     private static final int MAX_RETRIES = 10;
     private static final long RETRY_DELAY_MS = 60000; // 60 seconds between retries
     private static final long MAX_RETRY_DELAY_MS = 120000; // 2 minutes maximum delay
@@ -704,7 +704,7 @@ public class BackendStatusManager {
             handler.post(() -> {
                 try {
                     logInfo("Sending broadcast to close cold start screen");
-                    Intent intent = new Intent(BACKEND_ONLINE_ACTION);
+                    Intent intent = new Intent(ACTION_BACKEND_ONLINE);
                     intent.setPackage(PiglioTechApp.getContext().getPackageName());
                     PiglioTechApp.getContext().sendBroadcast(intent);
 
@@ -713,7 +713,7 @@ public class BackendStatusManager {
                     handler.postDelayed(() -> {
                         try {
                             logInfo("Sending delayed broadcast to close cold start screen");
-                            Intent delayedIntent = new Intent(BACKEND_ONLINE_ACTION);
+                            Intent delayedIntent = new Intent(ACTION_BACKEND_ONLINE);
                             delayedIntent.setPackage(PiglioTechApp.getContext().getPackageName());
                             PiglioTechApp.getContext().sendBroadcast(delayedIntent);
                         } catch (Exception e) {

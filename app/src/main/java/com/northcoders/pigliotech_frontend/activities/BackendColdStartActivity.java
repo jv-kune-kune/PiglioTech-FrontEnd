@@ -10,13 +10,13 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.northcoders.pigliotech_frontend.R;
 import com.northcoders.pigliotech_frontend.utils.BackendStatusManager;
-
 import java.util.concurrent.TimeUnit;
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 
 public class BackendColdStartActivity extends AppCompatActivity {
     private static final String TAG = "BackendColdStartActivity";
@@ -194,5 +194,10 @@ public class BackendColdStartActivity extends AppCompatActivity {
         } catch (Exception e) {
             logError("Error updating elapsed time: " + e.getMessage());
         }
+    }
+
+    private void registerBackendStatusReceiver() {
+        IntentFilter filter = new IntentFilter(BackendStatusManager.ACTION_BACKEND_ONLINE);
+        registerReceiver(backendOnlineReceiver, filter);
     }
 }
