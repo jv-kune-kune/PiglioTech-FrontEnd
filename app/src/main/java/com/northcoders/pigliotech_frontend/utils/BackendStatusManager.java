@@ -5,7 +5,8 @@ import static com.northcoders.pigliotech_frontend.utils.BackendAvailabilityInter
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -491,14 +492,25 @@ public class BackendStatusManager {
 
         logInfo("Checking internet connectivity");
 
-        // First check using ConnectivityManager
+        // Check using modern connectivity API
         ConnectivityManager connectivityManager = (ConnectivityManager) PiglioTechApp.getContext()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        boolean isConnected = activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        Network network = connectivityManager.getActiveNetwork();
+        if (network == null) {
+            logWarning("No active network detected");
+            showNoInternetMessage();
+            isNetworkCheckInProgress = false;
+            return;
+        }
 
-        if (!isConnected) {
-            logWarning("No internet connection detected via ConnectivityManager");
+        NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
+        boolean hasInternetCapability = capabilities != null && 
+                (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || 
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET));
+
+        if (!hasInternetCapability) {
+            logWarning("No internet capability detected");
             showNoInternetMessage();
             isNetworkCheckInProgress = false;
             return;
