@@ -1,6 +1,7 @@
 package com.northcoders.pigliotech_frontend.model;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.BaseObservable;
 
 public class Book {
 

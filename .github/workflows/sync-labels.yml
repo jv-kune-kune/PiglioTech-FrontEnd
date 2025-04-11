@@ -17,12 +17,12 @@ jobs:
         with:
           sparse-checkout: .github/labels.yml
 
-          # - uses: EndBug/label-sync@v2
-          # with:
+      # - uses: EndBug/label-sync@v2
+        # with:
           # If you want to use a config file, you can put its path or URL here, multiple files are also allowed (more info in the paragraphs below)
           # as URL:
           # config-file: https://raw.githubusercontent.com/jv-kune-kune/demo-repository/refs/heads/main/.github/workflows/labels.yaml
-
+          
       - uses: EndBug/label-sync@v2
         with:
           # If you want to use a source repo, you can put is name here (only the owner/repo format is accepted)

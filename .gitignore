@@ -27,7 +27,8 @@ render.experimental.xml
 
 # Keystore files
 *.keystore
-keystore
+*.jks
+set_keystore_env.sh
 
 # Secrets
 *.env
@@ -40,3 +41,8 @@ google-services.json
 
 # macOS Finder files
 .DS_Store
+
+# Release files
+app/release
+.vscode/
+.sonarlint/

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="matchUi"
             type="com.northcoders.pigliotech_frontend.model.MatchUi" />
@@ -43,7 +43,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:strokeColor="@color/white"
-                app:strokeWidth="0.8dp" />
+                app:strokeWidth="0.8dp"/>
 
             <LinearLayout
                 android:id="@+id/swapInfo"
@@ -71,7 +71,7 @@
                     android:textColor="@color/white"
                     android:text="@string/swap_text"
                     android:textStyle="italic"
-                    android:layout_marginTop="16dp" />
+                    android:layout_marginTop="16dp"/>
 
                 <TextView
                     android:id="@+id/otherUserTitle"
@@ -81,7 +81,7 @@
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:text="@{matchUi.requesterBookTitle}"
-                    tools:text="Their Book" />
+                    tools:text="Their Book"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
                     android:textColor="@color/white"
                     android:text="@string/for_text_view"
                     android:textStyle="italic"
-                    android:layout_marginTop="4dp" />
+                    android:layout_marginTop="4dp"/>
 
                 <TextView
                     android:id="@+id/userTitle"
@@ -100,7 +100,7 @@
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:text="@{matchUi.userBookTitle}"
-                    tools:text="Your Book" />
+                    tools:text="Your Book"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
