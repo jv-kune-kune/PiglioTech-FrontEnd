@@ -1,6 +1,5 @@
 package com.northcoders.pigliotech_frontend.presentation.features.home;
 
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -31,7 +30,8 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryV
     @Override
     public LibraryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LibraryViewBinding binding;
-        binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.library_view, parent, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.library_view, parent,
+                false);
 
         return new LibraryViewHolder(binding);
     }
@@ -40,24 +40,31 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryV
     public void onBindViewHolder(@NonNull LibraryViewHolder holder, int position) {
 
         User user = users.get(position);
+
+        // Add null checks for thumbnail
         String url = user.getThumbnail();
 
         Glide.with(holder.pfpImageView.getContext())
-                        .load(url)
-                        .placeholder(R.drawable.blank_pfp)
-                        .into(holder.pfpImageView);
+                .load(url)
+                .placeholder(R.drawable.blank_pfp)
+                .into(holder.pfpImageView);
 
+        // Set the user object to the binding, the view binding now has null checks
         holder.libraryItemBinding.setUser(user);
 
         holder.libraryItemBinding.libraryCard.setOnClickListener(view -> {
-            viewmodel.onUserClicked(user.getUid());
-            Log.i("LibraryAdapter", "RecyclerView item clicked" );
+            if (user.getUid() != null) {
+                viewmodel.onUserClicked(user.getUid());
+                Log.i("LibraryAdapter", "RecyclerView item clicked");
+            } else {
+                Log.e("LibraryAdapter", "User UID is null");
+            }
         });
     }
 
     @Override
     public int getItemCount() {
-        return users.size();
+        return users != null ? users.size() : 0;
     }
 
     public static class LibraryViewHolder extends RecyclerView.ViewHolder {

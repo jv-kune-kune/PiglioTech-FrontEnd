@@ -55,9 +55,21 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 .error(R.drawable.blank_book)
                 .into(holder.bookCoverImageView);
 
-        holder.deleteBookButton.setOnClickListener(view -> viewModel.deleteBook(book.getIsbn()));
+        holder.deleteBookButton.setOnClickListener(view -> {
+            if (book.getIsbn() != null) {
+                viewModel.deleteBook(book.getIsbn());
+            } else {
+                Log.e("UserAdapter", "Book ISBN is null");
+            }
+        });
 
-        holder.likeBookButton.setOnClickListener(view -> viewModel.likeBook(book.getIsbn()));
+        holder.likeBookButton.setOnClickListener(view -> {
+            if (book.getIsbn() != null) {
+                viewModel.likeBook(book.getIsbn());
+            } else {
+                Log.e("UserAdapter", "Book ISBN is null");
+            }
+        });
 
         if (profileState instanceof ProfileState.OtherUserLoaded) {
             holder.deleteBookButton.setVisibility(View.GONE);
@@ -67,7 +79,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     @Override
     public int getItemCount() {
-        return books.size();
+        return books != null ? books.size() : 0;
     }
 
     public static class UserViewHolder extends RecyclerView.ViewHolder {

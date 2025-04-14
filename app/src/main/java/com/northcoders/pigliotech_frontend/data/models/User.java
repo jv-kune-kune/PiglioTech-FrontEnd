@@ -85,7 +85,15 @@ public class User extends BaseObservable {
     }
 
     @SuppressWarnings("unused")
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    @SuppressWarnings("unused")
     public String createLabel(List<Book> books) {
+        if (books == null) {
+            return "Books";
+        }
         if (books.size() == 1) {
             return "Book";
         }

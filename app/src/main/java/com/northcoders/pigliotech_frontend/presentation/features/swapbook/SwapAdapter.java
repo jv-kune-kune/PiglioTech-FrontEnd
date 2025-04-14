@@ -42,6 +42,14 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
     public void onBindViewHolder(@NonNull SwapViewHolder holder, int position) {
 
         Match match = matches.get(position);
+
+        // Null check for match fields
+        if (match == null || match.userOne() == null || match.userTwo() == null ||
+                match.userOneBook() == null || match.userTwoBook() == null) {
+            Log.e("SwapAdapter", "Match or its components are null");
+            return;
+        }
+
         User userOne = match.userOne();
         User userTwo = match.userTwo();
         Book userOneBook = match.userOneBook();
@@ -49,8 +57,14 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
 
         Log.i("SwapAdapter", "Current Match: " + match);
 
+        String currentUserId = viewModel.getUserId();
+        if (currentUserId == null) {
+            Log.e("SwapAdapter", "Current user ID is null");
+            return;
+        }
+
         // To Determine which information from the Match object is bound to the View
-        if (viewModel.getUserId().equals(userOne.getUid())) {
+        if (currentUserId.equals(userOne.getUid())) {
             MatchUi matchUi = new MatchUi(
                     userTwo.getName(),
                     userTwoBook.getTitle(),
@@ -65,12 +79,18 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
         }
 
         holder.declineButton.setOnClickListener(
-                view -> viewModel.declineButtonClicked(match.id()));
+                view -> {
+                    if (match.id() != null) {
+                        viewModel.declineButtonClicked(match.id());
+                    } else {
+                        Log.e("SwapAdapter", "Match ID is null");
+                    }
+                });
     }
 
     @Override
     public int getItemCount() {
-        return matches.size();
+        return matches != null ? matches.size() : 0;
     }
 
     public static class SwapViewHolder extends RecyclerView.ViewHolder {
