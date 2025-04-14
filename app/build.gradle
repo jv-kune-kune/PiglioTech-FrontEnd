@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     id 'com.google.gms.google-services'
     id 'maven-publish'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -12,8 +13,8 @@ android {
         applicationId "com.northcoders.pigliotech_frontend"
         minSdk 26
         targetSdk 35
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 2
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -91,6 +92,10 @@ dependencies {
     implementation platform(libs.firebase.bom)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.analytics)
+    
+    // Firebase Crashlytics
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.crashlytics.ndk)
 
     // Barcode Scanner
     implementation(libs.play.services.code.scanner)
@@ -104,12 +109,19 @@ afterEvaluate {
                 artifactId = 'pigliotech-frontend'
                 version = android.defaultConfig.versionName
                 
-                // For Android, specify the artifacts directly instead of using components.release
-                artifact("$buildDir/outputs/aar/app-release.aar")
+                // For Android, specify the artifacts directly with the correct paths
+                artifact("$buildDir/outputs/bundle/release/app-release.aab") {
+                    classifier = 'release-aab'
+                }
                 
                 // Additional artifact for debug build
                 artifact("$buildDir/outputs/apk/debug/app-debug.apk") {
                     classifier = 'debug-apk'
+                }
+                
+                // Release APK
+                artifact("$buildDir/outputs/apk/release/app-release.apk") {
+                    classifier = 'release-apk'
                 }
                 
                 pom {

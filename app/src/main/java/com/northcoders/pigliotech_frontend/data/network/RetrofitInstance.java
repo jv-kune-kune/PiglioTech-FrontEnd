@@ -4,8 +4,13 @@ package com.northcoders.pigliotech_frontend.data.network;
 import com.northcoders.pigliotech_frontend.data.api.GooglePingService;
 import com.northcoders.pigliotech_frontend.data.api.UserApiService;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Dns;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -30,12 +35,46 @@ public class RetrofitInstance {
     private static UserApiService pingService = null;
     private static GooglePingService googlePingService = null;
 
+    // Custom DNS resolver to handle DNS issues on some devices
+    private static final Dns CUSTOM_DNS = new Dns() {
+        private final Dns defaultDns = Dns.SYSTEM;
+        private final List<String> fallbackDnsServers = Arrays.asList(
+                "8.8.8.8", // Google DNS
+                "8.8.4.4", // Google DNS secondary
+                "1.1.1.1" // Cloudflare DNS
+        );
+
+        @Override
+        public List<InetAddress> lookup(String hostname) throws UnknownHostException {
+            try {
+                // Try system DNS first
+                return defaultDns.lookup(hostname);
+            } catch (UnknownHostException e) {
+                // If system DNS fails, try alternative approaches
+                for (String dnsServer : fallbackDnsServers) {
+                    try {
+                        // Try to manually resolve using fallback DNS
+                        InetAddress dnsAddress = InetAddress.getByName(dnsServer);
+                        InetAddress resolved = InetAddress.getByName(hostname);
+                        return Arrays.asList(resolved);
+                    } catch (Exception ignored) {
+                        // Continue to next DNS server
+                    }
+                }
+
+                // All resolution attempts failed, throw the original exception
+                throw e;
+            }
+        }
+    };
+
     public static UserApiService getService() {
         if (regularService == null) {
             OkHttpClient client = new OkHttpClient.Builder()
                     .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
                     .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
                     .writeTimeout(WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                    .dns(CUSTOM_DNS)
                     .addInterceptor(new BackendAvailabilityInterceptor())
                     .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                     .build();
@@ -57,6 +96,7 @@ public class RetrofitInstance {
                     .connectTimeout(PING_CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
                     .readTimeout(PING_READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
                     .writeTimeout(PING_WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                    .dns(CUSTOM_DNS)
                     .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
                     .build();
 
@@ -77,6 +117,7 @@ public class RetrofitInstance {
                     .connectTimeout(10, TimeUnit.SECONDS)
                     .readTimeout(10, TimeUnit.SECONDS)
                     .writeTimeout(10, TimeUnit.SECONDS)
+                    .dns(CUSTOM_DNS)
                     .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
                     .build();
 

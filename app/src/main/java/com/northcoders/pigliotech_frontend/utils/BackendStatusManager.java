@@ -17,6 +17,7 @@ import com.northcoders.pigliotech_frontend.presentation.features.backend.Backend
 import com.northcoders.pigliotech_frontend.data.network.RetrofitInstance;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -521,6 +522,8 @@ public class BackendStatusManager {
     private void doPingToGoogleForConnectivityCheck() {
         try {
             logInfo("Pinging Google to verify internet connectivity");
+
+            // Use an HTTPS request to Google directly instead of pinging an IP address
             Call<Void> googlePingCall = RetrofitInstance.getGooglePingService().pingGoogle();
             googlePingCall.enqueue(new Callback<>() {
                 @Override
