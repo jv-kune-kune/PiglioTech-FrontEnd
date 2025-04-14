@@ -1,0 +1,48 @@
+# PiglioTech Android v1.0.1
+
+## Overview
+Maintenance update for the PiglioTech Android application with important fixes for network connectivity and crash reporting.
+
+## Key Improvements
+- **Backend Cold Start Handling**: Added robust detection and handling of Render.com backend cold starts
+- **Crash Reporting**: Integrated Firebase Crashlytics for automatic crash reporting
+- **Developer Tools**: Added hidden developer menu accessed via shake gesture (debug builds only)
+- **Network Reliability**: Custom DNS resolver with fallbacks to fix network issues on some devices
+- **Code Quality**: Improved code quality and maintainability (SonarQube compliance)
+
+## Technical Highlights
+
+### Backend Integration
+- Cold start screen with progress tracking during backend initialization
+- Automatic retry mechanism with exponential backoff
+- Network connectivity monitoring and fallback options
+- Seamless user experience during backend startup period
+
+### Crash Reporting Features
+- Automatic crash detection and reporting via Firebase Crashlytics
+- Non-fatal exception logging for better debugging
+- User-specific issue tracking capabilities
+- Developer-friendly testing tools (hidden in production builds)
+
+### Code Quality Improvements
+- Reduced code duplication in key utility classes
+- Modern network connectivity APIs (NetworkCapabilities)
+- Improved error handling across the application
+- Enhanced security configuration for API connections
+
+## Installation
+Download the APK from the assets section and install it on your Android device.
+- **Minimum Android version**: 8.0 (API 26)
+- **Target Android version**: Android 14 (API 34)
+
+## For Developers
+- Access developer menu by shaking the device (only in debug builds)
+- Use CrashReportingHelper utility class for standardized error logging
+- Cold start process can be observed by forcing backend to go offline and restart
+
+## Contributors
+- JacksonR64
+- Tchabva
+- Ge-Drei
+- Jnc-Panda
+- Kadri-K 
