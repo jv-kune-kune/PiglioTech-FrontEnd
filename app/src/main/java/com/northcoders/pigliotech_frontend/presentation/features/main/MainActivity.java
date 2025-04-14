@@ -1,7 +1,13 @@
 package com.northcoders.pigliotech_frontend.presentation.features.main;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -18,8 +24,14 @@ import com.northcoders.pigliotech_frontend.presentation.features.home.HomeFragme
 import com.northcoders.pigliotech_frontend.presentation.features.landing.LandingPageFragment;
 import com.northcoders.pigliotech_frontend.presentation.features.profile.ProfileFragment;
 import com.northcoders.pigliotech_frontend.presentation.features.swapbook.SwapFragment;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.northcoders.pigliotech_frontend.utils.CrashReportingHelper;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import com.northcoders.pigliotech_frontend.utils.DevMenuManager;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
+    private MainActivityViewModel viewModel;
+    private DevMenuManager devMenuManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +59,40 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 viewModel.eventSeen();
             }
         });
+
+        // Check if Crashlytics is properly initialized
+        boolean crashlyticsInitialized = CrashReportingHelper.isCrashlyticsInitialized();
+        String message = crashlyticsInitialized
+                ? "Crashlytics initialized successfully"
+                : "Crashlytics initialization failed";
+
+        // We'll use a constant for debugMode since we can't access BuildConfig
+        // For a real app, you'd use BuildConfig.DEBUG here
+        final boolean debugMode = true; // Set to false for production release
+
+        // Only show toast in debug builds
+        if (debugMode) {
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+
+            // Initialize the DevMenuManager (shake to show)
+            devMenuManager = new DevMenuManager(this, debugMode);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (devMenuManager != null) {
+            devMenuManager.register();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (devMenuManager != null) {
+            devMenuManager.unregister();
+        }
     }
 
     private void replaceFragment(Fragment fragment) {
