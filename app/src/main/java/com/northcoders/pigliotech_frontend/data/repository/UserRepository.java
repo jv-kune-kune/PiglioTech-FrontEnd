@@ -33,24 +33,57 @@ public class UserRepository {
     private abstract class RetryingCallback<T> implements Callback<T> {
         private int retryCount = 0;
         private final Consumer<?> consumer;
+        private final Call<T> originalCall;
 
-        RetryingCallback(@SuppressWarnings("unused") Call<T> call, Consumer<?> consumer) {
+        RetryingCallback(Call<T> call, Consumer<?> consumer) {
             this.consumer = consumer;
+            this.originalCall = call;
         }
 
         @Override
         public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
-            if (t instanceof IOException && t.getMessage() != null &&
-                    t.getMessage().contains("Backend is starting up") &&
-                    retryCount < MAX_RETRIES) {
+            boolean shouldRetry = false;
+            String errorType = "unknown";
 
+            // Check for various network-related exceptions
+            if (t instanceof IOException) {
+                if (t.getMessage() != null && t.getMessage().contains("Backend is starting up")) {
+                    shouldRetry = true;
+                    errorType = "backend-starting";
+                } else if (t.getMessage() != null && t.getMessage().contains("timeout")) {
+                    shouldRetry = true;
+                    errorType = "timeout";
+                } else if (t instanceof java.net.SocketTimeoutException) {
+                    shouldRetry = true;
+                    errorType = "socket-timeout";
+                } else if (t instanceof java.net.ConnectException) {
+                    shouldRetry = true;
+                    errorType = "connection-refused";
+                } else if (t instanceof java.net.UnknownHostException) {
+                    shouldRetry = true;
+                    errorType = "unknown-host";
+                } else {
+                    shouldRetry = true;
+                    errorType = "io-exception";
+                }
+            }
+
+            if (shouldRetry && retryCount < MAX_RETRIES) {
                 retryCount++;
-                Log.i(TAG, "Backend starting up, retry attempt " + retryCount);
+                long delay = RETRY_DELAY_MS * retryCount; // Increasing delay with each retry
 
-                handler.postDelayed(() -> call.clone().enqueue(this), RETRY_DELAY_MS);
+                Log.i(TAG, String.format("Network error (%s), retry attempt %d/%d in %d ms",
+                        errorType, retryCount, MAX_RETRIES, delay));
+
+                handler.postDelayed(() -> {
+                    // Use clone of the original call to retry
+                    Call<T> retryCall = originalCall.clone();
+                    retryCall.enqueue(this);
+                }, delay);
             } else {
                 consumer.accept(null);
-                Log.e(TAG, "Network failure after " + retryCount + " retries", t);
+                Log.e(TAG, String.format("Network failure (%s) after %d retries: %s",
+                        errorType, retryCount, t.getMessage()), t);
             }
         }
     }
