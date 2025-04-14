@@ -19,6 +19,7 @@ import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
+    private static final String TAG = "UserAdapter";
     private final List<Book> books;
     private final ProfileViewModel viewModel;
     private final ProfileState profileState;
@@ -48,7 +49,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.bookItemBinding.setBook(book);
 
         String bookCoverUrl = book.getThumbnail();
-        Log.i("UserAdapter", "Book Cover URL: " + bookCoverUrl);
+        Log.i(TAG, "Book Cover URL: " + bookCoverUrl);
         Glide.with(holder.bookCoverImageView.getContext())
                 .load(bookCoverUrl)
                 .placeholder(R.drawable.blank_book)
@@ -59,7 +60,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             if (book.getIsbn() != null) {
                 viewModel.deleteBook(book.getIsbn());
             } else {
-                Log.e("UserAdapter", "Book ISBN is null");
+                Log.e(TAG, "Book ISBN is null");
             }
         });
 
@@ -67,7 +68,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             if (book.getIsbn() != null) {
                 viewModel.likeBook(book.getIsbn());
             } else {
-                Log.e("UserAdapter", "Book ISBN is null");
+                Log.e(TAG, "Book ISBN is null");
             }
         });
 

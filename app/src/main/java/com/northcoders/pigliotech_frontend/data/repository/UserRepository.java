@@ -70,7 +70,7 @@ public class UserRepository {
 
             if (shouldRetry && retryCount < MAX_RETRIES) {
                 retryCount++;
-                long delay = RETRY_DELAY_MS * retryCount; // Increasing delay with each retry
+                long delay = RETRY_DELAY_MS * (long) retryCount; // Cast to long to prevent overflow
 
                 Log.i(TAG, String.format("Network error (%s), retry attempt %d/%d in %d ms",
                         errorType, retryCount, MAX_RETRIES, delay));

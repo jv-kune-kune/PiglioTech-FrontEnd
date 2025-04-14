@@ -18,6 +18,7 @@ import java.util.List;
 
 public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder> {
 
+    private static final String TAG = "SwapAdapter";
     private final List<Match> matches;
     private final SwapViewModel viewModel;
 
@@ -46,7 +47,7 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
         // Null check for match fields
         if (match == null || match.userOne() == null || match.userTwo() == null ||
                 match.userOneBook() == null || match.userTwoBook() == null) {
-            Log.e("SwapAdapter", "Match or its components are null");
+            Log.e(TAG, "Match or its components are null");
             return;
         }
 
@@ -55,11 +56,11 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
         Book userOneBook = match.userOneBook();
         Book userTwoBook = match.userTwoBook();
 
-        Log.i("SwapAdapter", "Current Match: " + match);
+        Log.i(TAG, "Current Match: " + match);
 
         String currentUserId = viewModel.getUserId();
         if (currentUserId == null) {
-            Log.e("SwapAdapter", "Current user ID is null");
+            Log.e(TAG, "Current user ID is null");
             return;
         }
 
@@ -83,7 +84,7 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
                     if (match.id() != null) {
                         viewModel.declineButtonClicked(match.id());
                     } else {
-                        Log.e("SwapAdapter", "Match ID is null");
+                        Log.e(TAG, "Match ID is null");
                     }
                 });
     }
