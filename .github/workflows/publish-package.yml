@@ -1,0 +1,46 @@
+name: Publish Package to GitHub Packages
+
+on:
+  push:
+    # Triggers on version tags
+    tags:
+      - 'v*.*.*'
+  
+  # Allow manual triggering
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
+      - name: Extract version from tag
+        if: startsWith(github.ref, 'refs/tags/')
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+      
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+        
+      - name: Build with Gradle
+        run: ./gradlew build
+      
+      - name: Build release bundle
+        run: ./gradlew bundleRelease
+      
+      - name: Publish to GitHub Packages
+        run: ./gradlew app:publishReleasePublicationToGitHubPackagesRepository
+        env:
+          GITHUB_USERNAME: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
