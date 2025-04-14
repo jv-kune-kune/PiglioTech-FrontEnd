@@ -15,6 +15,13 @@ public class CrashReportingHelper {
     private static final String TAG = "CrashReportingHelper";
 
     /**
+     * Private constructor to prevent instantiation of this utility class.
+     */
+    private CrashReportingHelper() {
+        // Utility class should not be instantiated
+    }
+
+    /**
      * Check if Crashlytics is properly initialized and log the result.
      * Call this from your main activity to verify Crashlytics setup.
      * 

@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             return insets;
         });
 
-        MainActivityViewModel viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        // Initialize the ViewModel using the class member variable
+        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
         NavigationBarView bottomNav = findViewById(R.id.bottom_nav_bar);
         bottomNav.setOnItemSelectedListener(this);

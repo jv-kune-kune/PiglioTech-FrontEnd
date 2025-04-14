@@ -565,23 +565,6 @@ public class BackendStatusManager {
         }
     }
 
-    /**
-     * Check if a specific IP address is reachable.
-     * This can help identify if there's a general connectivity issue vs.
-     * DNS-specific issue.
-     */
-    private boolean isIpAddressReachable(String ipAddress) {
-        try {
-            InetAddress address = InetAddress.getByName(ipAddress);
-            boolean reachable = address.isReachable(5000); // 5 second timeout
-            logInfo("IP address " + ipAddress + " is " + (reachable ? "reachable" : "unreachable"));
-            return reachable;
-        } catch (Exception e) {
-            logWarning("Error checking IP reachability: " + e.getMessage());
-            return false;
-        }
-    }
-
     private void showNoInternetMessage() {
         handler.post(() -> {
             try {

@@ -37,8 +37,8 @@ public class RetrofitInstance {
 
     // Custom DNS resolver to handle DNS issues on some devices
     private static final Dns CUSTOM_DNS = new Dns() {
-        private final Dns DEFAULT_DNS = Dns.SYSTEM;
-        private final List<String> FALLBACK_DNS_SERVERS = Arrays.asList(
+        private final Dns defaultDns = Dns.SYSTEM;
+        private final List<String> fallbackDnsServers = Arrays.asList(
                 "8.8.8.8", // Google DNS
                 "8.8.4.4", // Google DNS secondary
                 "1.1.1.1" // Cloudflare DNS
@@ -48,10 +48,10 @@ public class RetrofitInstance {
         public List<InetAddress> lookup(String hostname) throws UnknownHostException {
             try {
                 // Try system DNS first
-                return DEFAULT_DNS.lookup(hostname);
+                return defaultDns.lookup(hostname);
             } catch (UnknownHostException e) {
                 // If system DNS fails, try alternative approaches
-                for (String dnsServer : FALLBACK_DNS_SERVERS) {
+                for (String dnsServer : fallbackDnsServers) {
                     try {
                         // Try to manually resolve using fallback DNS
                         InetAddress dnsAddress = InetAddress.getByName(dnsServer);
