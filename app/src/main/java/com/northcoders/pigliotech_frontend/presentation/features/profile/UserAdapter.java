@@ -19,6 +19,7 @@ import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
+    private static final String TAG = "UserAdapter";
     private final List<Book> books;
     private final ProfileViewModel viewModel;
     private final ProfileState profileState;
@@ -48,16 +49,28 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.bookItemBinding.setBook(book);
 
         String bookCoverUrl = book.getThumbnail();
-        Log.i("UserAdapter", "Book Cover URL: " + bookCoverUrl);
+        Log.i(TAG, "Book Cover URL: " + bookCoverUrl);
         Glide.with(holder.bookCoverImageView.getContext())
                 .load(bookCoverUrl)
                 .placeholder(R.drawable.blank_book)
                 .error(R.drawable.blank_book)
                 .into(holder.bookCoverImageView);
 
-        holder.deleteBookButton.setOnClickListener(view -> viewModel.deleteBook(book.getIsbn()));
+        holder.deleteBookButton.setOnClickListener(view -> {
+            if (book.getIsbn() != null) {
+                viewModel.deleteBook(book.getIsbn());
+            } else {
+                Log.e(TAG, "Book ISBN is null");
+            }
+        });
 
-        holder.likeBookButton.setOnClickListener(view -> viewModel.likeBook(book.getIsbn()));
+        holder.likeBookButton.setOnClickListener(view -> {
+            if (book.getIsbn() != null) {
+                viewModel.likeBook(book.getIsbn());
+            } else {
+                Log.e(TAG, "Book ISBN is null");
+            }
+        });
 
         if (profileState instanceof ProfileState.OtherUserLoaded) {
             holder.deleteBookButton.setVisibility(View.GONE);
@@ -67,7 +80,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     @Override
     public int getItemCount() {
-        return books.size();
+        return books != null ? books.size() : 0;
     }
 
     public static class UserViewHolder extends RecyclerView.ViewHolder {

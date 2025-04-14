@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,8 +25,11 @@ public class BackendColdStartActivity extends AppCompatActivity {
     private static final String LOG_FORMAT = "%s%s - %s";
     private static final String BACKEND_ONLINE_ACTION = "com.northcoders.pigliotech_frontend.BACKEND_ONLINE";
     private static final long UPDATE_INTERVAL = 1000; // Update every second
+    private static final long ESTIMATED_COLD_START_TIME = 300000; // 5 minutes in milliseconds
 
     private TextView elapsedTimeTextView;
+    private TextView progressText;
+    private ProgressBar progressBar;
     private Handler handler;
     private Runnable updateElapsedTimeRunnable;
     private BroadcastReceiver backendOnlineReceiver;
@@ -61,6 +65,8 @@ public class BackendColdStartActivity extends AppCompatActivity {
             startTime = System.currentTimeMillis();
             handler = new Handler(Looper.getMainLooper());
             elapsedTimeTextView = findViewById(R.id.elapsedTimeTextView);
+            progressBar = findViewById(R.id.progressBar);
+            progressText = findViewById(R.id.progressText);
             Button retryButton = findViewById(R.id.retryButton);
             TextView messageTextView = findViewById(R.id.messageTextView);
 
@@ -89,6 +95,7 @@ public class BackendColdStartActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     updateElapsedTime();
+                    updateProgressBar();
                     handler.postDelayed(this, UPDATE_INTERVAL);
                 }
             };
@@ -188,15 +195,37 @@ public class BackendColdStartActivity extends AppCompatActivity {
     }
 
     private void updateElapsedTime() {
-        try {
-            long elapsedTimeMs = System.currentTimeMillis() - startTime;
-            long minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTimeMs);
-            long seconds = TimeUnit.MILLISECONDS.toSeconds(elapsedTimeMs) % 60;
+        long elapsedTimeMs = System.currentTimeMillis() - startTime;
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTimeMs);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(elapsedTimeMs) % 60;
 
-            elapsedTimeTextView.setText(String.format(Locale.US, "Time elapsed: %d min %d sec",
-                    minutes, seconds));
-        } catch (Exception e) {
-            logError("Error updating elapsed time: " + e.getMessage());
+        String timeText = String.format(Locale.US, "Time elapsed: %d min %d sec", minutes, seconds);
+        elapsedTimeTextView.setText(timeText);
+    }
+
+    private void updateProgressBar() {
+        long elapsedTimeMs = System.currentTimeMillis() - startTime;
+        int progress = (int) Math.min(100, (elapsedTimeMs * 100) / ESTIMATED_COLD_START_TIME);
+
+        progressBar.setProgress(progress);
+        progressText.setText(String.format(Locale.US, "%d%%", progress));
+
+        // Change progress bar color based on progress
+        if (progress > 80) {
+            // Almost done - green
+            progressBar.getProgressDrawable().setColorFilter(
+                    ContextCompat.getColor(this, android.R.color.holo_green_dark),
+                    android.graphics.PorterDuff.Mode.SRC_IN);
+        } else if (progress > 50) {
+            // Halfway there - yellow
+            progressBar.getProgressDrawable().setColorFilter(
+                    ContextCompat.getColor(this, android.R.color.holo_orange_light),
+                    android.graphics.PorterDuff.Mode.SRC_IN);
+        } else {
+            // Just started - red
+            progressBar.getProgressDrawable().setColorFilter(
+                    ContextCompat.getColor(this, android.R.color.holo_red_light),
+                    android.graphics.PorterDuff.Mode.SRC_IN);
         }
     }
 }

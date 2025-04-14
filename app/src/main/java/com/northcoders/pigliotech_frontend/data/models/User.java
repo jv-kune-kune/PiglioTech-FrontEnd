@@ -2,6 +2,7 @@ package com.northcoders.pigliotech_frontend.data.models;
 
 import androidx.databinding.BaseObservable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User extends BaseObservable {
@@ -14,6 +15,7 @@ public class User extends BaseObservable {
 
     // No args constructor
     public User() {
+        this.books = new ArrayList<>();
     }
 
     // All args
@@ -23,7 +25,7 @@ public class User extends BaseObservable {
         this.email = email;
         this.region = region;
         this.thumbnail = thumbnail;
-        this.books = books;
+        this.books = books != null ? books : new ArrayList<>();
     }
 
     // New User constructor
@@ -33,6 +35,7 @@ public class User extends BaseObservable {
         this.email = email;
         this.region = region;
         this.thumbnail = thumbnail;
+        this.books = new ArrayList<>();
     }
 
     public String getUid() {
@@ -85,7 +88,15 @@ public class User extends BaseObservable {
     }
 
     @SuppressWarnings("unused")
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    @SuppressWarnings("unused")
     public String createLabel(List<Book> books) {
+        if (books == null) {
+            return "Books";
+        }
         if (books.size() == 1) {
             return "Book";
         }

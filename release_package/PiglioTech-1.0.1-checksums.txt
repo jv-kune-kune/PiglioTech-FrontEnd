@@ -1,0 +1,1 @@
+a540de4855ee81712a3b0bbc4c6bacf9f22cdc1b91da9e60159d67332c6fbb8f  ./release_package/PiglioTech-1.0.1.apk

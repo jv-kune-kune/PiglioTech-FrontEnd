@@ -18,6 +18,7 @@ import java.util.List;
 
 public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder> {
 
+    private static final String TAG = "SwapAdapter";
     private final List<Match> matches;
     private final SwapViewModel viewModel;
 
@@ -42,15 +43,29 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
     public void onBindViewHolder(@NonNull SwapViewHolder holder, int position) {
 
         Match match = matches.get(position);
+
+        // Null check for match fields
+        if (match == null || match.userOne() == null || match.userTwo() == null ||
+                match.userOneBook() == null || match.userTwoBook() == null) {
+            Log.e(TAG, "Match or its components are null");
+            return;
+        }
+
         User userOne = match.userOne();
         User userTwo = match.userTwo();
         Book userOneBook = match.userOneBook();
         Book userTwoBook = match.userTwoBook();
 
-        Log.i("SwapAdapter", "Current Match: " + match);
+        Log.i(TAG, "Current Match: " + match);
+
+        String currentUserId = viewModel.getUserId();
+        if (currentUserId == null) {
+            Log.e(TAG, "Current user ID is null");
+            return;
+        }
 
         // To Determine which information from the Match object is bound to the View
-        if (viewModel.getUserId().equals(userOne.getUid())) {
+        if (currentUserId.equals(userOne.getUid())) {
             MatchUi matchUi = new MatchUi(
                     userTwo.getName(),
                     userTwoBook.getTitle(),
@@ -65,12 +80,18 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapAdapter.SwapViewHolder
         }
 
         holder.declineButton.setOnClickListener(
-                view -> viewModel.declineButtonClicked(match.id()));
+                view -> {
+                    if (match.id() != null) {
+                        viewModel.declineButtonClicked(match.id());
+                    } else {
+                        Log.e(TAG, "Match ID is null");
+                    }
+                });
     }
 
     @Override
     public int getItemCount() {
-        return matches.size();
+        return matches != null ? matches.size() : 0;
     }
 
     public static class SwapViewHolder extends RecyclerView.ViewHolder {
