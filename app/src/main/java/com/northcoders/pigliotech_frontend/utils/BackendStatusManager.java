@@ -17,6 +17,7 @@ import com.northcoders.pigliotech_frontend.presentation.features.backend.Backend
 import com.northcoders.pigliotech_frontend.data.network.RetrofitInstance;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -521,6 +522,8 @@ public class BackendStatusManager {
     private void doPingToGoogleForConnectivityCheck() {
         try {
             logInfo("Pinging Google to verify internet connectivity");
+
+            // Use an HTTPS request to Google directly instead of pinging an IP address
             Call<Void> googlePingCall = RetrofitInstance.getGooglePingService().pingGoogle();
             googlePingCall.enqueue(new Callback<>() {
                 @Override
@@ -559,6 +562,23 @@ public class BackendStatusManager {
             isNetworkCheckInProgress = false;
             logWarning("Error executing Google ping: " + e.getMessage());
             showNoInternetMessage();
+        }
+    }
+
+    /**
+     * Check if a specific IP address is reachable.
+     * This can help identify if there's a general connectivity issue vs.
+     * DNS-specific issue.
+     */
+    private boolean isIpAddressReachable(String ipAddress) {
+        try {
+            InetAddress address = InetAddress.getByName(ipAddress);
+            boolean reachable = address.isReachable(5000); // 5 second timeout
+            logInfo("IP address " + ipAddress + " is " + (reachable ? "reachable" : "unreachable"));
+            return reachable;
+        } catch (Exception e) {
+            logWarning("Error checking IP reachability: " + e.getMessage());
+            return false;
         }
     }
 
