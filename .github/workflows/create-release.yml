@@ -21,8 +21,7 @@ jobs:
       
       - name: Decode Keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" > keystore.b64
-          base64 -d keystore.b64 > app/pigliotech.keystore
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/pigliotech.keystore
       
       - name: Set up JDK 17
         uses: actions/setup-java@v3
