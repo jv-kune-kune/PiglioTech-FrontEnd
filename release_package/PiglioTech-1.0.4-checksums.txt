@@ -1,0 +1,1 @@
+01a65595bb1a5a2a02b559046f48d79580629ae2f27d0943a03d12d574463c4d  release_package/v1.0.4/PiglioTech-1.0.4.apk
