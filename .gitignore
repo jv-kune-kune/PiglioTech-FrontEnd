@@ -45,3 +45,4 @@ google-services.json
 app/release
 .vscode/
 .sonarlint/
+release-process-summary.md
