@@ -28,6 +28,8 @@ render.experimental.xml
 *.keystore
 *.jks
 set_keystore_env.sh
+keystore*.b64
+keystore_base64.txt
 
 # Secrets
 *.env
@@ -46,3 +48,7 @@ app/release
 .vscode/
 .sonarlint/
 release-process-summary.md
+
+# Testing files
+test_keystore.sh
+logs/
